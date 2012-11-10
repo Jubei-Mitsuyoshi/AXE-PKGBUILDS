@@ -1,0 +1,44 @@
+# $Id: PKGBUILD 170683 2012-11-09 12:41:46Z jgc $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+# Contributor: Ionut Biru <ibiru@archlinux.org>
+
+pkgname=colord
+pkgver=0.1.24
+pkgrel=99.2axe
+pkgdesc="System daemon for managing color devices"
+arch=('i686' 'x86_64')
+url="http://www.freedesktop.org/software/colord"
+license=('GPL2')
+groups=('axis')
+depends=('lcms2' 'libgusb' 'sane' 'shared-color-profiles' 'sqlite' 'udev')
+makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook2x')
+source=($url/releases/$pkgname-$pkgver.tar.xz)
+options=('!libtool')
+sha1sums=('52089b72d79cd4358a86b7e646c42d23157bbcf9')
+
+build() {
+  cd "$pkgname-$pkgver"
+  
+  # put udev files in /usr/lib
+  sed -i "/slashlibdir=/s#/lib#/usr/lib#" configure
+  
+	  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/colord \
+    --localstatedir=/var \
+    --enable-gudev \
+    --disable-static \
+    --disable-polkit
+	
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install \
+    bashcompletiondir=/usr/share/bash-completion/completions
+}
+
+# vim:set ts=2 sw=2 et:
+#----------------axe warning------------------ syetemd detected

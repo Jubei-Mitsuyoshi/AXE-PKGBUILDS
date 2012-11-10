@@ -1,0 +1,42 @@
+# $Id: PKGBUILD 137084 2011-09-06 04:35:05Z allan $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Allan McRae <allan@archlinux.org>
+# Contributor: Andreas Radke <andyrtr@archlinux.org>
+
+pkgname=diffutils
+pkgver=3.2
+pkgrel=99.1axe
+pkgdesc="Utility programs used for creating patch files  --maintained as part of the axe project"
+arch=('i686' 'x86_64')
+url="http://www.gnu.org/software/diffutils"
+license=('GPL3')
+groups=('axis' 'base')
+depends=('glibc' 'sh')
+install=diffutils.install
+source=("ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz"
+        'diffutils-3.2-no-gets.patch')
+md5sums=('26ff64c332429c830c154be46b393382'
+         '767874FD3ED804E6B7013EA18E2F024A')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  
+  patch -Np1 -i "$srcdir/diffutils-3.2-no-gets.patch"
+  
+  # Disable automagic dependency over libsigsegv; see bug #312351.
+	export ac_cv_libsigsegv=no
+  
+  ./configure --prefix=/usr
+  
+  make
+}
+
+check() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make check
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+}

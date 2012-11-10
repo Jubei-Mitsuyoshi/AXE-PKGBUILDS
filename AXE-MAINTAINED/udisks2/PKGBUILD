@@ -1,0 +1,36 @@
+# $Id: PKGBUILD 161616 2012-06-12 13:51:10Z heftig $
+# Maintainer: Ionut Biru <ibiru@archlinux.org>
+
+pkgname=udisks2
+pkgver=2.0.0
+pkgrel=99.1axe
+pkgdesc="Disk Management Service, version 2 --maintained as part of the axe project"
+arch=('i686' 'x86_64')
+url="http://www.freedesktop.org/wiki/Software/udisks"
+license=('GPL2')
+groups=('axis')
+depends=('glib2' 'udev' 'polkit' 'libatasmart' 'eject')
+makedepends=('intltool' 'docbook-xsl' 'gobject-introspection')
+optdepends=('parted: partition management'
+            'gptfdisk: GUID partition table support')
+options=(!libtool)
+source=(http://udisks.freedesktop.org/releases/udisks-$pkgver.tar.bz2)
+sha256sums=('aa026a5a865688a2e9e430a389c7636c1a556d980539e4bd4a3f31dc5d4fe1eb')
+
+build() {
+  cd "udisks-$pkgver"
+  ./configure --prefix=/usr \
+	--sysconfdir=/etc \
+      --localstatedir=/var \
+	  --disable-static
+  make
+}
+
+#coomented outby axe
+#--with-systemdsystemunitdir=/usr/lib/systemd/system 
+
+package() {
+  cd "udisks-$pkgver"
+  make DESTDIR="$pkgdir" install \
+    bash_completiondir=/usr/share/bash-completion/completions
+}

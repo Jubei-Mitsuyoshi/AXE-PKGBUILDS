@@ -1,0 +1,44 @@
+# $Id: PKGBUILD 166381 2012-09-07 09:14:25Z tpowa $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+# Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor: Daniel Ehlers <danielehlers@mindeye.net>
+
+pkgname=alsa-plugins
+pkgver=1.0.26.0
+pkgrel=g9df5d
+pkgdesc="Extra alsa plugins  tarball based on GIT snapshot"
+arch=(i686 x86_64)
+url="http://www.alsa-project.org"
+license=(GPL)
+groups=('axis')
+depends=(alsa-lib)
+makedepends=(libpulse jack ffmpeg)
+optdepends=('libpulse: PulseAudio plugin'
+            'jack: Jack plugin'
+            'ffmpeg: libavcodec resampling plugin'
+            'libsamplerate: libsamplerate resampling plugin'
+            'speex: libspeexdsp resampling plugin')
+options=('!libtool')
+source=("http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.g9df5d.tar.bz2"
+        alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch
+        alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch)
+
+build() {
+  cd $pkgname-$pkgver.$pkgrel
+  patch -Np1 -i ../alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch
+  patch -Np1 -i ../alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver.$pkgrel
+  make DESTDIR="$pkgdir" install
+
+  install -d "$pkgdir/usr/share/doc/$pkgname"
+  install -m644 doc/README* doc/*.txt "$pkgdir/usr/share/doc/$pkgname/"
+}
+md5sums=('0C2AA65A0CD2CDB3A7B197CEDFD1A2F0'
+         '50d9adcda20756d063e676a563c201d9'
+         '697c6275f678d86ded2e5092d8a154c9')

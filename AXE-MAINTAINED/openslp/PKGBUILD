@@ -1,0 +1,40 @@
+# $Id: PKGBUILD 165260 2012-08-14 16:48:24Z andyrtr $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+
+pkgname=openslp
+pkgver=1.2.1
+pkgrel=99.5axe
+pkgdesc="Open-source implementation of Service Location Protocol"
+arch=('i686' 'x86_64')
+url="http://www.openslp.org"
+license=('BSD')
+groups=('axis')
+depends=('bash' 'openssl')
+backup=('etc/slp.conf' 'etc/slp.reg' 'etc/slp.spi')
+options=('!libtool')
+source=(http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz rc.slpd
+        #https://github.com/lunar-linux/moonbase-other/commit/ae74b5873e639d50db0a563d2424114a530c01ae
+        openslp.service)
+md5sums=('ff9999d1b44017281dd00ed2c4d32330'
+         '504f4e7f78b6dd35ec30523ef08647c5'
+         '296dc3c8f75e7a1823fcb9dd97ea0971')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure --prefix=/usr \
+    --disable-static \
+    --enable-slpv1 \
+    --enable-slpv2-security # service would fail to start without this
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} DOC_DIR=/usr/share/doc/openslp-${pkgver} install
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -D -m755 $srcdir/rc.slpd ${pkgdir}/etc/rc.d/slpd
+#  install -D -m644 $srcdir/openslp.service ${pkgdir}/usr/lib/systemd/system/openslp.service
+}
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/openslp/rc.slpd altered for rc.d changes
+#----------------axe warning------------------ syetemd detected

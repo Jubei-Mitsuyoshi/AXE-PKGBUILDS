@@ -1,0 +1,84 @@
+diff -Naur compiz-0.9.8.4-orig/compizconfig/ccsm/CMakeLists.txt compiz-0.9.8.4/compizconfig/ccsm/CMakeLists.txt
+--- compiz-0.9.8.4-orig/compizconfig/ccsm/CMakeLists.txt	2012-09-27 12:04:02.000000000 +0100
++++ compiz-0.9.8.4/compizconfig/ccsm/CMakeLists.txt	2012-09-30 19:56:30.470231716 +0100
+@@ -12,7 +12,7 @@
+ execute_process (COMMAND uname -p OUTPUT_VARIABLE PROC_ARCH)
+ 
+ # Get Python Version
+-execute_process (COMMAND python -c "import sys; print str (sys.version_info[0]) + '.' + str (sys.version_info[1])"
++execute_process (COMMAND python2 -c "import sys; print str (sys.version_info[0]) + '.' + str (sys.version_info[1])"
+ 		 OUTPUT_VARIABLE PY_VERSION)
+ 
+ string (REPLACE "\n" "" PROC_ARCH ${PROC_ARCH})
+@@ -36,7 +36,7 @@
+ set (VERSION ${COMPIZ_RELEASE_VERSION})
+ 
+ add_custom_command (OUTPUT ${PY_CCSM_LIB}
+-		    COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR}/build --version=${VERSION}
++		    COMMAND python2 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR}/build --version=${VERSION}
+ 		    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+ 		    COMMENT "Generating Python Bytecode")
+ 
+@@ -44,7 +44,7 @@
+                    ${PY_CCSM_LIB})
+ 
+ add_custom_target (uninstall
+-		   COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/setup.py uninstall --prefix=${CMAKE_INSTALL_PREFIX}
++		   COMMAND python2 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py uninstall --prefix=${CMAKE_INSTALL_PREFIX}
+ 		   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+ 		   COMMENT "Uninstalling Python Files")
+ 
+diff -Naur compiz-0.9.8.4-orig/compizconfig/compizconfig-python/CMakeLists.txt compiz-0.9.8.4/compizconfig/compizconfig-python/CMakeLists.txt
+--- compiz-0.9.8.4-orig/compizconfig/compizconfig-python/CMakeLists.txt	2012-09-27 12:04:02.000000000 +0100
++++ compiz-0.9.8.4/compizconfig/compizconfig-python/CMakeLists.txt	2012-09-30 19:56:30.470231716 +0100
+@@ -12,7 +12,7 @@
+ execute_process (COMMAND uname -p OUTPUT_VARIABLE PROC_ARCH)
+ 
+ # Get Python Version
+-execute_process (COMMAND python -c "import sys; print str (sys.version_info[0]) + '.' + str (sys.version_info[1])"
++execute_process (COMMAND python2 -c "import sys; print str (sys.version_info[0]) + '.' + str (sys.version_info[1])"
+ 		 OUTPUT_VARIABLE PY_VERSION)
+ 
+ string (REPLACE "\n" "" PROC_ARCH ${PROC_ARCH})
+@@ -37,7 +37,7 @@
+                 ${CMAKE_CURRENT_BINARY_DIR}/compizconfig-python.pc)
+ 
+ add_custom_command (OUTPUT ${PY_COMPIZCONFIG_LIB}
+-		    COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR}/build --version=${VERSION}
++		    COMMAND python2 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR}/build --version=${VERSION}
+ 		    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+ 		    DEPENDS ${PY_COMPIZCONFIG_SRC} ${PY_COMPIZCONFIG_VERSION} compizconfig
+ 		    COMMENT "Generating Python Bytecode")
+@@ -46,7 +46,7 @@
+                    ${PY_COMPIZCONFIG_LIB})
+ 
+ add_custom_target (uninstall
+-		   COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/setup.py uninstall --prefix=${CMAKE_INSTALL_PREFIX}
++		   COMMAND python2 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py uninstall --prefix=${CMAKE_INSTALL_PREFIX}
+ 		   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+ 		   COMMENT "Uninstalling Python Files")
+ 
+@@ -60,7 +60,7 @@
+ if (COMPIZ_BUILD_TESTING)
+ 
+         find_program (BASH_EXECUTABLE bash)
+-	find_program (PYTHON_EXECUTABLE python)
++	find_program (PYTHON_EXECUTABLE python2)
+ 	mark_as_advanced (FORCE PYTHON_EXECUTABLE)
+ 
+ 	file (GLOB PYTHON_TESTS "tests/test_*.py")
+diff -Naur compiz-0.9.8.4-orig/postinst/CMakeLists.txt compiz-0.9.8.4/postinst/CMakeLists.txt
+--- compiz-0.9.8.4-orig/postinst/CMakeLists.txt	2012-09-27 12:04:02.000000000 +0100
++++ compiz-0.9.8.4/postinst/CMakeLists.txt	2012-09-30 19:56:58.900533674 +0100
+@@ -6,9 +6,9 @@
+ 	      PROPERTY GSETTINGS_LOCAL_COMPILE_INHIBIT_RULE
+ 	      FALSE)
+ 
+-if (USE_GSETTINGS)
++if (USE_GSETTINGS AND NOT COMPIZ_DISABLE_SCHEMAS_INSTALL)
+ 
+     compiz_add_install_recompile_gsettings_schemas (${CMAKE_INSTALL_PREFIX}/share/glib-2.0/schemas)
+     add_all_gsettings_schemas_to_local_recompilation_rule ()
+ 
+-endif (USE_GSETTINGS)
++endif (USE_GSETTINGS AND NOT COMPIZ_DISABLE_SCHEMAS_INSTALL)

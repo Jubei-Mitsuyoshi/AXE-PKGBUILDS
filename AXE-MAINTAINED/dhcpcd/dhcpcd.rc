@@ -1,0 +1,28 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/conf.d/dhcpcd
+. /etc/rc.d/functions
+
+# See how we were called.
+case "$1" in
+  start) if dmn_running dhcpcd; then
+			echo "DHCPCD is already running. Try 'rc.d restart dhcpcd'"
+			exit
+         fi
+  
+        exec_cmd "Starting DHCPCD" dhcpcd ${DHCPCD_ARGS} 
+        
+        if [ "${?}" = "0" ]; then
+			dmn_add dhcpcd
+		fi ;;
+  stop) exec_cmd "Stopping DHCPCD" dhcpcd -qk
+        
+        if [ "${?}" = "0" ]; then
+			dmn_rm dhcpcd
+		fi ;;
+  restart) $0 stop
+		   sleep 2
+		   $0 start ;;
+  *) echo "Usage: $0 {start|stop|restart}" ;;
+esac

@@ -1,0 +1,50 @@
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Contributor: Adam Hani Schakaki <adam@schakaki.net>
+# Maintainer: Ner0
+
+pkgname=muffin-wm
+pkgver=1.1.2
+pkgrel=99.1axe
+pkgdesc="Cinnamon window manager based on Mutter --maintained as part of the axe project"
+arch=('i686' 'x86_64')
+url="https://github.com/linuxmint/muffin"
+license=('GPL')
+groups=('axis')
+depends=('clutter' 'gconf' 'gobject-introspection' 'gsettings-desktop-schemas' 'libcanberra' 'libxxf86vm' 'startup-notification' 'zenity' 'dconf' 'pango' 'cairo' 'gtk3'
+		'libxcomposite' 'libx11' 'libxcursor' 'libxdamage' 'libxext' 'libxfixes' 'libxrandr' 'libxrender' 'libxinerama')
+makedepends=('libltdl' 'intltool' 'gnome-doc-utils' 'pkg-config' 'gdk-pixbuf2' 'libice' 'libsm' 'gettext' 'xextproto' 'xproto')
+conflicts=('muffin-git')
+options=('!libtool' '!emptydirs')
+install=$pkgname.install
+source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxmint/muffin/tarball/$pkgver")
+md5sums=('0950fa5c00a165c7fed73b0898d072d5')
+
+build() {
+  cd linuxmint-muffin-*
+
+  autoreconf -vfi
+  PYTHON=python2 ./configure --prefix=/usr \
+  --sysconfdir=/etc \
+  --libexecdir=/usr/lib/muffin \
+  --localstatedir=/var \
+  --disable-static \
+  --disable-schemas-compile
+	--enable-shape \
+	--enable-sm \
+	--enable-startup-notification \
+	--enable-xsync \
+	--enable-verbose-mode \
+	--with-libcanberra \
+	--enable-introspection \
+	--enable-xinerama
+		
+		
+  make ${MAKEFLAGS}
+}
+
+package() {
+  cd linuxmint-muffin-*
+  make DESTDIR="$pkgdir/" install
+}
+
+# vim:set ts=2 sw=2 et:

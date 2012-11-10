@@ -1,0 +1,48 @@
+# $Id: PKGBUILD 142080 2011-11-04 23:36:17Z allan $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Allan McRae <allan@archlinux.org>
+# Contributor: Andreas Radke <andyrtr@archlinux.org>
+
+pkgname=tar
+pkgver=1.26
+pkgrel=99.2axe
+pkgdesc="Utility used to store, backup, and transport files  --maintained as part of the axe project"
+arch=('i686' 'x86_64')
+url="http://www.gnu.org/software/tar/tar.html"
+license=('GPL3')
+groups=('axis' 'base')
+depends=('glibc' 'sh')
+options=('!emptydirs')
+install=tar.install
+source=(ftp://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz{,.sig}
+		tar-1.26-xattr.patch
+		tar-1.26-no-gets.patch
+        tar.1)
+md5sums=('0ced6f20b9fa1bea588005b5ad4b52c1'
+         '6618d5fe7785e138c27d7d6a24e998b2'
+		 '1881760AEB64FEE9B0B5FC1BFE8FED40'
+		 '2DB5A9320C561D211EEE2C84A9C2C006'
+         'e97e7343f4e23724b4c48bca2f033e38')
+
+build() {
+  cd ${srcdir}/$pkgname-$pkgver
+
+  patch -Np1 -i ../tar-1.26-no-gets.patch
+  
+  #this patch from gentoo causes build fail 
+ # patch -Np1 -i ../tar-1.26-xattr.patch
+  
+  ./configure --prefix=/usr --libexecdir=/usr/lib/tar --bindir=/bin
+  make
+}
+
+check() {
+  cd ${srcdir}/$pkgname-$pkgver
+  make check
+}
+  
+package() {
+  cd ${srcdir}/$pkgname-$pkgver
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ${srcdir}/tar.1 ${pkgdir}/usr/share/man/man1/tar.1
+}

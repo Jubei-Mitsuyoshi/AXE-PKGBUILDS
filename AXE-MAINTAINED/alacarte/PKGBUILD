@@ -1,0 +1,34 @@
+# $Id: PKGBUILD 170137 2012-11-03 13:03:21Z ibiru $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+# Contributor: pressh <pressh@gmail.com>
+
+pkgname=alacarte
+pkgver=3.6.1
+pkgrel=99.2axe
+pkgdesc="Menu editor for gnome"
+arch=(any)
+license=('LGPL')
+url="http://www.gnome.org"
+depends=('gnome-menus' 'hicolor-icon-theme' 'python2-gobject' 'gtk3' 'gnome-panel')
+makedepends=('intltool')
+install=alacarte.install
+options=('!libtool')
+groups=('axis' 'gnome-extra')
+source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/3.6/${pkgname}-${pkgver}.tar.xz
+        fix-crash.patch)
+sha256sums=('7e17bd80e43130afea6372a957777d289c9b9b6d4893aa20ad3f45bbd48dd25e'
+            '20ba4fb152996879c76571c9e26f993882314ff5fd0074279c71644c9e72dc01')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  # Fix crash when $XDG_MENU_PREFIX is not defined
+  patch -Np1 -i "${srcdir}/fix-crash.patch"
+
+  ./configure --prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var
+  make
+  make DESTDIR="${pkgdir}" install
+}

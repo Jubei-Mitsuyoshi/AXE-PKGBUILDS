@@ -1,0 +1,44 @@
+#!/bin/bash
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+export DAEMONS_single=(sulogin)
+
+. /etc/rc.conf
+
+DAEMONS_default=("${DAEMONS[@]}")
+
+curlevel=default
+for w in $(</proc/cmdline); do
+  case $w in
+    single|1|S|-s) curlevel=single;;
+    emergency|-b) curlevel=emergency;
+                  sulogin -p;;
+    runlevel=*) curlevel=${w#*runlevel=};;
+  esac
+done
+
+sysctl --system
+
+for runlevel in ${!DAEMONS_*}; do
+  runlevel=${runlevel#DAEMONS_}
+  d=/run/runit/runsvdir/$runlevel
+  mkdir -p $d
+  ref="DAEMONS_${runlevel}[@]"
+  for daemon in "${!ref}"; do
+    case ${daemon:0:1} in
+      !) ;;
+      *) if [[ -d /etc/sv/$daemon ]]; then 
+	   ln -s /etc/sv/$daemon $d
+         else
+	   [[ $curlevel == $runlevel ]] && /etc/rc.d/$daemon start
+         fi
+    esac
+  done
+done
+
+[ -x /etc/rc.local ] && /etc/rc.local
+
+ln -s /run/runit/runsvdir/$curlevel /run/runit/runsvdir/current
+
+exec env - PATH=$PATH \
+runsvdir -P /run/runit/runsvdir/current 'log: ...........................................................................................................................................................................................................................................................................................................................................................................................................'

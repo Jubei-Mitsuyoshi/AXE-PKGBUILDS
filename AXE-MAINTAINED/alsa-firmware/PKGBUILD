@@ -1,0 +1,36 @@
+# $Id: PKGBUILD 158602 2012-05-05 02:35:11Z dreisner $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: Jochen Immendörfer <jochen dot immendoerfer at gmail dot com>
+pkgname=alsa-firmware
+pkgver=1.0.25.0
+pkgrel=g714f1
+pkgdesc="ALSA firmware package  --maintained as part of the axe project"
+arch=('i686' 'x86_64')
+url="http://alsa-project.org/"
+license=('GPL')
+groups=('axis')
+source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$pkgrel.tar.bz2)
+options=(!strip)
+
+#source=(ftp://ftp.alsa-project.org/pub/firmware/$pkgname-$pkgver.tar.bz2
+#http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.ga9f39.tar.bz2
+
+
+build() {
+  cd $srcdir/$pkgname-$pkgver.$pkgrel
+  ./configure --prefix=/usr --with-hotplug-dir=/usr/lib/firmware
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver.$pkgrel
+  make DESTDIR=$pkgdir install
+  # remove files which conflicts with linux-firmware
+  rm -rf ${pkgdir}/usr/lib/firmware/{ess,korg,sb16,yamaha}
+  # remove broken symlinks (broken upstream)
+  rm -rf ${pkgdir}/usr/lib/firmware/turtlebeach
+  # remove empty dir
+  rm -rf ${pkgdir}/usr/bin
+}
+md5sums=('54768A06F39B10683CF1A23D7655C3E2')

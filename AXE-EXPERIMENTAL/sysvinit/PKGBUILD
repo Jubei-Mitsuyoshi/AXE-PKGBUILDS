@@ -1,0 +1,66 @@
+# $Id: PKGBUILD 166964 2012-09-23 12:22:41Z tomegun $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Eric Belanger <eric@archlinux.org>
+
+pkgbase=sysvinit
+pkgname=('sysvinit-tools' 'sysvinit')
+pkgver=2.88
+pkgrel=99.9axe
+arch=('i686' 'x86_64')
+url="http://savannah.nongnu.org/projects/sysvinit"
+license=('GPL')
+groups=('base' 'axe')
+depends=('util-linux' 'coreutils' 'glibc' 'awk')
+source=("http://download.savannah.gnu.org/releases/sysvinit/sysvinit-${pkgver}dsf.tar.bz2"
+        '0001-simplify-writelog.patch'
+        '0002-remove-ansi-escape-codes-from-log-file.patch'
+        'bootlog')
+sha1sums=('f2ca149df1314a91f3007cccd7a0aa47d990de26'
+          '326112c8a9bd24cb45bd4bb2f958a25f0ac4773d'
+          'bbecfa7dfa45ac7c37ed8ac59fb53f6a85064b32'
+          'dfa64a60fd5d3c0d3f9cd1164d5d40fec5850f9a')
+
+build() {
+  cd "${srcdir}/sysvinit-${pkgver}dsf"
+
+  # FS#30005
+  patch -p1 -d "src" -i "${srcdir}/0001-simplify-writelog.patch"
+  patch -p1 -d "src" -i "${srcdir}/0002-remove-ansi-escape-codes-from-log-file.patch"
+
+  make 
+}
+
+package_sysvinit-tools() {
+  pkgdesc="Linux System V Init Tools --maintained as part of the axe project"
+
+  cd "${srcdir}/sysvinit-${pkgver}dsf"
+  make ROOT="${pkgdir}" install
+
+  # provided by util-linux
+  cd "${pkgdir}"
+  rm bin/mountpoint
+  rm usr/share/man/man1/mountpoint.1
+  rm usr/bin/{mesg,utmpdump,wall}
+  rm usr/share/man/man1/{mesg,utmpdump,wall}.1
+  rm sbin/sulogin
+  rm usr/share/man/man8/sulogin.8
+
+  ### split out sysvinit
+  rm -rf "${srcdir}/_sysvinit"
+  install -dm755 \
+        "${srcdir}/_sysvinit/sbin" \
+        "${srcdir}/_sysvinit/usr/share/man/man8"
+  cd "${srcdir}/_sysvinit"
+  mv "${pkgdir}/sbin/"{halt,init,poweroff,reboot,runlevel,shutdown,telinit} sbin/
+  mv "${pkgdir}/usr/share/man/man5" usr/share/man/
+  mv "${pkgdir}/usr/share/man/man8/"{halt,init,poweroff,reboot,runlevel,shutdown,telinit}.8 usr/share/man/man8/
+}
+
+package_sysvinit() {
+  pkgdesc="Linux System V Init --maintained as part of the axe project"
+  depends=('sysvinit-tools')
+  install="sysvinit.install"
+
+  mv "${srcdir}/_sysvinit/"* "${pkgdir}"
+  install -Dm644 "${srcdir}/bootlog" "${pkgdir}/etc/logrotate.d/bootlog"
+}

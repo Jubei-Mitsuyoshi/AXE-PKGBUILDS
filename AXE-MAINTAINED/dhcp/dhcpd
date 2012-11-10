@@ -1,0 +1,40 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+. /etc/conf.d/dhcp
+
+PIDFILE="/var/run/dhcpd.pid"
+PID=`cat $PIDFILE 2>/dev/null`
+case "$1" in
+  start)
+    msg_busy "Starting DHCP Server"
+    if [ "$PID" = "" ]; then 
+       /usr/sbin/dhcpd $DHCP_ARGS 
+    fi
+    if [ "$PID" != "" -o $? -gt 0 ]; then
+      msg_fail
+    else
+      dmn_add dhcpd
+      msg_ok
+    fi
+    ;;
+  stop)
+    msg_busy "Stopping DHCP Server"
+    [ ! -z "$PID" ]  && kill $PID &> /dev/null
+    rm -f $PIDFILE
+    if [ $? -gt 0 ]; then
+      msg_fail
+    else
+      dmn_rm dhcpd
+      msg_ok
+    fi
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "usage: $0 {start|stop|restart}"  
+esac

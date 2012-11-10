@@ -1,0 +1,20 @@
+#!/bin/bash 
+source /etc/rc.conf
+source /etc/rc.d/functions
+
+case "${1}" in 
+    start) exec_cmd "Starting pup-volume-monitor" pup-volume-monitor &
+           if [ "${?}" = "0"];then
+               dmn_add pup-vm
+           fi ;;
+    stop) exec_cmd "Stopping pup-volume-monitor" killall pup-volume-monitor
+          if [ "${?}" = "0"];then
+              dmn_rm pup-vm
+          fi ;; 
+    restart) ${0} stop
+             sleep 2
+             ${0} start ;; 
+    *) 
+        echo $"Usage: ${0} {start|stop|restart}" 
+        ;; 
+esac 

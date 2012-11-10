@@ -1,0 +1,50 @@
+#$Id: PKGBUILD 79133 2012-10-31 00:23:46Z dwallace $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Daniel Wallace <danielwallace at gtmanfred dot com>
+# Contributor: Lucas De Marchi <lucas.de.marchi@gmail.com>
+
+pkgname=connman
+pkgver=1.9
+pkgrel=99.2axe
+pkgdesc="Wireless LAN network manager  --maintained as part of the axe project"
+url="http://connman.net/"
+arch=('i686' 'x86_64')
+license=('GPL2')
+depends=('dbus-core' 'iptables' 'glib2' 'gnutls')
+conflicts=('openresolv')
+optdepends=('bluez: Support for Bluetooth devices'
+            'wpa_supplicant: For WiFi devices')
+makedepends=('bluez' 'wpa_supplicant' 'openconnect' 'openvpn')
+options=('!libtool')
+source=('connmand-daemon'
+        "http://www.kernel.org/pub/linux/network/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
+        'allow_group_network.diff')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  #is this necessary in a root environment ?
+  patch -Np1 -i "${srcdir}/allow_group_network.diff"
+
+  ./configure --prefix=/usr \
+	  --sysconfdir=/etc \
+	  --localstatedir=/var \
+      --enable-threads \
+      --enable-openconnect \
+      --enable-openvpn \
+      --disable-polkit \
+      --enable-client
+
+  make
+}
+
+package(){
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+  install -Dm755 "$srcdir"/connmand-daemon "$pkgdir"/etc/rc.d/connmand
+  install -Dm755 "$srcdir/$pkgname-$pkgver/client/${pkgname}ctl" "$pkgdir/usr/sbin/${pkgname}ctl"
+}
+md5sums=('88ece7cbf1d0d289545ce4f8553fdab8'
+         '8196824f400719dd172222a355ad9592'
+         'a8d22ee089fb0ed725130d16ad393047')

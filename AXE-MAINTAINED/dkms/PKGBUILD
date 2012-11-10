@@ -1,0 +1,70 @@
+# $Id: PKGBUILD 76986 2012-10-02 22:13:50Z seblu $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Sébastien Luttringer <seblu@aur.archlinux.org>
+# Contributor: Balwinder S "bsd" Dheeman (bdheeman AT gmail.com)
+
+pkgname=dkms
+pkgver=2.2.0.3
+pkgrel=99.12axe
+pkgdesc='Dynamic Kernel Modules System'
+arch=('any')
+url='http://linux.dell.com/dkms/'
+license=('GPL2')
+groups=('axis')
+depends=('bash' 'kmod' 'gcc' 'make' 'patch')
+optdepends=('linux-headers: build modules against Arch kernel'
+            'linux-lts-headers: build modules against LTS Arch kernel')
+backup=('etc/dkms/framework.conf' "etc/conf.d/$pkgname")
+source=("http://linux.dell.com/$pkgname/permalink/$pkgname-$pkgver.tar.gz"
+        "$pkgname.rc"
+        "$pkgname.conf"
+        "$pkgname.service"
+        "$pkgname.systemd"
+        '01-broken-uninstall.patch')
+md5sums=('11a8aaade2ebec2803653837c7593030'
+         'e0d5307f4506ac259b3e91a49ebc494f'
+         '8be6746da3df4dcb61cd2b1459974fce'
+         '02e9744e3fdc3d2f68e46966fb32e260'
+         '64119373e56a9e243e57adc57657a5ea'
+         '2dfd8656dc79afd229c1481a90fb645b')
+
+build() {
+  patches=("$srcdir"/*.patch)
+  cd $pkgname-$pkgver
+  for p in "${patches[@]}"; do
+    msg2 "Apply patch: ${p##*/}"
+    patch -p1 -i "$p"
+  done
+  # /usr move
+  msg2 '/usr move patching'
+  for i in dkms{,_framework.conf,.bash-completion,.8,_common.postinst}; do
+    sed -ri 's,/lib/modules,/usr/lib/modules,g' "$i"
+  done
+}
+
+package() {
+  # upstream installer
+  pushd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+  popd
+  # fix hardcoded paths
+  sed -i "s|/sbin/depmod|depmod|" $pkgdir/usr/sbin/dkms
+  # remove debian specific
+  rm -r "$pkgdir/etc/kernel"
+  # move bash completion in right place
+  install -d -m 755 "$pkgdir/usr/share/bash-completion"
+  mv "$pkgdir/etc/bash_completion.d" "$pkgdir/usr/share/bash-completion/completions"
+  # add initscripts
+  install -D -m 755 $pkgname.rc "$pkgdir/etc/rc.d/$pkgname"
+  install -D -m 644 $pkgname.conf "$pkgdir/etc/conf.d/$pkgname"
+  # add systemd
+#  install -D -m 644 $pkgname.service "$pkgdir/usr/lib/systemd/system/$pkgname.service"
+#  install -D -m 755 $pkgname.systemd "$pkgdir/usr/lib/systemd/scripts/$pkgname"
+}
+
+# vim:set ts=2 sw=2 et:
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/dkms/dkms.hook altered for rc.d changes
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/dkms/dkms.rc altered for rc.d changes
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/dkms/dkms.rc aswell
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/dkms/dkms.systemd altered for rc.d changes
+#----------------axe warning------------------ syetemd detected

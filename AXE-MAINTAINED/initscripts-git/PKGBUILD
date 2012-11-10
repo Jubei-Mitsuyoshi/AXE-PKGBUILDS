@@ -1,0 +1,46 @@
+# Maintainer: Ivailo Monev <xakepa10@gmail.com>
+pkgname='initscripts-git'
+pkgdesc="System initialization/bootup scripts without systemd support, part of the LSD initiative"
+pkgver=20121023
+pkgrel=3
+replaces=('initscripts')
+provides=('initscripts')
+conflicts=('initscripts')
+groups=('axis' 'base')
+
+arch=('any')
+url="https://bitbucket.org/smil3y/initscripts"
+license=('GPL')
+install="${pkgname}.install"
+backup=('etc/inittab'
+        'etc/rc.conf')
+makedepends=('git' 'asciidoc')
+depends=('glibc' 'bash' 'sed' 'grep' 'coreutils' 'udev' 'iproute2'
+         'ncurses' 'kbd' 'findutils' 'sysvinit' 'procps-ng')
+optdepends=('cronie: runs specified programs at scheduled times'
+            'net-tools: legacy network tools'
+            'dhcpcd-lsd: DHCP network configuration'
+            'netcfg: advanced network configuration')
+_gitroot="https://smil3y@bitbucket.org/smil3y/initscripts.git"
+_gitname="initscripts"
+
+build() {
+    if [ -d "${_gitname}" ] ; then
+    cd "${srcdir}/${_gitname}"
+    msg2 "Updating local tree..."
+    git pull --depth=1 origin master
+  else
+    cd "${srcdir}"
+    msg2 "Cloning initial copy of ${_gitname}..."
+    git clone --depth=1 "${_gitroot}" "${_gitname}"
+    cd "${srcdir}/${_gitname}"
+  fi
+  
+  make
+}
+
+package() {
+  cd "${srcdir}/${_gitname}"
+  
+  make DESTDIR="${pkgdir}" install
+}

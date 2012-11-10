@@ -1,0 +1,34 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+
+case "$1" in
+  start)
+    msg_busy 'Starting Dynamic Kernel Module System'
+    if /usr/lib/systemd/scripts/dkms start >/dev/null; then
+      dmn_add ${0##*/}
+      msg_ok
+    else
+      msg_fail
+      exit 1
+    fi
+  ;;
+  stop)
+    msg_busy 'Stopping Dynamic Kernel Module System'
+    if /usr/lib/systemd/scripts/dkms stop >/dev/null; then
+      dmn_rm ${0##*/}
+      msg_ok
+    else
+      msg_fail
+      exit 1
+    fi
+  ;;
+  *)
+    echo "usage: ${0##*/} {start|stop}" >&2
+    exit 1
+  ;;
+esac
+
+:
+# vim:set ts=2 sw=2 ft=sh et:

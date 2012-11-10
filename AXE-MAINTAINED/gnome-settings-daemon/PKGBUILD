@@ -1,0 +1,73 @@
+# $Id: PKGBUILD 170537 2012-11-08 11:30:19Z heftig $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+
+pkgname=gnome-settings-daemon
+pkgver=3.6.2
+pkgrel=99.1axe
+pkgdesc="The GNOME Settings daemon"
+arch=('i686' 'x86_64')
+license=('GPL')
+depends=('dconf' 'gnome-desktop' 'gsettings-desktop-schemas' 'hicolor-icon-theme' 'libcanberra-pulse' 'libnotify'
+         'udev' 'libwacom' 'nss' 'pulseaudio' 'pulseaudio-alsa' 'upower' 'ibus' 'cairo' 'gtk3' 'cantarell-fonts'
+		 'fontconfig' 'lcms2' 'packagekit' 'consolekit')
+makedepends=('intltool' 'xf86-input-wacom' 'libxslt' 'docbook-xsl' 'libx11' 'libxkbfile' 'libxi' 'libxext' 'libxfixes' 'gettext' 'libxml2'
+			'inputproto' 'xproto' 'gdk-pixbuf2 2.26.5-1')
+options=('!emptydirs' '!libtool')
+install=gnome-settings-daemon.install
+url="http://www.gnome.org"
+groups=('axis' 'gnome')
+source=(http://ftp.gnome.org/pub/gnome/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz
+        0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
+		gnome-settings-daemon-3.5.91-optional-color-wacom.patch)
+sha256sums=('d718f9fdf3bb26fc71861548f834364955d37532871ec2e89a5ad0d63857215f'
+            '5e08d9b7f91f93429ab8da12e5762b4f0419726364e71fddb39b535d5bb537a9'
+			'6F1586967C7678E9706DF6D115A3F441444E011BA9AD25DC8DF7F281F48D57A4')
+
+build() {
+  cd $pkgname-$pkgver
+
+  # logind key handling FS#31801, patch from Fedora
+  # rebased onto screensaver.patch
+#  patch -Np1 -i ../0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
+#  aclocal
+#  automake
+
+	patch -Np1 -i ../gnome-settings-daemon-3.5.91-optional-color-wacom.patch
+	
+	autoreconf
+
+  ./configure --prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+      --libexecdir=/usr/lib/gnome-settings-daemon \
+	  --disable-static \
+		--enable-man \
+		--disable-color \
+		--disable-cups \
+		--enable-packagekit \
+		--disable-smartcard-support \
+		--enable-gudev \
+		--enable-wacom \
+		--disable-schemas-compile \
+		--disble-systemd
+
+  #https://bugzilla.gnome.org/show_bug.cgi?id=656231
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+
+  # Plugins that aren't installed still have schema references
+  # and cause gsettings errors - remove the references we're not using
+  sed -i '/org\.gnome\.settings-daemon\.plugins\.updates/d' \
+    "$pkgdir/usr/share/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml"
+}
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/gnome-settings-daemon/0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch altered for rc.d changes
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/gnome-settings-daemon/0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch aswell
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/gnome-settings-daemon/screensaver.patch altered for rc.d changes
+#----------------axe warning------------------ syetemd detected

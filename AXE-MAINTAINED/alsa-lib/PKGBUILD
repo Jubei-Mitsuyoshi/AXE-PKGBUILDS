@@ -1,0 +1,29 @@
+# $Id: PKGBUILD 166377 2012-09-07 09:11:49Z tpowa $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: judd <jvinet@zeroflux.org>
+
+pkgname=alsa-lib
+pkgver=1.0.26.32
+pkgrel=g2b49d
+pkgdesc="ALSA An alternative implementation of Linux sound support tarball based on GIT snapshot  --maintained as part of the axe project"
+arch=('i686' 'x86_64')
+url="http://www.alsa-project.org"
+depends=('glibc')
+optdepends=('python2: for python smixer plugin')
+makedepends=('python2')
+license=('GPL')
+groups=('axis')
+options=(!libtool)
+source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$pkgrel.tar.bz2)
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  ./configure --prefix=/usr --with-pythonlibs="-lpthread -lm -ldl -lpython2.7" --with-pythonincludes=-I/usr/include/python2.7
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  make DESTDIR="$pkgdir" install
+}
+md5sums=('E483C39588853AE230CFC34C9EB6EFF7')

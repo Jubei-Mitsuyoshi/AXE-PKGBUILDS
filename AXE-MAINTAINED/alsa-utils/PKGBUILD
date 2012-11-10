@@ -1,0 +1,49 @@
+# $Id: PKGBUILD 166379 2012-09-07 09:13:20Z tpowa $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: judd <jvinet@zeroflux.org>
+
+pkgname=alsa-utils
+pkgver=1.0.26.6
+pkgrel=gf2826
+pkgdesc="An alternative implementation of Linux sound support"
+arch=('i686' 'x86_64')
+url="http://www.alsa-project.org"
+#can not use >=$pkgver due to use of letters in alsa-lib update versioning
+depends=("alsa-lib>1.0.24" 'dialog' 'pciutils' 'ncurses' 'psmisc' 'libsamplerate')
+makedepends=('xmlto' 'docbook-xsl')
+license=('GPL')
+groups=('axis')
+source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$pkgrel.tar.bz2
+        alsa
+        alsa.conf.d
+        90alsa)
+backup=(etc/conf.d/alsa)
+
+
+
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}.${pkgrel}
+  ./configure --prefix=/usr --disable-alsaconf \
+    --with-udev-rules-dir=/usr/lib/udev/rules.d
+  make
+}
+
+#masked  out by axe,AXE does not like systemd
+#--with-systemdsystemunitdir=/usr/lib/systemd/system
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}.${pkgrel}
+  make DESTDIR=${pkgdir} install
+  install -D -m755 ../alsa ${pkgdir}/etc/rc.d/alsa
+  install -D -m644 ../alsa.conf.d ${pkgdir}/etc/conf.d/alsa
+  install -D -m755 ../90alsa ${pkgdir}/etc/pm/sleep.d/90alsa
+
+  # dir where to save ALSA state
+  install -d ${pkgdir}/var/lib/alsa
+}
+md5sums=('2CF37B50513843A8E29E2D560D454DD9'
+         '2ba1a1cbf653bf1a69f8a720fd6549da'
+         '4c8ae9f976c7df5e271a4cb91ccc7767'
+         '529216f6a46e61a546640e08ea7a0879')

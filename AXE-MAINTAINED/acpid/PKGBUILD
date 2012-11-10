@@ -1,0 +1,62 @@
+# $Id: PKGBUILD 77739 2012-10-14 03:02:21Z seblu $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Sébastien Luttringer <seblu@aur.archlinux.org>
+# Contributor: xduugu
+# Contributor: Manolis Tzanidakis
+# Contributor: Jonathan Schmidt <j.schmidt@archlinux.us
+
+pkgname=acpid
+pkgver=2.0.17
+pkgrel=99.3axe
+pkgdesc='A daemon for delivering ACPI power management events with netlink support'
+arch=('i686' 'x86_64')
+url='http://tedfelix.com/linux/acpid-netlink.html'
+license=('GPL')
+groups=('axis')
+depends=('bash')
+optdepends=('perl: use perl based examples')
+replaces=('acpid2')
+backup=('etc/acpi/handler.sh' 'etc/acpi/events/anything' 'etc/conf.d/acpid')
+source=("http://www.tedfelix.com/linux/$pkgname-$pkgver.tar.xz"
+        'acpid.rc'
+        'acpid.conf'
+        'acpid.socket'
+        'acpid.service'
+        'anything'
+        'handler.sh')
+md5sums=('d858729b7d984c5e3a0c7558e9de1584'
+         '73530fcc9a10e49b41dd8ff455c5d185'
+         '929c6d2e91295c22ed9ec6212d7eabef'
+         'ee6cb99e50e580c50331a73045412ae9'
+         '7f545754db5be7296d2dd97c049062ee'
+         '2d37b98d6e74bab815604b8b48c6cfd4'
+         '47f44ff5f02685dce8bcdab8568f0c38')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  pushd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+  popd
+
+  # default config
+  install -Dm644 anything "$pkgdir/etc/acpi/events/anything"
+  install -Dm755 handler.sh "$pkgdir/etc/acpi/handler.sh"
+
+  # initscripts
+  install -Dm755 acpid.rc "$pkgdir/etc/rc.d/acpid"
+  install -Dm644 acpid.conf "$pkgdir/etc/conf.d/acpid"
+#  install -Dm644 acpid.socket "$pkgdir/usr/lib/systemd/system/acpid.socket"
+#  install -Dm644 acpid.service "$pkgdir/usr/lib/systemd/system/acpid.service"
+
+  # fix acpid rights
+  chmod 755 "$pkgdir/usr/sbin/acpid"
+}
+
+# vim:set ts=2 sw=2 ft=sh et:
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/acpid/acpid.rc altered for rc.d changes
+#----------------axe warning------------------ syetemd detected

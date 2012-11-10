@@ -1,0 +1,51 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+
+PID=`pidof -o %PPID auditd`
+
+case "$1" in
+	start)
+		msg_busy "Starting auditd"
+		[ -z "$PID" ] && {
+			/sbin/auditctl -R /etc/audit/audit.rules >/dev/null || stat_die
+			/sbin/auditd || stat_die
+		}
+		dmn_add auditd
+		msg_ok
+		;;
+
+	stop)
+		msg_busy "Stopping auditd"
+		[ ! -z "$PID" ] && kill $PID &> /dev/null
+		if [ $? -gt 0 ]; then
+			msg_fail
+		else
+			dmn_rm auditd
+			msg_ok
+		fi
+		;;
+
+	restart)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+
+	reload)
+		msg_busy "Reloading auditd"
+		[ ! -z "$PID" ] && kill -HUP $PID &> /dev/null
+		if [ $? -gt 0 ]; then
+			msg_fail
+		else
+			dmn_rm auditd
+			msg_ok
+		fi
+		;;
+
+	*)
+		echo "usage: $0 {start|stop|restart|reload}"
+esac
+
+exit 0

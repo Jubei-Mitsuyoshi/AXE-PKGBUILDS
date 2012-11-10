@@ -1,0 +1,36 @@
+# $Id: PKGBUILD 78553 2012-10-20 20:21:09Z idevolder $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: BlackIkeEagle <ike DOT devolder AT gmail DOT com>
+# Contributor: Philippe Cherel <philippe.cherel@mayenne.org>
+
+pkgname=libcec
+pkgver=1.9.0
+pkgrel=99.2axe
+pkgdesc="Pulse-Eight's libcec for the Pulse-Eight USB-CEC adapter"
+arch=('i686' 'x86_64')
+url="https://github.com/Pulse-Eight/libcec"
+license=('GPL')
+groups=('axis')
+depends=('udev' 'lockdev')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Pulse-Eight/libcec/tarball/$pkgname-$pkgver")
+_srcfolder=Pulse-Eight-libcec-217b236
+sha256sums=('93c0c56b446f82ef71499fd88186c7212a92b037cb8a19516140216cc0aae68f')
+options=(!libtool)
+
+build() {
+  mv "$_srcfolder" "$pkgname-$pkgver"
+
+  cd "$pkgname-$pkgver"
+  autoreconf -vif
+  ./configure --prefix=/usr \
+  --enable-optimisation \
+	--disable-rpi \
+	--disable-cubox
+  
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

@@ -1,0 +1,47 @@
+# $Id: PKGBUILD 75687 2012-08-29 07:50:35Z andrea $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Andrea Scarpino <andrea@archlinux.org>
+# Contributor: examon <examon.mail[at]gmail[dot]com>
+# Contributor: Sebastian Wiesner <lunaryorn googlemail com>
+# Contributor: Dwight Schauer <dschauer@ti.com>
+
+pkgbase=pyudev
+pkgname=('pyudev' 'python2-udev')
+pkgver=0.16.1
+pkgrel=99.2axe
+arch=('any')
+url='http://pyudev.readthedocs.org/en/latest/index.html'
+license=('LGPL')
+makedepends=('python-distribute' 'python2-distribute' 'python' 'python2' 'udev')
+optdepends=('python2-pyqt: PyQt integration'
+            'python2-gobject2: Glib integration'
+            'wxpython: WX integration')
+source=("http://pypi.python.org/packages/source/p/pyudev/pyudev-${pkgver}.tar.gz")
+md5sums=('4034de584b6d9efcbfc590a047c63285')
+
+build() {
+  cp -rf "${srcdir}/${pkgbase}-${pkgver}" "${srcdir}/python2-${pkgbase}-${pkgver}"
+}
+
+package_pyudev() {
+  pkgdesc='A pure Python 3.x binding to libudev  --maintained as part of the axe project'
+  depends=('python' 'udev')
+  groups=('axis')
+  optdepends=('pyqt: PyQt integration'
+              'python-gobject2: Glib integration')
+  
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  python setup.py install --root "${pkgdir}" --optimize=1
+}
+
+package_python2-udev() {
+  pkgdesc='A pure Python 2.x binding to libudev  --maintained as part of the axe project'
+  depends=('python2' 'udev')
+  groups=('axis')
+  optdepends=('python2-pyqt: PyQt integration'
+              'python2-gobject2: Glib integration'
+              'wxpython: WX integration')
+  
+  cd "${srcdir}/python2-${pkgbase}-${pkgver}"
+  python2 setup.py install --root "${pkgdir}" --optimize=1
+}

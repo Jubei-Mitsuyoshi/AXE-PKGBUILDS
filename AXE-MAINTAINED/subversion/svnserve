@@ -1,0 +1,42 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+. /etc/conf.d/svnserve
+
+PID=`pidof -o %PPID /usr/bin/svnserve`
+case "$1" in
+  start)
+    msg_busy "Starting svnserve"
+    if [ -z "$PID" ]; then 
+      if [ -n "$SVNSERVE_USER" ]; then
+        su -s '/bin/sh' $SVNSERVE_USER -c "/usr/bin/svnserve -d $SVNSERVE_ARGS" &
+      else
+        /usr/bin/svnserve -d $SVNSERVE_ARGS &
+      fi
+    fi
+    if [ ! -z "$PID" -o $? -gt 0 ]; then
+      msg_fail
+    else
+      dmn_add svnserve
+      msg_ok
+    fi
+    ;;
+  stop)
+    msg_busy "Stopping svnserve"
+    [ ! -z "$PID" ]  && kill $PID &> /dev/null
+    if [ $? -gt 0 ]; then
+      msg_fail
+    else
+      dmn_rm svnserve
+      msg_ok
+    fi
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "usage: $0 {start|stop|restart}"  
+esac

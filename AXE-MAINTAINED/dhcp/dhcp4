@@ -1,0 +1,57 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+. /etc/conf.d/dhcp
+
+PIDFILE="/var/run/dhcpd.pid"
+
+if [[ -f $PIDFILE ]]; then
+  read -r PID < "$PIDFILE"
+
+  # prevent stale pidfiles from hanging around
+  if [[ ! -d /proc/$PID ]]; then
+    echo 'pid not found. deleteing stale pidfile'
+    unset PID
+    rm -f "$PIDFILE"
+  fi
+fi
+
+case "$1" in
+  start)
+    msg_busy "Starting DHCPv4 Server"
+    if [[ $PID ]]; then
+      msg_fail
+      exit 1
+    fi
+    if /usr/sbin/dhcpd -4 -pf "$PIDFILE" $DHCP4_ARGS; then
+      dmn_add dhcp4
+      msg_ok
+    else
+      msg_fail
+      exit 1
+    fi
+    ;;
+  stop)
+    msg_busy "Stopping DHCPv4 Server"
+    if [[ ! $PID ]]; then
+      msg_fail
+      exit 1
+    fi
+    if { kill $PID && rm -f "$PIDFILE"; } &>/dev/null; then
+      dmn_rm dhcp4
+      msg_ok
+    else
+      msg_fail
+      exit 1
+    fi
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "usage: $0 {start|stop|restart}"
+esac
+

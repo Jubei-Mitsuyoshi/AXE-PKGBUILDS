@@ -1,0 +1,30 @@
+# $Id: PKGBUILD 165610 2012-08-27 09:02:59Z jgc $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+
+pkgname=libatasmart
+pkgver=0.19
+pkgrel=99.1axe
+pkgdesc="ATA S.M.A.R.T. Reading and Parsing Library --maintained as part of the axe project"
+arch=('i686' 'x86_64')
+license=('LGPL')
+groups=('axis')
+depends=('udev')
+url="http://0pointer.de/blog/projects/being-smart.html"
+options=('!libtool')
+source=("http://0pointer.de/public/${pkgname}-${pkgver}.tar.xz")
+md5sums=('53afe2b155c36f658e121fe6def33e77')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

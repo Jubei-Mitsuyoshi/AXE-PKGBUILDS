@@ -1,0 +1,50 @@
+# Maintainer: Ner0
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+
+pkgname=nemo-fm
+pkgver=1.1.1
+pkgrel=99.1axe
+pkgdesc="Cinnamon file manager (Nautilus fork), stable version"
+arch=('i686' 'x86_64')
+url="https://github.com/linuxmint/nemo"
+license=('GPL')
+groups=("axis")
+depends=('dconf' 'desktop-file-utils' 'exempi' 'gnome-desktop' 'gnome-icon-theme' 'hicolor-icon-theme' 'libnotify' 'libtracker-sparql')
+makedepends=('gtk-doc' 'gnome-common' 'gobject-introspection' 'intltool')
+optdepends=('gksu: Open as Root')
+conflicts=('nemo-git')
+provides=('nautilus')
+options=('!emptydirs' '!libtool')
+install=nemo.install
+source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxmint/nemo/tarball/$pkgver")
+md5sums=('0587c9cd41fa9c5f3cda8163969c235b')
+
+build() {
+  cd linuxmint-nemo-*
+
+  # Get default terminal value
+  _terminal=$(gsettings get org.gnome.desktop.default-applications.terminal exec | tr -d "'")
+
+  # Set "Open in Terminal" to default terminal (Arch doesn't use x-terminal-emulator)
+  sed -i "s/x-terminal-emulator/$_terminal/" src/nemo-view.c
+
+  # Fix "Open as Root"
+  sed -i "s/gksu/gksudo/" src/nemo-view.c
+
+  ./autogen.sh --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-static \
+      --libexecdir=/usr/lib/nemo \
+      --disable-nst-extension \
+      --disable-update-mimedb \
+      --disable-packagekit \
+      --disable-gtk-doc-html \
+      --disable-schemas-compile
+  make
+}
+
+package() {
+  cd linuxmint-nemo-*
+  make DESTDIR="$pkgdir/" install
+}
+
+# vim:set ts=2 sw=2 et:

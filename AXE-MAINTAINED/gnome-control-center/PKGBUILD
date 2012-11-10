@@ -1,0 +1,67 @@
+# $Id: PKGBUILD 169892 2012-10-30 22:33:48Z heftig $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+# Contributor: Jan de Groot <jgc@archlinux.org>
+
+pkgname=gnome-control-center
+pkgver=3.6.2
+pkgrel=99.1axe
+pkgdesc="The Control Center for GNOME"
+arch=('i686' 'x86_64')
+depends=('accountsservice' 'gnome-bluetooth' 'gnome-desktop' 'gnome-menus'
+		'gnome-settings-daemon' 'gsettings-desktop-schemas' 'gtk3'
+         'libgtop' 'network-manager-applet' 'sound-theme-freedesktop' 'upower' 'libpwquality')
+optdepends=('mesa-demos: provides glxinfo for graphics information'
+            'gnome-color-manager: for color management tasks')
+makedepends=('gnome-doc-utils' 'intltool' 'docbook-xsl')
+url="http://www.gnome.org"
+groups=('gnome' 'axis')
+install=gnome-control-center.install
+license=('GPL')
+options=('!libtool' '!emptydirs')
+source=(http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz
+		'gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch'
+		'gnome-control-center-3.5.91-optional-kerberos.patch')
+sha256sums=('3ab5aa304b424006c9f38ce2ff50afbf38e167ca632c64509bf30aa3c786afb7'
+			'933AF56534F4B62C74D55A650F4AF510F7D39F9AE0A846D53988BBC06EC703D5'
+			'B5C318B2B96C6A31A73D447DA3A51B05070949AADCF4F8BFB0E72A546A0070CC')
+
+build() {
+  cd $pkgname-$pkgver
+  
+    # Make some panels optional; requires eautoreconf
+  patch -Np1 -i ../gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch
+  # https://bugzilla.gnome.org/show_bug.cgi?id=679759
+	patch -Np1 -i ../gnome-control-center-3.5.91-optional-kerberos.patch
+	autoreconf
+
+#   gnome-autogen.sh
+  
+  
+  ./configure --prefix=/usr \
+	--sysconfdir=/etc \
+      --localstatedir=/var \
+	  --disable-static \
+	  --enable-documentation \
+	  --disable-update-mimedb \
+      --disable-systemd  \
+	  --without-libsocialweb \
+      --disable-update-mimedb \
+      --without-cheese \
+	  --enable-bluetooth \
+	  --disable-color \
+		--disable-goa \
+		--disable-cups \
+		--disable-wacom \
+		KRB5_CONFIG=$(type -P true) #remove kerborus support from gentoo
+
+  #https://bugzilla.gnome.org/show_bug.cgi?id=656229
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' -e 's/    if test "$export_dynamic" = yes && test -n "$export_dynamic_flag_spec"; then/      func_append compile_command " -Wl,-O1,--as-needed"\n      func_append finalize_command " -Wl,-O1,--as-needed"\n\0/' libtool
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+
+  make DESTDIR="$pkgdir" install
+}

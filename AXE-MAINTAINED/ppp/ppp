@@ -1,0 +1,36 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+
+PID=`pidof -o %PPID /usr/sbin/pppd`
+case "$1" in
+  start)
+    msg_busy "Starting PPP daemon"
+    [ -z "$PID" ] && /usr/bin/pon
+    if [ $? -gt 0 ]; then
+      msg_fail
+    else
+      dmn_add ppp
+      msg_ok
+    fi
+    ;;
+  stop)
+    msg_busy "Stopping PPP daemon"
+    [ ! -z "$PID" ]  && poff -a &> /dev/null
+    if [ $? -gt 0 ]; then
+      msg_fail
+    else
+      dmn_rm ppp
+      msg_ok
+    fi
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "usage: $0 {start|stop|restart}"  
+esac
+exit 0

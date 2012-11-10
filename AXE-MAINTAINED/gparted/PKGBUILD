@@ -1,0 +1,36 @@
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Ivailo Monev <xakepa10@gmail.com>
+pkgname=gparted
+pkgdesc="A Partition Magic clone, frontend to GNU Parted, --maintained as part of the axe project"
+pkgver=0.14.0
+pkgrel=99.1axe
+arch=('i686' 'x86_64')
+url="http://gparted.sourceforge.net"
+license=('GPL')
+groups=('axis')
+depends=('parted' 'gtkmm' 'hicolor-icon-theme')
+makedepends=('intltool' 'pkg-config' 'gnome-doc-utils')
+optdepends=('dosfstools: for FAT16 and FAT32 partitions'
+            'jfsutils: for jfs partitions'
+            'ntfsprogs: for ntfs partitions'
+            'reiserfsprogs: for reiser partitions'
+            'xfsprogs: for xfs partitions'
+            'nilfs-utils: for nilfs2 support'
+            'gpart: for recovering corrupt partition tables'
+            'mtools')
+install=gparted.install
+source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('fc3507479e930967a2049c533907384d')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+}

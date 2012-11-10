@@ -1,0 +1,32 @@
+# $Id: PKGBUILD 170681 2012-11-09 12:30:03Z jgc $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Ionut Biru <ibiru@archlinux.org>
+
+pkgname=libgusb
+pkgver=0.1.4
+pkgrel=99.1axe
+pkgdesc="GLib wrapper around libusb1"
+arch=('i686' 'x86_64')
+url="https://gitorious.org/gusb/"
+license=('LGPL2.1')
+groups=('axis')
+depends=('udev' 'libusbx')
+makedepends=('gobject-introspection' 'libxslt')
+source=(http://people.freedesktop.org/~hughsient/releases/$pkgname-$pkgver.tar.xz)
+options=('!libtool')
+sha256sums=('64294a649e54df2009545f47577f41438ec50c2fc571dd7b08cf32cb14de37b9')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./configure --prefix=/usr \
+  --disable-static
+  
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}
+
+# vim:set ts=2 sw=2 et:

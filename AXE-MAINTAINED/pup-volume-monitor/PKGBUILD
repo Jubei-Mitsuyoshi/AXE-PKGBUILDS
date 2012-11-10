@@ -1,0 +1,43 @@
+# $Id: PKGBUILD 166650 2012-09-14 11:11:15Z ronald $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+
+
+pkgname='pup-volume-monitor'
+pkgver=0.1.8
+pkgrel=99.2axe
+pkgdesc="Lightweight drive and volume management backend --maintained as part of the axe project"
+url="http://www.murga-linux.com/puppy/viewtopic.php?t=78881"
+arch=('i686' 'x86_64')
+license=('OTHER')
+groups=('axis')
+depends=('glibc')
+source=("http://dl.dropbox.com/u/58347439/pup-vm/${pkgname}-${pkgver}.tar.gz"
+        'pup-vm')
+md5sums=('e21d5cb0a63065adcc14229f8147ce6b'
+         '82721a74507fb3cea318faa26cd21818')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  if [ -f "Makefile" ];then
+    msg2 "Cleaning up..."
+    make clean
+  fi
+
+  msg2 "Configuring..."
+   ./configure \
+       --prefix=/usr \
+       --sysconfdir=/etc \
+
+  msg2 "Compiling..."
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  msg2 "Installing..."
+  make DESTDIR=${pkgdir} install
+  
+   # install rc daemon script
+  install -Dm755 "${srcdir}/pup-vm" "${pkgdir}/etc/rc.d/pup-vm"
+}

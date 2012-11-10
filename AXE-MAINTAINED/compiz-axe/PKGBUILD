@@ -1,0 +1,187 @@
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Mario Cruz <duartecruz@gmail.com>
+
+pkgbase=compiz-axe
+pkgname=('compiz-axe'
+         'compiz-axe-decorator-gtk'
+         'compiz-axe-decorator-kde4'
+         'compiz-axe-config-backend-gconf'
+         'compiz-axe-config-backend-gsettings'
+         'compiz-axe-config-python'
+         'compiz-axe-config-settings-manager')
+pkgseries=0.9.8
+pkgver=${pkgseries}.4
+pkgrel=99.1axe
+pkgdesc="OpenGL compositing window manager"
+url="http://launchpad.net/compiz"
+license=('GPL' 'LGPL' 'MIT')
+arch=('i686' 'x86_64')
+groups=('axis' 'compiz' 'compiz-kde' 'compiz-gtk' 'axis')
+makedepends=('cmake' 'intltool' 'libxslt'
+    'xorg-server' 'libxcomposite' 'libxrender' 'mesa' 'glibmm' 'librsvg'
+    'boost' 'pyrex'
+    'gtk2' 'metacity' 'gconf' 'dconf' 'libwnck' 
+    'kdebase-workspace' 'automoc4')
+options=(!libtool !emptydirs)
+source=(https://launchpad.net/compiz/${pkgseries}/${pkgver}/+download/compiz-${pkgver}.tar.bz2
+        compiz9-build.patch
+        compiz9-kde-4.9.patch)
+sha1sums=('2b544f6e3063ee321d9bd3dbcff78dd8aa891e9b'
+          'c19ba39c3253849e1f982e55d04e2b8cbcaa7064'
+          '2a1112d0a3aa2f46653d83d8334fecf154729aac')
+
+build() {
+  cd "${srcdir}/compiz-${pkgver}"
+  patch -p1 -i ../compiz9-build.patch
+  patch -p1 -i ../compiz9-kde-4.9.patch
+  [[ -d build ]] || mkdir build
+  cd build
+  cmake .. \
+    -DCOMPIZ_PACKAGING_ENABLED=ON \
+    -DCMAKE_INSTALL_PREFIX="/usr" \
+    -DCMAKE_BUILD_TYPE="Release" \
+    -DCOMPIZ_BUILD_WITH_RPATH=OFF \
+    -DCOMPIZ_BUILD_TESTING=OFF \
+    -DBUILD_GTK=ON \
+    -DBUILD_METACITY=ON \
+    -DBUILD_GNOME=ON \
+    -DUSE_GNOME_KEYBINDINGS=ON \
+    -DBUILD_KDE4=ON \
+    -DUSE_GCONF=ON \
+    -DUSE_GSETTINGS=ON  \
+    -DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON
+  make
+}
+
+package_compiz-axe()
+{
+  pkgdesc="OpenGL compositing window manager"
+  depends=('mesa')
+  conflicts=('compiz-core' 'compiz-bcop' 'compiz-fusion-plugins-main' 'compiz-fusion-plugins-extra' 'libcompizconfig')
+  
+  cd "${srcdir}/compiz-${pkgver}/build"
+  make DESTDIR="${pkgdir}" install
+  
+  # Clean the install tree
+  rm -rf "${pkgdir}"/usr/bin/{gtk-window-decorator,kde4-window-decorator}
+  rm -rf "${pkgdir}"/usr/share/gconf
+  rm -rf "${pkgdir}"/usr/lib/compizconfig/backends/libgconf.so
+  rm -rf "${pkgdir}"/usr/lib/compizconfig/backends/libgsettings.so
+  rm -rf "${pkgdir}"/usr/lib/libcompizconfig_gsettings_backend.so
+  # Consider creating a compiz-devel package to distribute these files 
+  rm -rf "${pkgdir}"/usr/share/compiz/cmake
+  rm -rf "${pkgdir}"/usr/share/cmake*
+  rm -rf "${pkgdir}"/usr/include
+  rm -rf "${pkgdir}"/usr/lib/pkgconfig
+
+  # Licenses
+  #install -dm755 "${pkgdir}"/usr/share/licenses/${pkgname}/
+  #install -m644 ../COPYING.* "${pkgdir}"/usr/share/licenses/${pkgname}/
+}
+
+package_compiz-axe-decorator-gtk()
+{
+  pkgdesc="GTK decorator for Compiz"
+  depends=('gnome-control-center' 'libwnck' 'metacity' "compiz-axe>=${pkgver}")
+  conflicts=('compiz-decorator-gtk')
+  install=compiz9-decorator-gtk.install
+
+  cd "${srcdir}/compiz-${pkgver}/build"
+  make DESTDIR="${pkgdir}" install
+
+  # Clean the install tree
+  cp "${pkgdir}"/usr/share/gconf/schemas/gwd.schemas "${pkgdir}"/usr/
+  rm -rf "${pkgdir}"/usr/{include,lib,share}
+  rm -rf "${pkgdir}"/usr/bin/{compiz,kde4-window-decorator}*
+  install -Dm644 "${pkgdir}"/usr/gwd.schemas \
+        "${pkgdir}"/usr/share/gconf/schemas/gwd.schemas
+  rm -rf "${pkgdir}"/usr/gwd.schemas
+  install -Dm644 generated/glib-2.0/schemas/org.compiz.gwd.gschema.xml \
+        "${pkgdir}"/usr/share/glib-2.0/schemas/org.compiz.gwd.schema.xml
+} 
+
+package_compiz-axe-decorator-kde4()
+{
+  pkgdesc="KDE4 decorator for Compiz"
+  depends=('kdebase-workspace' "compiz-axe>=${pkgver}")
+  conflicts=('compiz-decorator-kde')
+
+  cd "${srcdir}/compiz-${pkgver}/build"
+  make DESTDIR="${pkgdir}" install
+
+  # Clean the install tree
+  rm -rf "${pkgdir}"/usr/{include,lib,share}
+  rm -rf "${pkgdir}"/usr/bin/{compiz,gtk-window-decorator}*
+}
+
+package_compiz-axe-config-backend-gconf()
+{
+  pkgdesc="Compizconfig gconf backend"
+  depends=('gconf' "compiz-axe>=${pkgver}")
+  conflicts=('compizconfig-backend-gconf')
+  install=compiz9-config-backend-gconf.install
+ 
+  cd "${srcdir}/compiz-${pkgver}/build"
+  make DESTDIR="${pkgdir}" install
+  
+  # Clean the install tree
+  cp "${pkgdir}"/usr/lib/compizconfig/backends/libgconf.so "${pkgdir}"/usr/
+  rm -rf "${pkgdir}"/usr/{bin,include,lib}
+  rm -rf "${pkgdir}"/usr/share/{applications,cmake,compiz,locale}
+  rm -rf "${pkgdir}"/usr/share/gconf/schemas/gwd.schemas
+  install -Dm644 "${pkgdir}"/usr/libgconf.so \
+        "${pkgdir}"/usr/lib/compizconfig/backends/libgconf.so
+  rm -rf "${pkgdir}"/usr/libgconf.so
+}
+
+package_compiz-axe-config-backend-gsettings()
+{
+  pkgdesc="Compizconfig gsettings backend"
+  depends=('glib2' "compiz-axe>=${pkgver}")
+  install=compiz9-config-backend-gsettings.install
+
+  cd "${srcdir}/compiz-${pkgver}/build"
+  make DESTDIR="${pkgdir}" install
+
+  # Clean the install tree
+  cp "${pkgdir}"/usr/lib/compizconfig/backends/libgsettings.so "${pkgdir}"/usr/
+  cp "${pkgdir}"/usr/lib/libcompizconfig_gsettings_backend.so "${pkgdir}"/usr/
+  rm -rf "${pkgdir}"/usr/{bin,include,lib,share}
+  install -Dm644 "${pkgdir}"/usr/libgsettings.so \
+        "${pkgdir}"/usr/lib/compizconfig/backends/libgsettings.so
+  install -Dm644 "${pkgdir}"/usr/libcompizconfig_gsettings_backend.so \
+        "${pkgdir}"/usr/lib/libcompizconfig_gsettings_backend.so
+  rm -rf "${pkgdir}"/usr/libgsettings.so
+  rm -rf "${pkgdir}"/usr/libcompizconfig_gsettings_backend.so
+  # The install target fails to copy the schemas so get them from the build dir 
+  install -dm755 "${pkgdir}"/usr/share/glib-2.0/schemas/
+  install -m644 generated/glib-2.0/schemas/* "${pkgdir}"/usr/share/glib-2.0/schemas/
+  rm -rf "${pkgdir}"/usr/share/glib-2.0/schemas/org.compiz.gwd.gschema.xml     
+}
+
+package_compiz-axe-config-python()
+{
+  pkgdesc="Compizconfig python bindings"
+  depends=('python2' "compiz-axe>=${pkgver}")
+  conflicts=('compizconfig-python')
+
+  cd "${srcdir}/compiz-${pkgver}/build"
+  
+  # The install target is not really working so just grab required files
+  install -Dm644 compizconfig/compizconfig-python/build/lib.linux-x86_64-2.7/compizconfig.so \
+        "${pkgdir}"/usr/lib/python2.7/site-packages/compizconfig.so
+  install -Dm644 compizconfig/compizconfig-python/compizconfig-python.pc \
+        "${pkgdir}"/usr/lib/pkgconfig/compizconfig-python.pc
+}
+
+package_compiz-axe-config-settings-manager()
+{
+  pkgdesc="Compizconfig Settings Manager"
+  depends=('pygtk' "compiz-axe-config-python>=${pkgver}")
+  conflicts=('ccsm')
+  install=ccsm.install
+
+  cd "${srcdir}/compiz-${pkgver}/compizconfig/ccsm"
+  python2 ./setup.py install --version="${pkgver}" --prefix=/usr --root="${pkgdir}"  
+}
+

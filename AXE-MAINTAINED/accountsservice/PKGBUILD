@@ -1,0 +1,46 @@
+# $Id$
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Ionut Biru <ibiru@archlinux.org>
+# axe-progress- could add docks compile from gentoo, optional
+
+pkgname=accountsservice
+pkgver=0.6.25
+pkgrel=99.1axe
+pkgdesc="D-Bus interface for user account query and manipulation --maintained as part of the axe project"
+arch=(i686 x86_64)
+url="http://cgit.freedesktop.org/accountsservice/"
+license=('GPL3')
+groups=('axis')
+depends=('glib2' 'polkit' 'consolekit' 'libxslt' 'gettext')
+makedepends=('intltool' 'gobject-introspection' 'vala' 'libxslt' 'gettext' )
+options=('!libtool')
+source=(http://cgit.freedesktop.org/accountsservice/snapshot/${pkgname}-${pkgver}.tar.xz
+        more-exclusions.patch)
+md5sums=('8438df64afffa3bd065c9c3134adb1e7'
+         '1d5cf127e5aac407fe7c37b2f4fd503c')
+
+build() {
+  cd $pkgname-$pkgver
+  patch -Np1 -i ../more-exclusions.patch
+  
+  ./autogen.sh --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/accountsservice \
+    --localstatedir=/var \
+	--disable-static \
+	--disable-more-warnings \
+	--enable-vala \
+	--enable-introspection \
+	--disable-systemd
+  make
+}
+#removed by AXE
+#    --with-systemdsystemunitdir=/usr/lib/systemd/system 
+#	 --enable-systemd
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}
+
+# vim:set ts=2 sw=2 et:

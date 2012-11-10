@@ -1,0 +1,38 @@
+# $Id: PKGBUILD 169660 2012-10-25 08:23:04Z eric $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer:
+# Contributor: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: arjan <arjan@archlinux.org>
+
+pkgname=libusb-compat
+pkgver=0.1.4
+pkgrel=99.2axe
+pkgdesc="Library to enable user space application programs to communicate with USB devices"
+arch=('i686' 'x86_64')
+url="http://libusb.sourceforge.net/"
+license=('LGPL')
+groups=('axis')
+depends=('libusb' 'sh')
+options=('!libtool')
+source=("http://downloads.sourceforge.net/${pkgname%-*}/${pkgname}-${pkgver%.*}/$pkgname-$pkgver/${pkgname}-${pkgver}.tar.bz2"
+		"libusb-0.1-ansi.patch")
+md5sums=('2ca521fffadd0c28fdf174e6ec73865b'
+		'09F64EF8CCF4627E9C8CC970E151BC9D')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  patch -Np1 -i "$srcdir/libusb-0.1-ansi.patch"
+  
+  ./configure --prefix=/usr \
+  --disable-static
+  
+  
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
+

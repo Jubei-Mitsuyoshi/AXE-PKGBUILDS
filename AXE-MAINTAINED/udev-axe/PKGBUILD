@@ -1,0 +1,90 @@
+# $Id: 
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Contributor: Aline Freitas <aline@alinefreitas.com.br>
+# Contributor: Ivailo Monev <xakepa10@gmail.com>
+
+pkgname=udev-axe
+pkgver=195
+pkgrel=99.1axe
+groups=('axis' 'base')
+arch=('i686' 'x86_64')
+pkgdesc="The userspace dev tools (udev) - fork --maintained as part of the axe project"
+url="https://bitbucket.org/braindamaged/udev"
+license=('GPL')
+depends=('util-linux' 'glib2' 'kmod' 'hwids' 'bash' 'acl')
+provides=('libsystemd' 'systemd-tools' "udev=$pkgver")
+conflicts=('udev-axe-git' 'systemd')
+makedepends=('gobject-introspection' 'gperf' 'libxslt' 'docbook-xsl')
+options=(!makeflags !libtool)
+install="udev.install"
+backup=('etc/udev/udev.conf')
+source=("https://bitbucket.org/braindamaged/udev/downloads/udev-${pkgver}.tar.gz"
+        'initcpio-hooks-udev'
+        'initcpio-install-udev')
+backup=('etc/udev/udev.conf')
+options=(!makeflags !libtool)
+md5sums=('dfe7188b8e8ce612521f02d1eba5f4c4'
+         '782ec5acdf48d2e8c06724225fe00623'
+         '5dc65936221938659aa53f389eaa3d7d')
+         
+build() {
+  cd "${srcdir}/udev-${pkgver}"
+
+  msg2 "Configuring sources..."
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc \
+              --bindir=/usr/sbin \
+              --libexecdir=/usr/lib \
+              --with-firmware-path=/usr/lib/firmware/updates:/lib/firmware/updates:/usr/lib/firmware:/lib/firmware \
+              --with-usb-ids-path=/usr/share/hwdata/usb.ids \
+              --with-pci-ids-path=/usr/share/hwdata/pci.ids \
+              --enable-logging \
+              --enable-gudev \
+              --enable-introspection \
+              --enable-rule_generator
+
+# --prefix="${EPREFIX}" \
+#                 --with-rootprefix="${EPREFIX}" \
+#                 --bindir="${EPREFIX}"/sbin \
+#                 --sysconfdir="${EPREFIX}"/etc \
+#                 --libexecdir="${EPREFIX}"/"$(get_libdir)" \
+#                 --libdir="${EPREFIX}"/usr/"$(get_libdir)" \
+#                 --with-rootlibdir="${EPREFIX}"/"$(get_libdir)" \
+#                 --includedir="${EPREFIX}"/usr/include \
+#                 --datarootdir="${EPREFIX}"/usr/share \
+#                 --docdir="${EPREFIX}"/usr/share/doc/"${PF}" \
+#                 --with-pci-ids-path="${EPREFIX}"/usr/share/misc/pci.ids \
+#                 --with-usb-ids-path="${EPREFIX}"/usr/share/misc/usb.ids \
+#                 --enable-logging \
+#                 $(use_with selinux) \
+#                 $(use_enable debug) \
+#                 $(use_enable doc) \
+#                 $(use_enable static-libs static) \
+#                 $(use_enable keymap) \
+#                 $(use_enable floppy) \
+#                 $(use_enable gudev) \
+#                 $(use_enable introspection)
+
+  msg2 "Compiling..."
+  make
+}
+
+
+package() {
+  cd "${srcdir}/udev-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  # install the mkinitpcio hook
+  install -D -m644 "../initcpio-hooks-udev" "${pkgdir}/usr/lib/initcpio/hooks/udev"
+  install -D -m644 "../initcpio-install-udev" "${pkgdir}/usr/lib/initcpio/install/udev"
+
+  # fix wrong path to /bin/sh
+  sed -i -e 's#/usr/bin/sh#/bin/sh#g' "${pkgdir}/usr/lib/udev/keyboard-force-release.sh"
+
+  # Replace dialout/tape/cdrom group in rules with uucp/storage/optical group
+  for i in "${pkgdir}/usr/lib/udev/rules.d/"*.rules; do
+    sed -i -e 's#GROUP="dialout"#GROUP="uucp"#g;
+               s#GROUP="tape"#GROUP="storage"#g;
+               s#GROUP="cdrom"#GROUP="optical"#g' "${i}"
+  done
+}

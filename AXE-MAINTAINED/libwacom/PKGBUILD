@@ -1,0 +1,33 @@
+# $Id: PKGBUILD 164253 2012-07-28 20:26:26Z eric $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+
+pkgname=libwacom
+pkgver=0.6
+pkgrel=99.1axe
+pkgdesc="Library to identify Wacom tablets and their features  --maintained as part of the axe project"
+arch=('x86_64' 'i686')
+url="http://sourceforge.net/apps/mediawiki/linuxwacom/index.php?title=Libwacom"
+license=('MIT')
+groups=('axis')
+depends=('glib2' 'udev')
+options=('!libtool')
+source=(http://sourceforge.net/projects/linuxwacom/files/libwacom/$pkgname-$pkgver.tar.bz2)
+sha256sums=('7115690698edc87deec482f0b2526567b858475d2135b5f8ccc946e5e76ec01d')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+check() {
+  cd $pkgname-$pkgver
+  make check
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

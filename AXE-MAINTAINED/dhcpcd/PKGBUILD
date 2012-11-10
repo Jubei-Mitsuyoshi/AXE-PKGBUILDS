@@ -1,0 +1,54 @@
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Ivailo Monev <xakepa10@gmail.com>
+pkgname='dhcpcd'
+pkgdesc="RFC2131 compliant DHCP client daemon,  --maintained as part of the axe project"
+pkgver=5.6.2
+pkgrel=99.8axe
+groups=('axis' 'base')
+url='http://roy.marples.name/projects/dhcpcd'
+arch=('i686' 'x86_64')
+license=('BSD')
+depends=('glibc' 'sh')
+backup=('etc/conf.d/dhcpcd' 'etc/dhcpcd.conf')
+options=('emptydirs')  # We Need the Empty /var/lib/${pkgname} Directory
+source=("http://roy.marples.name/downloads/${pkgname}/${pkgname}-$pkgver.tar.bz2" \
+        'dhcpcd.conf.d' 'dhcpcd.rc')
+md5sums=('fbd0d12ae335beed1fd2c3afd7859af9'
+         '372d33485556982b64a97f301e17c5dd'
+         '74abe39921a9867b738bed641f3622d3')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  # configure variables
+  ./configure \
+    --libexecdir=/usr/lib/${pkgname} \
+    --dbdir=/var/lib/${pkgname} \
+	--rundir=/run
+
+  # Build
+  make
+}
+
+package() {
+  cd "${srcdir}/dhcpcd-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  # Create Binary Symlink
+  install -d "${pkgdir}/usr/sbin"
+  ln -sf "/sbin/dhcpcd" "${pkgdir}/usr/sbin/dhcpcd"
+
+  # Install Configuration File used in /etc/rc.d/network
+  install -D -m644 "${srcdir}/${pkgname}.conf.d" "${pkgdir}/etc/conf.d/dhcpcd"
+
+  # Install License
+  install -d "${pkgdir}/usr/share/licenses/dhcpcd"
+  awk '{if(FNR<27)print $0}' "${srcdir}/dhcpcd-${pkgver}/configure.h" \
+        >> "${pkgdir}/usr/share/licenses/dhcpcd/LICENSE"
+
+  # Set Options in /etc/dhcpcd.conf
+  echo noipv4ll >> "${pkgdir}/etc/dhcpcd.conf" # Disable ip4vall
+
+  # install rc daemon script
+  install -Dm755 "${srcdir}/dhcpcd.rc" "${pkgdir}/etc/rc.d/dhcpcd"
+}

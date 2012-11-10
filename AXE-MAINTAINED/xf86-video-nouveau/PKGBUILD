@@ -1,0 +1,31 @@
+# $Id: PKGBUILD 170688 2012-11-09 17:02:04Z andyrtr $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Andreas Radke <andyrtr@archlinux.org>
+# Contributor: buddabrod <buddabrod@gmail.com>
+
+pkgname=xf86-video-nouveau
+pkgver=1.0.4
+pkgrel=99.1axe
+pkgdesc="Open Source 2D acceleration driver for nVidia cards"
+arch=('i686' 'x86_64')
+url="http://nouveau.freedesktop.org/"
+license=('GPL')
+depends=('libdrm' 'udev' 'nouveau-dri')
+makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=13' 'resourceproto' 'scrnsaverproto')
+conflicts=('xorg-server<1.13.0' 'X-ABI-VIDEODRV_VERSION<13' 'X-ABI-VIDEODRV_VERSION>=14')
+groups=('axis')"axis" 'xorg-drivers' 'xorg')
+options=('!libtool')
+install=$pkgname.install
+source=(http://xorg.freedesktop.org/archive/individual/driver/$pkgname-$pkgver.tar.bz2)
+sha256sums=('1a8290489cf4f48d2094a541ec9a6b68beb80299741d047e322e650c30ceb7c1')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}

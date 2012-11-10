@@ -1,0 +1,37 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+
+[ -f /etc/conf.d/rsyncd ] && . /etc/conf.d/rsyncd
+
+case "$1" in
+  start)
+    msg_busy "Starting rsyncd"
+    [ ! -f /run/daemons/rsyncd ] && /usr/bin/rsync --daemon $RSYNCD_ARGS
+    if [ $? -gt 0 ]; then
+      msg_fail
+    else
+      dmn_add rsyncd
+      msg_ok
+    fi
+    ;;
+  stop)
+    msg_busy "Stopping rsyncd"
+    [ -f /run/rsyncd.pid ] && kill `cat /run/rsyncd.pid`
+    if [ $? -gt 0 ]; then
+      msg_fail
+    else
+      dmn_rm rsyncd
+      msg_ok
+    fi
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "usage: $0 {start|stop|restart}"
+esac
+exit 0

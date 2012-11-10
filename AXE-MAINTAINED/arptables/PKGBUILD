@@ -1,0 +1,56 @@
+# $Id: PKGBUILD 71317 2012-05-26 14:59:39Z seblu $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Sébastien Luttringer <seblu@aur.archlinux.org>
+# Contributor: Daniel Micay <danielmicay@gmail.com>
+# Contributor: Michal Soltys <soltys@ziu.info>
+#axe-progress- lots of patches from gentoo to check and put in
+
+pkgname=arptables
+pkgver=0.0.3_4
+pkgrel=99.3axe
+pkgdesc='ARP filtering utility  --maintained as part of the axe project'
+arch=('i686' 'x86_64')
+url='http://ebtables.sourceforge.net/'
+license=('GPL')
+groups=('axis')
+backup=("etc/$pkgname.conf" "etc/conf.d/$pkgname")
+install=$pkgname.install
+source=("http://downloads.sourceforge.net/ebtables/$pkgname-v${pkgver//_/-}.tar.gz"
+        "$pkgname.conf"
+        "$pkgname.rc"
+        "$pkgname.systemd"
+        "$pkgname.service")
+md5sums=('1d4ab05761f063b0751645d8f2b8f8e5'
+         '00bfb5bd8a83a5b466c650ee5d8f86f3'
+         '60e0319b55b1ef9e13d9ac03dd98c8d4'
+         '65a9ed0b866f727184a87e4d480975bd'
+         'b26771191e52905d8aea6333c26cb1c3')
+
+build() {
+  cd $pkgname-v${pkgver//_/-}
+  make
+}
+
+package() {
+  pushd $pkgname-v${pkgver//_/-}
+  make install \
+    DESTDIR="$pkgdir" \
+    PREFIX=/usr \
+    LIBDIR=/usr/lib/arptables \
+    BINDIR=/usr/sbin \
+    MANDIR=/usr/share/man \
+    INITDIR=/etc/rc.d \
+    SYSCONFIGDIR=/etc
+  popd
+  # install initscripts
+  install -Dm 755 $pkgname.rc "$pkgdir/etc/rc.d/$pkgname"
+  install -Dm 644 $pkgname.conf "$pkgdir/etc/conf.d/$pkgname"
+   #masked  out by axe,AXE does not like systemd
+  # install systemd service
+ # install -Dm 755 $pkgname.systemd "$pkgdir/usr/lib/systemd/scripts/$pkgname"
+#  install -Dm 644 $pkgname.service "$pkgdir/usr/lib/systemd/system/$pkgname.service"
+  # default config file
+  install -Dm 644 /dev/null "$pkgdir/etc/$pkgname.conf"
+}
+
+# vim:set ts=2 sw=2 ft=sh et:
