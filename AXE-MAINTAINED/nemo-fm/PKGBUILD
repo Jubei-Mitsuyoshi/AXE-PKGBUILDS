@@ -38,7 +38,10 @@ build() {
       --disable-update-mimedb \
       --disable-packagekit \
       --disable-gtk-doc-html \
-      --disable-schemas-compile
+      --disable-schemas-compile \
+	  --enable-libexif \
+	  --enable-introspection
+	  
   make
 }
 
