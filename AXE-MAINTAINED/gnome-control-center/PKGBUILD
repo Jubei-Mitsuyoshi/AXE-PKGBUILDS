@@ -23,8 +23,8 @@ source=(http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver
 		'gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch'
 		'gnome-control-center-3.5.91-optional-kerberos.patch')
 sha256sums=('3ab5aa304b424006c9f38ce2ff50afbf38e167ca632c64509bf30aa3c786afb7'
-			'933AF56534F4B62C74D55A650F4AF510F7D39F9AE0A846D53988BBC06EC703D5'
-			'B5C318B2B96C6A31A73D447DA3A51B05070949AADCF4F8BFB0E72A546A0070CC')
+			'EDE7822E6AE989661CD873107922F7301843DFC3A4020FD7A01ED67D33109ACA'
+			'49BC7820C9C5B3EE8171111D9EC37C878554E22B61BADECE23ABF1E2BD09548A')
 
 build() {
   cd $pkgname-$pkgver

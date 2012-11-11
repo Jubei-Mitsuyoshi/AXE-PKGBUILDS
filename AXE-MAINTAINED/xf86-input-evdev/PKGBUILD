@@ -14,7 +14,7 @@ depends=('glibc' 'udev' 'mtdev')
 makedepends=('xorg-server-devel' 'X-ABI-XINPUT_VERSION=18' 'resourceproto' 'scrnsaverproto')
 conflicts=('xorg-server<1.13.0' 'X-ABI-XINPUT_VERSION<18' 'X-ABI-XINPUT_VERSION>=19')
 options=('!libtool' '!makeflags')
-groups=('axis')"axis" 'xorg-drivers' 'xorg')
+groups=('axis' 'xorg-drivers' 'xorg')
 source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2)
 sha256sums=('eb389413602c3d28c44bbfab0477c98582f0e2f5be5f41986e58e93a033fa504')
 

@@ -8,7 +8,7 @@ pkgdesc="A daemon which implements the Point-to-Point Protocol for dial-up netwo
 arch=(i686 x86_64) 
 url="http://www.samba.org/ppp/"
 license=('custom:GPL/BSD')
-groups=('axis')"axis" 'base')
+groups=('axis' 'base')
 depends=('glibc' 'libpcap>=1.0.0')
 backup=(etc/ppp/{chap-secrets,pap-secrets,options,ip-up,ip-down})
 source=(ftp://ftp.samba.org/pub/ppp/ppp-${pkgver}.tar.gz
