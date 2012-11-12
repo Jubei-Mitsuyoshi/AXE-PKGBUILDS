@@ -12,7 +12,7 @@ groups=('axis')
 url="http://code.entropywave.com/projects/orc/"
 depends=('glibc')
 options=('!libtool')
-source=(http://ftp.de.debian.org/debian/pool/main/o/$pkgname/$pkgname_$pkgver.orig.tar.gz)
+source=(http://ftp.de.debian.org/debian/pool/main/o/orc/orc_$pkgver.orig.tar.gz)
 md5sums=('E482932E544C847761449B106ECBC483')
 
 build () {
