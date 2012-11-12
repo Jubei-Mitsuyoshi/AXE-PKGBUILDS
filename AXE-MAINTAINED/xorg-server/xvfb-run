@@ -101,7 +101,7 @@ ARGS=$(getopt --options +ae:f:hn:lp:s:w: \
 GETOPT_STATUS=$?
 
 if [ $GETOPT_STATUS -ne 0 ]; then
-    error "internal error; getopt exited with exec_cmd $GETOPT_STATUS"
+    error "internal error; getopt exited with status $GETOPT_STATUS"
     exit 6
 fi
 
@@ -165,7 +165,7 @@ if ! kill -0 $XVFBPID 2>/dev/null; then
   exit 1
 fi
 
-# Start the command and save its exit exec_cmd.
+# Start the command and save its exit status.
 set +e
 DISPLAY=:$SERVERNUM XAUTHORITY=$AUTHFILE "$@" 2>&1
 RETVAL=$?
@@ -174,7 +174,7 @@ set -e
 # Kill Xvfb now that the command has exited.
 kill $XVFBPID
 
-# Return the executed command's exit exec_cmd.
+# Return the executed command's exit status.
 exit $RETVAL
 
 # vim:set ai et sts=4 sw=4 tw=80:

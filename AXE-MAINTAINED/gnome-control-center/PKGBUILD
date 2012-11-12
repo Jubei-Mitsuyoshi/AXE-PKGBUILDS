@@ -35,7 +35,7 @@ build() {
 	patch -Np1 -i ../gnome-control-center-3.5.91-optional-kerberos.patch
 	autoreconf
 
-#   gnome-autogen.sh
+   gnome-autogen.sh
   
   
   ./configure --prefix=/usr \

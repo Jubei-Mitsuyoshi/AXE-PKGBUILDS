@@ -61,13 +61,13 @@ just started and the X authority file created earlier.
 .PP
 When the
 .I command
-exits, its exec_cmd is saved, the
+exits, its status is saved, the
 .B Xvfb
 server is killed (using the process ID stored earlier), the X authority
 cookie removed, and the authority file deleted (if the user did not specify
 one to use).
 .B xvfb\-run
-then exits with the exit exec_cmd of
+then exits with the exit status of
 .IR command .
 .PP
 .B xvfb\-run
@@ -207,14 +207,14 @@ or
 options are specifed; see above.
 .SH "EXIT STATUS"
 .B xvfb\-run
-uses its exit exec_cmd as well as output to standard error to communicate
+uses its exit status as well as output to standard error to communicate
 diagnostics.
-The exit exec_cmd of \(oq1\(cq is not used, and should be interpreted as failure
+The exit status of \(oq1\(cq is not used, and should be interpreted as failure
 of the specified command.
 .TP
 0
 .B xvfb\-run
-only uses this exit exec_cmd if the
+only uses this exit status if the
 .B \-h\fR,\fB \-\-help
 option is given.
 In all other situations, this may be interpreted as success of the specified
