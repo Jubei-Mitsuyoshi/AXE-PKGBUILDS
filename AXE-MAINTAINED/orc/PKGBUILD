@@ -1,0 +1,28 @@
+# $Id: PKGBUILD 149305 2012-02-06 18:30:33Z ibiru $
+# Maintainer: Ionut Biru <ibiru@archlinux.org>
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+#axe-------------------- no changes here due to dowload fail, just changed sources todebian
+pkgname=orc
+pkgver=0.4.16
+pkgrel=99.2axe
+pkgdesc="The Oild Runtime Compiler"
+arch=('i686' 'x86_64')
+license=('custom')
+groups=('axis')
+url="http://code.entropywave.com/projects/orc/"
+depends=('glibc')
+options=('!libtool')
+source=(http://ftp.de.debian.org/debian/pool/main/o/$pkgname/$pkgname_$pkgver.orig.tar.gz)
+md5sums=('E482932E544C847761449B106ECBC483')
+
+build () {
+    cd "$srcdir/$pkgname-$pkgver"
+    ./configure --prefix=/usr --disable-static
+    make
+}
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    make DESTDIR="$pkgdir" install
+    install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
