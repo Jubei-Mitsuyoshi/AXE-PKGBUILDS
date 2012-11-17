@@ -1,0 +1,27 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+case "$1" in
+  start)
+    msg_busy "Starting wicd Daemon"
+    pkill -f wicd-daemon.py &> /dev/null
+    /usr/sbin/wicd &> /dev/null
+    dmn_add wicd
+    msg_ok
+    ;;
+  stop)
+    msg_busy "Stopping wicd Daemon"
+    pkill -f wicd-daemon.py &> /dev/null
+    dmn_rm wicd
+    msg_ok
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "usage: $0 {start|stop|restart}"  
+esac
+exit 0
