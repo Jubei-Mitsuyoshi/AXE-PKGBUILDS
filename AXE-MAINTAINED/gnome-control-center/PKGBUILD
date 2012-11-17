@@ -4,7 +4,7 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 
 pkgname=gnome-control-center
-pkgver=3.6.2
+pkgver=3.6.3
 pkgrel=99.1axe
 pkgdesc="The Control Center for GNOME"
 arch=('i686' 'x86_64')
@@ -22,7 +22,7 @@ options=('!libtool' '!emptydirs')
 source=(http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz
 		'gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch'
 		'gnome-control-center-3.5.91-optional-kerberos.patch')
-sha256sums=('3ab5aa304b424006c9f38ce2ff50afbf38e167ca632c64509bf30aa3c786afb7'
+sha256sums=('2ae23972bc64f62b4facd12dd5adce212bda02491eb6e56bbf195332157d21fb'
 			'EDE7822E6AE989661CD873107922F7301843DFC3A4020FD7A01ED67D33109ACA'
 			'49BC7820C9C5B3EE8171111D9EC37C878554E22B61BADECE23ABF1E2BD09548A')
 
@@ -53,6 +53,7 @@ build() {
 		--disable-goa \
 		--disable-cups \
 		--disable-wacom \
+		--disable-ibus \
 		KRB5_CONFIG=$(type -P true) #remove kerborus support from gentoo
 
   #https://bugzilla.gnome.org/show_bug.cgi?id=656229
