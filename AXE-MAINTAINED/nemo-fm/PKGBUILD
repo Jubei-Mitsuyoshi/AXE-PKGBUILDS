@@ -2,7 +2,7 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 
 pkgname=nemo-fm
-pkgver=1.1.1
+pkgver=1.1.2
 pkgrel=99.1axe
 pkgdesc="Cinnamon file manager (Nautilus fork), stable version"
 arch=('i686' 'x86_64')
@@ -17,7 +17,7 @@ provides=('nautilus')
 options=('!emptydirs' '!libtool')
 install=nemo.install
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxmint/nemo/tarball/$pkgver")
-md5sums=('0587c9cd41fa9c5f3cda8163969c235b')
+md5sums=('6f432bd9277a597a295ac22475d4a12e')
 
 build() {
   cd linuxmint-nemo-*
