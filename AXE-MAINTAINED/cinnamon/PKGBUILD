@@ -4,7 +4,7 @@
 #axe notes needs deps checking against portage but otherwise complete and untested
 
 pkgname=cinnamon
-pkgver=1.6.6
+pkgver=1.6.7
 pkgrel=99.1axe
 pkgdesc="Linux desktop which provides advanced innovative features and a traditional user experience"
 arch=('i686' 'x86_64')
@@ -38,7 +38,7 @@ install=${pkgname}.install
 source=("$pkgname.tar.gz::https://github.com/linuxmint/Cinnamon/tarball/$pkgver"
 		'cinnamon-1.6.1-automagic-gnome-bluetooth.patch'
 		'cinnamon-1.6.1-optional-networkmanager.patch')
-md5sums=('b7dc16d9087a3a7f5d5e5a84216aaf02'
+md5sums=('ea73c6367d43d82c61f977477bf0c08c'
 		'9ED409C669B947602FC63E64C0E7901D'
 		'2463E2823E99C1D29CDAF06F55ACDFC3')
 build() {
