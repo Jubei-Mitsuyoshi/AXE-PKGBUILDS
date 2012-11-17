@@ -5,7 +5,7 @@
 
 pkgbase=gvfs
 pkgname=('gvfs' 'gvfs-smb' 'gvfs-afc' 'gvfs-afp' 'gvfs-gphoto2' 'gvfs-obexftp')
-pkgver=1.14.1
+pkgver=1.14.2
 pkgrel=99.2axe
 arch=('i686' 'x86_64')
 license=('LGPL')

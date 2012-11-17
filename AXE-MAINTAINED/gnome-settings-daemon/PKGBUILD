@@ -4,7 +4,7 @@
 
 pkgname=gnome-settings-daemon
 pkgver=3.6.3
-pkgrel=99.1axe
+pkgrel=99.2axe
 pkgdesc="The GNOME Settings daemon"
 arch=('i686' 'x86_64')
 license=('GPL')
