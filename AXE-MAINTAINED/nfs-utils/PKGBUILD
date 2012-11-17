@@ -1,4 +1,4 @@
-# $Id: PKGBUILD 168765 2012-10-15 19:16:00Z thomas $
+# $Id: PKGBUILD 170826 2012-11-12 09:13:11Z tpowa $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Contributor: John Proctor <jproctor@prium.net>
@@ -8,12 +8,12 @@
 
 pkgname=nfs-utils
 pkgver=1.2.6
-pkgrel=99.2axe
+pkgrel=99.3axe
 pkgdesc="Support programs for Network File Systems"
 arch=('i686' 'x86_64')
 url='http://nfs.sourceforge.net'
 license=('GPL')
-groups=('axis')
+groups=("axis")
 backup=(etc/{exports,idmapd.conf,nfsmount.conf} etc/conf.d/{nfs-common.conf,nfs-server.conf})
 depends=('glibc' 'e2fsprogs' 'rpcbind' 'libtirpc>=0.2.1' 'librpcsecgss>=0.19-2' 'nfsidmap' 'libevent>=2.0.10' 'libgssglue' 'device-mapper')
 makedepends=('pkgconfig' 'autoconf' 'automake')
@@ -54,7 +54,7 @@ md5sums=('8be543ca270c2234ff18f8c8d35e0d37'
          '965311784d49a7d126d512cadbe91deb'
          'e05705d9ccccaeaeb1ecaee20adc05bc'
          '359d84a85f8781dc3f45f4cf1dbe4b53'
-         'c82ef7b238efe62af3d5e263e1ba1c5c'
+         'beff8a426b3b14c46e3e78a2a283e2ab'
          '5d33d2e754fd37280365b287603bac90'
          '1cd65909fa0983047f3f06a3ab352401'
          '02a34835aa077146a90eb7d191e612d0'
@@ -68,15 +68,9 @@ build() {
   # arch specific patch
   patch -Np0 -i $srcdir/start-statd.patch
 
-  ./configure --prefix=/usr \
-				--enable-nfsv4 \
-				--enable-nfsv41 \
-				--enable-gss \
-              --without-tcp-wrappers \
-			  --with-statedir=/var/lib/nfs \
-              --enable-ipv6 \
-			  --sysconfdir=/etc \
-			  --enable-libmount-mount \
+  ./configure --prefix=/usr --enable-nfsv4 --enable-nfsv41 --enable-gss \
+              --without-tcp-wrappers --with-statedir=/var/lib/nfs \
+              --enable-ipv6 --sysconfdir=/etc --enable-libmount-mount \
               --enable-mountconfig
 
   make 
@@ -102,15 +96,15 @@ package() {
   install -D -m 644 ../nfs "$pkgdir/"etc/conf.d/nfs
   install -D -m 644 utils/mount/nfsmount.conf "$pkgdir/"etc/nfsmount.conf
   # systemd files
-#  for i in ${srcdir}/*.{service,mount}; do
-#    install -D -m 644 $i "$pkgdir/usr/lib/systemd/system/${i##*/}"
-#  done
+ # for i in ${srcdir}/*.{service,mount}; do
+ #   install -D -m 644 $i "$pkgdir/usr/lib/systemd/system/${i##*/}"
+ # done
   install -D -m 644 ../nfs-utils.conf "$pkgdir/"usr/lib/modules-load.d/nfs-utils.conf
   # directories
   mkdir "$pkgdir/"etc/exports.d
-  mkdir "$pkgdir/"var/lib/nfs/rpc_pipefs
+  mkdir -m 555 "$pkgdir/"var/lib/nfs/rpc_pipefs
   mkdir "$pkgdir/"var/lib/nfs/v4recovery
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/nfs-utils/PKGBUILD 
 #----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/nfs-utils/nfs-common altered for rc.d changes
 #----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/nfs-utils/nfs-server altered for rc.d changes
-#----------------axe warning------------------ syetemd detected
