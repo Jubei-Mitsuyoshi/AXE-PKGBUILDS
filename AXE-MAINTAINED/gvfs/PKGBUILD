@@ -16,7 +16,7 @@ makedepends=('avahi' 'bluez' 'dbus-glib' 'fuse' 'intltool' 'libarchive' 'libcdio
 			'libxml2' 'openssh' 'obex-data-server' 'expat' 'libbluray' 'gnome-disk-utility' 'libplist' 'intltool' 'libxslt' 'gtk-doc')
 url="http://www.gnome.org"
 options=(!libtool)
-source=(http://ftp.gnome.org/pub/gnome/sources/$pkgbase/${pkgver%.*}/$pkgbase-$pkgver.tar.xz)
+source=(http://ftp.gnome.org/pub/gnome/sources/$pkgbase/${pkgver%.*}/$pkgbase-$pkgver.tar.xz
 		gvfs-1.2.2-expose-archive-backend.patch)
 sha256sums=('c3bbdac4bc89de82a2ba373799da80d24fb6a038a9893d9b54e2c9429c878fbc'
 			'A6CD0F6B848E1943F9121CF4CE4105F32573F9CF7CF75BC0D7D61A98BABEC519')
