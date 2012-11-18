@@ -5,7 +5,7 @@
 
 pkgname=colord
 pkgver=0.1.24
-pkgrel=99.2axe
+pkgrel=99.3axe
 pkgdesc="System daemon for managing color devices"
 arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/software/colord"
