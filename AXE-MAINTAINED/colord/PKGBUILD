@@ -29,6 +29,7 @@ build() {
     --localstatedir=/var \
     --enable-gudev \
     --disable-static \
+	--enable-vala \
     --disable-polkit
 	
   make
