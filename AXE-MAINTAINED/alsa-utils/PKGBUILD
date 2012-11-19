@@ -5,7 +5,8 @@
 
 pkgname=alsa-utils
 pkgver=1.0.26.6
-pkgrel=gf2826
+pkgrel=99.1axe
+_pkgrelss=gf2826
 pkgdesc="An alternative implementation of Linux sound support"
 arch=('i686' 'x86_64')
 url="http://www.alsa-project.org"
@@ -14,7 +15,7 @@ depends=("alsa-lib>1.0.24" 'dialog' 'pciutils' 'ncurses' 'psmisc' 'libsamplerate
 makedepends=('xmlto' 'docbook-xsl')
 license=('GPL')
 groups=('axis')
-source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$pkgrel.tar.bz2
+source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$_pkgrelss.tar.bz2
         alsa
         alsa.conf.d
         90alsa)
@@ -24,7 +25,7 @@ backup=(etc/conf.d/alsa)
 
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}.${pkgrel}
+  cd ${srcdir}/${pkgname}-${pkgver}.${_pkgrelss}
   ./configure --prefix=/usr --disable-alsaconf \
     --with-udev-rules-dir=/usr/lib/udev/rules.d
   make
@@ -34,7 +35,7 @@ build() {
 #--with-systemdsystemunitdir=/usr/lib/systemd/system
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}.${pkgrel}
+  cd ${srcdir}/${pkgname}-${pkgver}.${_pkgrelss}
   make DESTDIR=${pkgdir} install
   install -D -m755 ../alsa ${pkgdir}/etc/rc.d/alsa
   install -D -m644 ../alsa.conf.d ${pkgdir}/etc/conf.d/alsa

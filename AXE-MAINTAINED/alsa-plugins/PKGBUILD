@@ -6,7 +6,8 @@
 
 pkgname=alsa-plugins
 pkgver=1.0.26.0
-pkgrel=g9df5d
+pkgrel=99.1axe
+_pkgrelss=g9df5d
 pkgdesc="Extra alsa plugins  tarball based on GIT snapshot"
 arch=(i686 x86_64)
 url="http://www.alsa-project.org"
@@ -20,12 +21,12 @@ optdepends=('libpulse: PulseAudio plugin'
             'libsamplerate: libsamplerate resampling plugin'
             'speex: libspeexdsp resampling plugin')
 options=('!libtool')
-source=("http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.g9df5d.tar.bz2"
+source=("http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$_pkgrelss.tar.bz2"
         alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch
         alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch)
 
 build() {
-  cd $pkgname-$pkgver.$pkgrel
+  cd $pkgname-$pkgver.$_pkgrelss
   patch -Np1 -i ../alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch
   patch -Np1 -i ../alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch
   ./configure --prefix=/usr
@@ -33,7 +34,7 @@ build() {
 }
 
 package() {
-  cd $pkgname-$pkgver.$pkgrel
+  cd $pkgname-$pkgver.$_pkgrelss
   make DESTDIR="$pkgdir" install
 
   install -d "$pkgdir/usr/share/doc/$pkgname"

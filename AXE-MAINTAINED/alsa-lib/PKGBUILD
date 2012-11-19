@@ -4,7 +4,8 @@
 
 pkgname=alsa-lib
 pkgver=1.0.26.35
-pkgrel=g3fd4a
+pkgrel=99.1axe
+_pkgrelss=g3fd4a
 pkgdesc="ALSA An alternative implementation of Linux sound support tarball based on GIT snapshot  --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.alsa-project.org"
@@ -14,16 +15,16 @@ makedepends=('python2')
 license=('GPL')
 groups=('axis')
 options=(!libtool)
-source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$pkgrel.tar.bz2)
+source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$_pkgrelss.tar.bz2)
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  cd "$srcdir/$pkgname-$pkgver.$_pkgrelss"
   ./configure --prefix=/usr --with-pythonlibs="-lpthread -lm -ldl -lpython2.7" --with-pythonincludes=-I/usr/include/python2.7
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver.$pkgrel"
+  cd "$srcdir/$pkgname-$pkgver.$_pkgrelss"
   make DESTDIR="$pkgdir" install
 }
 md5sums=('88F4F716C0E2218DB67B09A4B8980CAE')
