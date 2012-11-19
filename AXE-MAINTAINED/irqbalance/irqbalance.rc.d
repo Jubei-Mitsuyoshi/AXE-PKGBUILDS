@@ -14,25 +14,25 @@ fi
 PID=`pidof -o %PPID /usr/sbin/irqbalance`
 case "$1" in
   start)
-    stat_busy "Starting IRQ balancing"
+    msg_busy "Starting IRQ balancing"
     [ -z "$PID" ] && /usr/sbin/irqbalance $ONESHOT_CMD
     if [ $? -gt 0 ]; then
-      stat_fail
+      msg_fail
     else
       if [ "$ONESHOT" -eq 0 ]; then
-        add_daemon irqbalance
+        dmn_add irqbalance
       fi
-      stat_done
+      msg_ok
     fi
     ;;
   stop)
-    stat_busy "Stopping IRQ balancing"
+    msg_busy "Stopping IRQ balancing"
     [ ! -z "$PID" ] && kill $PID &> /dev/null
     if [ $? -gt 0 ]; then
-      stat_fail
+      msg_fail
     else
-      rm_daemon irqbalance
-      stat_done
+      dmn_rm irqbalance
+      msg_ok
     fi
     ;;
   restart)

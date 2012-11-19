@@ -1,4 +1,4 @@
-# $Id: PKGBUILD 169626 2012-10-24 23:47:29Z bisson $
+# $Id: PKGBUILD 171552 2012-11-19 03:55:36Z bisson $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Gaetan Bisson <bisson@archlinux.org>
 # Contributor: Aaron Griffin <aaron@archlinux.org>
@@ -6,10 +6,11 @@
 
 pkgname=openssh
 pkgver=6.1p1
-pkgrel=99.3axe
-pkgdesc='Free version of the SSH connectivity tools --maintained as part of the axe project'
+pkgrel=99.4axe
+pkgdesc='Free version of the SSH connectivity tools'
 url='http://www.openssh.org/portable.html'
 license=('custom:BSD')
+groups=("axis")
 arch=('i686' 'x86_64')
 makedepends=('linux-headers')
 depends=('krb5' 'openssl' 'libedit' 'ldns')
@@ -25,14 +26,14 @@ source=("ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/${pkgname}-${pkgver}
         'sshd.pam'
         'sshd')
 sha1sums=('751c92c912310c3aa9cadc113e14458f843fc7b3'
-          '954bf1660aa32620c37034320877f4511b767ccb'
+          'b97e513407d2d955f73e1884c4dc19142e292175'
           '6df5be396f8c593bb511a249a1453294d18a01a6'
           'bd6eae36c7ef9efb7147778baad7858b81f2d660'
           'f9af4a442b804ab661cec0edb25dd76dee16d8d2'
           'e12fa910b26a5634e5a6ac39ce1399a132cf6796'
           'ec102deb69cad7d14f406289d2fc11fee6eddbdd'
           '659e3ee95c269014783ff8b318c6f50bf7496fbd'
-          '1488d4ed33cf3037accf4b0e1c7a7e90b6a097c7')
+          '378b35f7773c17c03d5a2f364c2a4faac21355cc')
 
 backup=('etc/ssh/ssh_config' 'etc/ssh/sshd_config' 'etc/pam.d/sshd' 'etc/conf.d/sshd')
 
@@ -94,3 +95,8 @@ package() {
 		-e '/^#UsePAM no$/c UsePAM yes' \
 		-i "${pkgdir}"/etc/ssh/sshd_config
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/openssh/PKGBUILD 
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/openssh/sshd altered for rc.d changes
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/openssh/sshd.close-sessions altered for rc.d changes
+#--------aex hand note, need to understand if we need to remove that reference below
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/openssh/sshd.pam 

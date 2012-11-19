@@ -13,24 +13,24 @@ fi
 
 case "$1" in
 	start)
-		stat_busy 'Starting Secure Shell Daemon'
+		msg_busy 'Starting Secure Shell Daemon'
 		/usr/bin/ssh-keygen -A
 		[[ -z $PID ]] && /usr/sbin/sshd $SSHD_ARGS
 		if [[ $? -gt 0 ]]; then
-			stat_fail
+			msg_fail
 		else
-			add_daemon sshd
-			stat_done
+			dmn_add sshd
+			msg_ok
 		fi
 		;;
 	stop)
-		stat_busy 'Stopping Secure Shell Daemon'
+		msg_busy 'Stopping Secure Shell Daemon'
 		[[ ! -z $PID ]] && kill $PID &> /dev/null
 		if [[ $? -gt 0 ]]; then
-			stat_fail
+			msg_fail
 		else
-			rm_daemon sshd
-			stat_done
+			dmn_rm sshd
+			msg_ok
 		fi
 		;;
 	restart)
