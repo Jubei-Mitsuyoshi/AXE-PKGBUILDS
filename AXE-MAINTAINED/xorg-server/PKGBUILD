@@ -87,6 +87,7 @@ build() {
 package_xorg-server-common() {
   pkgdesc="Xorg server common files"
   depends=('xkeyboard-config' 'xorg-xkbcomp' 'xorg-setxkbmap' 'xorg-fonts-misc')
+  groups=("axis" 'xorg')
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
   install -m755 -d "${pkgdir}/usr/share/licenses/xorg-server-common"
@@ -139,6 +140,7 @@ package_xorg-server() {
 package_xorg-server-xephyr() {
   pkgdesc="A nested X server that runs as an X application"
   depends=(libxfont libgl libgcrypt libxv 'pixman>=0.28.0' xorg-server-common)
+  groups=("axis" 'xorg')
 
   cd "${srcdir}/${pkgbase}-${pkgver}/hw/kdrive"
   make DESTDIR="${pkgdir}" install
@@ -150,6 +152,7 @@ package_xorg-server-xephyr() {
 package_xorg-server-xvfb() {
   pkgdesc="Virtual framebuffer X server"
   depends=(libxfont libxdmcp libxau libgcrypt 'pixman>=0.28.0' xorg-server-common)
+  groups=("axis" 'xorg')
 
   cd "${srcdir}/${pkgbase}-${pkgver}/hw/vfb"
   make DESTDIR="${pkgdir}" install
@@ -164,6 +167,7 @@ package_xorg-server-xvfb() {
 package_xorg-server-xnest() {
   pkgdesc="A nested X server that runs as an X application"
   depends=(libxfont libxext libgcrypt 'pixman>=0.28.0' xorg-server-common)
+  groups=("axis" 'xorg')
 
   cd "${srcdir}/${pkgbase}-${pkgver}/hw/xnest"
   make DESTDIR="${pkgdir}" install
@@ -175,6 +179,7 @@ package_xorg-server-xnest() {
 package_xorg-server-xdmx() {
   pkgdesc="Distributed Multihead X Server and utilities"
   depends=(libxfont libxi libgcrypt libxaw libxrender libdmx libxfixes 'pixman>=0.28.0' xorg-server-common)
+  groups=("axis" 'xorg')
 
   cd "${srcdir}/${pkgbase}-${pkgver}/hw/dmx"
   make DESTDIR="${pkgdir}" install
@@ -193,6 +198,7 @@ package_xorg-server-devel() {
            resourceproto scrnsaverproto
            # not technically required but almost every Xorg pkg needs it to build
            xorg-util-macros)
+	groups=("axis" 'xorg')
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
   make DESTDIR="${pkgdir}" install

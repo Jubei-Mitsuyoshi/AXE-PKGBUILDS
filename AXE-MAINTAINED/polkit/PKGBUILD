@@ -1,0 +1,47 @@
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Ivailo Monev <xakepa10@gmail.com>
+
+
+pkgname='polkit'
+pkgdesc="Application development toolkit for controlling system-wide privileges, --maintained as part of the axe project"
+pkgver=0.107
+pkgrel=99.1axe
+arch=(i686 x86_64)
+license=('LGPL')
+groups=('axis')
+url="http://www.freedesktop.org/wiki/Software/PolicyKit"
+depends=('glib2' 'shadow' 'expat' 'js')
+makedepends=('intltool' 'gtk-doc' 'gobject-introspection')
+replaces=('policykit')
+options=('!libtool')
+source=("http://www.freedesktop.org/software/polkit/releases/$pkgname-$pkgver.tar.gz"
+        'logind+ConsoleKit.patch'
+        'autogen.sh')
+md5sums=('0e4f9c53f43fd1b25ac3f0d2e09b2ae1'
+         '746a86e2c8f17117fd20c847f1858dba'
+         'c562ca20e3818a960c92a1d99aa8fbf1')
+install="${pkgname}.install"
+
+build() {
+  cd $pkgname-$pkgver
+  
+  patch -p1 <../logind+ConsoleKit.patch
+  
+  cp ../autogen.sh .
+  ./autogen.sh --prefix=/usr \
+      --sysconfdir=/etc \
+      --localstatedir=/var \
+      --libexecdir=/usr/lib/polkit-1 \
+      --disable-static \
+      --with-authfw=shadow \
+      --enable-gtk-doc
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+  
+  chown 102 "$pkgdir/etc/polkit-1/rules.d"
+  chown 102 "$pkgdir/usr/share/polkit-1/rules.d"
+}
