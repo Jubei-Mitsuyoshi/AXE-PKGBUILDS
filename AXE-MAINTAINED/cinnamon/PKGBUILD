@@ -37,10 +37,14 @@ options=('!libtool' '!emptydirs')
 install=${pkgname}.install
 source=("$pkgname.tar.gz::https://github.com/linuxmint/Cinnamon/tarball/$pkgver"
 		'cinnamon-1.6.1-automagic-gnome-bluetooth.patch'
-		'cinnamon-1.6.1-optional-networkmanager.patch')
+		'cinnamon-1.6.1-optional-networkmanager.patch'
+		'cinnamon-screensaver.desktop'
+		'cinnamon2d-screensaver.desktop')
 md5sums=('ea73c6367d43d82c61f977477bf0c08c'
 		'9ED409C669B947602FC63E64C0E7901D'
-		'2463E2823E99C1D29CDAF06F55ACDFC3')
+		'2463E2823E99C1D29CDAF06F55ACDFC3'
+		'd55c079cdc8bec606f510f87b2a6f776'
+         '5c6af851ab1cf7e9219f11d86353196a')
 build() {
   LDFLAGS="/usr/lib/libgthread-2.0.so"
   CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
@@ -95,7 +99,9 @@ package() {
   # Kdm fix
 #  mkdir -p  $pkgdir/usr/share/apps/kdm/sessions/
 #  cp $pkgdir/usr/share/xsessions/*.desktop $pkgdir/usr/share/apps/kdm/sessions/
+
+  # Gnome Screensaver 
+  mkdir $pkgdir/etc/xdg/autostart
+  cp $srcdir/*.desktop $pkgdir/etc/xdg/autostart/
+
 }
-
-
-#----------------axe warning------------------ syetemd detected

@@ -1,34 +1,33 @@
+# $Id: PKGBUILD 169989 2012-10-30 23:00:46Z heftig $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
-# Maintainer: Ivailo Monev <xakepa10@gmail.com>
+# Maintainer: Jan de Groot <jgc@archlinux.org>
 
-
-pkgname='polkit'
-pkgdesc="Application development toolkit for controlling system-wide privileges, --maintained as part of the axe project"
+pkgname=polkit
 pkgver=0.107
-pkgrel=99.1axe
+pkgrel=99.4axe
+pkgdesc="Application development toolkit for controlling system-wide privileges"
 arch=(i686 x86_64)
 license=('LGPL')
-groups=('axis')
+groups=("axis")
 url="http://www.freedesktop.org/wiki/Software/PolicyKit"
 depends=('glib2' 'shadow' 'expat' 'js')
 makedepends=('intltool' 'gtk-doc' 'gobject-introspection')
 replaces=('policykit')
 options=('!libtool')
-source=("http://www.freedesktop.org/software/polkit/releases/$pkgname-$pkgver.tar.gz"
-        'logind+ConsoleKit.patch'
-        'autogen.sh')
+install=polkit.install
+source=(http://www.freedesktop.org/software/polkit/releases/$pkgname-$pkgver.tar.gz
+        polkit.pam fix-empty-wheel.patch)
 md5sums=('0e4f9c53f43fd1b25ac3f0d2e09b2ae1'
-         '746a86e2c8f17117fd20c847f1858dba'
-         'c562ca20e3818a960c92a1d99aa8fbf1')
-install="${pkgname}.install"
+         '6564f95878297b954f0572bc1610dd15'
+         'c99ab2a7919ad0b69fde4804c043b07f')
 
 build() {
   cd $pkgname-$pkgver
-  
-  patch -p1 <../logind+ConsoleKit.patch
-  
-  cp ../autogen.sh .
-  ./autogen.sh --prefix=/usr \
+
+  # https://bugs.archlinux.org/task/31717
+  patch -Np1 -i ../fix-empty-wheel.patch
+
+  ./configure --prefix=/usr \
       --sysconfdir=/etc \
       --localstatedir=/var \
       --libexecdir=/usr/lib/polkit-1 \
@@ -41,7 +40,10 @@ build() {
 package() {
   cd $pkgname-$pkgver
   make DESTDIR="$pkgdir" install
-  
+
   chown 102 "$pkgdir/etc/polkit-1/rules.d"
   chown 102 "$pkgdir/usr/share/polkit-1/rules.d"
+
+  install -m644 "$srcdir/polkit.pam" "$pkgdir/etc/pam.d/polkit-1"
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/polkit/PKGBUILD 

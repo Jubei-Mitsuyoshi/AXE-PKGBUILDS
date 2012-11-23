@@ -18,7 +18,7 @@ options=('!libtool')
 source=("http://www.packagekit.org/releases/PackageKit-$pkgver.tar.xz"
         'adopt.patch')
 sha256sums=('82c0a553075d49add3c4f58e6e93f7f3613938809a4b8e36f46476e86981b45d'
-            'd0ee8580202a878571dddd470017731299c63e5c5120afe881bb41b9544322b8')
+            '383B254AAB18E195F3363ABC97F3F295F4F4F89B545A9A6B02EA4C38F0D236FE')
 
 build() {
   cd "$srcdir/PackageKit-$pkgver"

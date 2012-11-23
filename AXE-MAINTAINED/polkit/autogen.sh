@@ -92,7 +92,7 @@ esac
       (cd "test/mocklibc"; autoreconf --install)
 
       if grep "^AM_PROG_LIBTOOL" configure.ac >/dev/null; then
-	if test -z "$NO_LIBTOOLIZE" ; then
+	if test -z "$NO_LIBTOOLIZE" ; then 
 	  echo "Running libtoolize..."
 	  libtoolize --force --copy
 	fi
