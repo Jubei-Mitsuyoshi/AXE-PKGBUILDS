@@ -3,7 +3,7 @@
 pkgname=gparted
 pkgdesc="A Partition Magic clone, frontend to GNU Parted, --maintained as part of the axe project"
 pkgver=0.14.0
-pkgrel=99.1axe
+pkgrel=99.2axe
 arch=('i686' 'x86_64')
 url="http://gparted.sourceforge.net"
 license=('GPL')

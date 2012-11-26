@@ -19,7 +19,7 @@ index 570d382..e36e261 100644
 @@ -68,11 +68,6 @@ int didnl = 1;
  int createlogfile = 0;
  int syncalot = 0;
-
+ 
 -struct line {
 -	char buf[256];
 -	int pos;
@@ -53,13 +53,13 @@ index 570d382..e36e261 100644
 +		if (*(ptr-1) == '\n' || first_run) {
 +			time_t t;
 +			char *s;
-			time(&t);
-			s = ctime(&t);
-			fprintf(fp, "%.24s: ", s);
+ 			time(&t);
+ 			s = ctime(&t);
+ 			fprintf(fp, "%.24s: ", s);
 -			didnl = 0;
 +			dosync = 1;
 +			first_run = 0;
-		}
+ 		}
 -		switch (*ptr) {
 -			case 27: /* ESC */
 -				strcpy(tmp, "^[");
@@ -90,36 +90,37 @@ index 570d382..e36e261 100644
 -		}
 -		ptr++;
 -		len--;
-
+ 
 -		tlen = strlen(tmp);
 -		if (tlen && (line.pos + tlen < (int)sizeof(line.buf))) {
 -			memcpy(line.buf + line.pos, tmp, tlen);
 -			line.pos += tlen;
 +		if (*ptr == '\r') {
 +			ignore = 1;
-		}
+ 		}
 -		if (didnl) {
 -			fprintf(fp, "%s\n", line.buf);
 -			memset(&line, 0, sizeof(line));
 +
 +		if (!ignore) {
 +			fwrite(ptr, sizeof(char), 1, fp);
-		}
+ 		}
 -	}
-
+ 
 +		ptr++;
 +	}
-	if (dosync) {
-		fflush(fp);
-		if (syncalot) {
+ 	if (dosync) {
+ 		fflush(fp);
+ 		if (syncalot) {
 @@ -415,7 +381,7 @@ void writelog(FILE *fp, unsigned char *ptr, int len)
-		}
-	}
-
+ 		}
+ 	}
+ 
 -	outptr += olen;
 +	outptr += len;
-	if (outptr >= endptr)
-		outptr = ringbuf;
-
---
+ 	if (outptr >= endptr)
+ 		outptr = ringbuf;
+ 
+-- 
 1.7.10.4
+
