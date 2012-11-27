@@ -5,7 +5,7 @@
 
 pkgname=cinnamon
 pkgver=1.6.7
-pkgrel=99.2axe
+pkgrel=99.3axe
 pkgdesc="Linux desktop which provides advanced innovative features and a traditional user experience"
 arch=('i686' 'x86_64')
 url="http://cinnamon.linuxmint.com/"
@@ -15,20 +15,6 @@ depends=('accountsservice' 'caribou' 'dbus-glib' 'folks' 'gjs' 'gnome-bluetooth'
 'gnome-panel' 'gnome-session' 'gnome-settings-daemon' 'libcroco' 'libgnomekbd' 'libpulse' 'muffin-wm' 'networkmanager' 
 'notification-daemon' 'python2' 'python2-gconf' 'telepathy-logger' 'gnome-menus2' 'gnome-control-center' 'python2-lxml' 'python2-imaging')
 makedepends=('gnome-common' 'intltool')
-# Runtime-only deps are probably incomplete and approximate.
-# Each block:
-# 2. Introspection stuff + dconf needed via imports.gi.*
-# 3. gnome-session is needed for gnome-session-quit
-# 4. Control shell settings
-# 5. accountsservice is needed for GdmUserManager (0.6.14 needed for fast
-#    user switching with gdm-3.1.x)
-# 6. caribou needed for on-screen keyboard
-# 7. xdg-utils needed for xdg-open, used by extension tool
-# 8. gconf-python, imaging, lxml needed for cinnamon-settings
-# 9. gnome-icon-theme-symbolic needed for various icons
-# 10. pygobject needed for menu editor
-# 11. nemo - default file manager, tightly integrated with cinnamon
-# 12. timedated or DateTimeMechanism implementation for cinnamon-settings
 optdepends=('nemo-fm: the official Cinnamon file manager (a Nautilus fork)'
 	    'nautilus: the official Gnome file manager')
 provides=('cinnamon')
@@ -46,7 +32,7 @@ md5sums=('ea73c6367d43d82c61f977477bf0c08c'
 		'd55c079cdc8bec606f510f87b2a6f776'
          '5c6af851ab1cf7e9219f11d86353196a')
 build() {
-  LDFLAGS="/usr/lib/libgthread-2.0.so"
+#  LDFLAGS="/usr/lib/libgthread-2.0.so"
   CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
   cd ${srcdir}/linuxmint-Cinnamon*
   
@@ -58,7 +44,7 @@ build() {
   patch -Np1 -i ../cinnamon-1.6.1-optional-networkmanager.patch
   
  # 	if ! use bluetooth; then
-		rm -rv files/usr/share/cinnamon/applets/bluetooth@cinnamon.org
+#		rm -rv files/usr/share/cinnamon/applets/bluetooth@cinnamon.org
 #	fi
 
 #	if ! use networkmanager; then
@@ -80,28 +66,39 @@ build() {
 	--enable-networkmanager \
 	--without-session-tracking=systemd
  
-  make GLIB_COMPILE_SCHEMAS=glib-compile-schemas
+  make
 }
 
 package() {
   cd ${srcdir}/linuxmint-Cinnamon*
   make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
   
-  # Python2 fix
-  sed -i \
-    -e 's|^\(#!.*python\)$|\12|g' \
-    -e '/python[ \t]\+[-a-zA-Z0-9]\+$/ s|^\(#!.*python\)[ \t]*\(.*\)$|\12 \2|g' \
+   #Run python2 instead of python(3)
+  sed -i 's/bin\/python/bin\/python2/g' \
     "${pkgdir}/usr/bin/$pkgname-extension-tool" \
-    "${pkgdir}/usr/lib/$pkgname-settings/$pkgname-settings.py" \
+    "${pkgdir}/usr/bin/$pkgname-launcher" \
+    "${pkgdir}/usr/bin/$pkgname-menu-editor" \
     "${pkgdir}/usr/bin/$pkgname-settings" \
-    "${pkgdir}/usr/bin/$pkgname-menu-editor"
-    
-  # Kdm fix
-#  mkdir -p  $pkgdir/usr/share/apps/kdm/sessions/
-#  cp $pkgdir/usr/share/xsessions/*.desktop $pkgdir/usr/share/apps/kdm/sessions/
-
-  # Gnome Screensaver 
-  mkdir $pkgdir/etc/xdg/autostart
-  cp $srcdir/*.desktop $pkgdir/etc/xdg/autostart/
+    "${pkgdir}/usr/share/$pkgname/applets/panel-launchers@$pkgname.org/$pkgname-add-panel-launcher.py"
+ 
+  sed -i 's/env python/env python2/g' \
+    "${pkgdir}/usr/lib/$pkgname-settings/$pkgname-settings.py"
+ 
+  install -Dm644 $srcdir/${pkgname}-screensaver.desktop ${pkgdir}/etc/xdg/autostart/${pkgname}-screensaver.desktop
+  install -Dm644 $srcdir/${pkgname}2d-screensaver.desktop ${pkgdir}/etc/xdg/autostart/${pkgname}2d-screensaver.desktop
 
 }
+# Runtime-only deps are probably incomplete and approximate.
+# Each block:
+# 2. Introspection stuff + dconf needed via imports.gi.*
+# 3. gnome-session is needed for gnome-session-quit
+# 4. Control shell settings
+# 5. accountsservice is needed for GdmUserManager (0.6.14 needed for fast
+#    user switching with gdm-3.1.x)
+# 6. caribou needed for on-screen keyboard
+# 7. xdg-utils needed for xdg-open, used by extension tool
+# 8. gconf-python, imaging, lxml needed for cinnamon-settings
+# 9. gnome-icon-theme-symbolic needed for various icons
+# 10. pygobject needed for menu editor
+# 11. nemo - default file manager, tightly integrated with cinnamon
+# 12. timedated or DateTimeMechanism implementation for cinnamon-settings
