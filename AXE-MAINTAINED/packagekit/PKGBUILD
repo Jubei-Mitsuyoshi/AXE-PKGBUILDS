@@ -12,7 +12,7 @@ arch=('i686' 'x86_64')
 url="http://www.packagekit.org"
 license=('GPL')
 makedepends=('dbus-glib' 'gobject-introspection' 'gtk-doc' 'intltool'
-             'networkmanager' 'pacman'  'pm-utils' 'polkit' 'python2' 'qt'
+             'networkmanager' 'pacman'  'pm-utils' 'polkit-axe' 'python2' 'qt'
              'shared-mime-info' 'sqlite' 'udev')
 options=('!libtool')
 source=("http://www.packagekit.org/releases/PackageKit-$pkgver.tar.xz"
