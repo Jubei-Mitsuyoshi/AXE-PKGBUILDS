@@ -4,7 +4,7 @@
 
 pkgname=udisks
 pkgver=1.0.4
-pkgrel=99.5axe
+pkgrel=99.6axe
 pkgdesc="Disk Management Service --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
@@ -35,8 +35,10 @@ package() {
   # move udev helpers and rules to /usr/lib
   mv "${pkgdir}"/lib/udev "${pkgdir}"/usr/lib/
   rm -r "${pkgdir}"/lib
+  
+    # install the /media folder
+  install -d -m 755 $pkgdir/media
 
 #  install -Dm644 "$srcdir/udisks.service" "$pkgdir/usr/lib/systemd/system/udisks.service"
-  echo "SystemdService=udisks.service" \
-    >> "$pkgdir/usr/share/dbus-1/system-services/org.freedesktop.UDisks.service"
+#  echo "SystemdService=udisks.service" >> "$pkgdir/usr/share/dbus-1/system-services/org.freedesktop.UDisks.service"
 }
