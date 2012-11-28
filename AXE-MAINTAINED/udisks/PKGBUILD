@@ -10,7 +10,7 @@ arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
 license=('GPL')
 groups=('axis')
-depends=('udev' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 'device-mapper' 'libatasmart' 'lsof' 'eject')
+depends=('udev' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit-axe' 'parted' 'device-mapper' 'libatasmart' 'lsof' 'eject')
 makedepends=('intltool' 'docbook-xsl')
 options=(!libtool)
 source=(http://hal.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz udisks.service)
@@ -19,8 +19,11 @@ sha256sums=('854b89368733b9c3a577101b761ad5397ae75a05110c8698ac5b29de9a8bf8f5'
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-      --libexecdir=/usr/lib/udisks --disable-static
+  ./configure --prefix=/usr \
+			--sysconfdir=/etc \
+			--localstatedir=/var \
+      --libexecdir=/usr/lib/udisks \
+			--disable-static
   make
 }
 

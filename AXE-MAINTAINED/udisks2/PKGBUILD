@@ -9,7 +9,7 @@ arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
 license=('GPL2')
 groups=('axis')
-depends=('glib2' 'udev' 'polkit' 'libatasmart' 'eject')
+depends=('glib2' 'udev' 'polkit-axe' 'libatasmart' 'eject')
 makedepends=('intltool' 'docbook-xsl' 'gobject-introspection')
 optdepends=('parted: partition management'
             'gptfdisk: GUID partition table support')
