@@ -19,15 +19,17 @@ build() {
   sed -i '/AC_PATH_XTRA/d' configure.ac
   autoreconf
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-    --disable-static --enable-experimental \
+    --disable-static \
+	--enable-experimental \
     --disable-schemas-install \
     --disable-hal \
     --disable-esd \
     --with-package-name="GStreamer Good Plugins (Archlinux)" \
     --with-package-origin="http://www.archlinux.org/"
 
+	sed -e 's/gst sys ext/gst/' -i Makefile
   make
-  sed -e 's/gst sys ext/gst/' -i Makefile
+ 
 }
 
 check() {
@@ -54,7 +56,7 @@ package_gstreamer0.10-good-plugins() {
   install=gstreamer0.10-good-plugins.install
 
   cd "${srcdir}/gst-plugins-good-${pkgver}"
-  make -C sys DESTDIR="${pkgdir}" install
+  
   make -C ext GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
   install -m755 -d "${pkgdir}/usr/share/gconf/schemas"
   install -m644 gconf/gstreamer-0.10.schemas "${pkgdir}/usr/share/gconf/schemas/gstreamer0.10-good-plugins.schemas"
