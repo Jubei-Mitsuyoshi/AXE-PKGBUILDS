@@ -10,7 +10,7 @@ arch=('i686' 'x86_64')
 license=('GPL')
 url="http://www.cups.org/"
 makedepends=('libtiff>=4.0.0' 'libpng>=1.5.7' 'acl' 'pam' 'xdg-utils' 'krb5' 'gnutls>=2.8.3' 'cups-filters' 'bc'
-             'colord' 'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus-core' 'avahi'  'hicolor-icon-theme' 'udev')
+             'colord' 'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus-core' 'avahi'  'hicolor-icon-theme')
 source=(ftp://ftp.easysw.com/pub/cups/${pkgver}/cups-${pkgver}-source.tar.bz2
         cups-no-export-ssllibs.patch
         cups-no-gcrypt.patch
@@ -71,7 +71,7 @@ build() {
      --with-docdir=/usr/share/cups/doc \
      --with-cups-user=daemon \
      --with-cups-group=lp \
-     --enable-pam=yes \
+     --enable-pam=no \
      --enable-raw-printing \
      --enable-dbus --with-dbusdir=/etc/dbus-1 \
      --enable-ssl=yes --enable-gnutls \
