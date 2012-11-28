@@ -14,6 +14,8 @@ url="http://www.freedesktop.org/wiki/Software/PolicyKit"
 depends=('glib2' 'shadow' 'expat' 'js')
 makedepends=('intltool' 'gtk-doc' 'gobject-introspection')
 replaces=('policykit')
+provides=("polkit=$pkgver")
+conflicts=("polkit")
 options=('!libtool')
 install=polkit.install
 source=(http://www.freedesktop.org/software/polkit/releases/$_axepkgname-$pkgver.tar.gz
