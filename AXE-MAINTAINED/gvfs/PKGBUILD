@@ -53,8 +53,8 @@ build() {
 		--enable-udev \
 		--enable-gudev \
 		--enable-http \
-		--disable-gnome-keyring keyring \
-		--disable-samba \
+		--disable-gnome-keyring \
+		--enable-samba \
 		--disable-libsystemd-login
 		
 #		--enable-archive 	# exposing the archive backend ( from gentoo) is tricky
