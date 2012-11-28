@@ -25,9 +25,9 @@ build() {
   cd "$pkgbase-$pkgver"
   
   #gentoo patches
-  patch -Np1 -i "$srcdir/gvfs-1.2.2-expose-archive-backend.patch"
-	echo mount-archive.desktop.in >> po/POTFILES.in
-	echo mount-archive.desktop.in.in >> po/POTFILES.in
+#  patch -Np1 -i "$srcdir/gvfs-1.2.2-expose-archive-backend.patch"
+#	echo mount-archive.desktop.in >> po/POTFILES.in
+#	echo mount-archive.desktop.in.in >> po/POTFILES.in
 
   ./configure --prefix=/usr \
 	--sysconfdir=/etc \
@@ -41,7 +41,6 @@ build() {
 		--disable-schemas-compile \
 		--enable-documentation \
 		--disable-afp \
-		--enable-archive \
 		--enable-avahi \
 		--enable-obexftp \
 		--enable-bluray \
@@ -57,6 +56,12 @@ build() {
 		--disable-gnome-keyring keyring \
 		--disable-samba \
 		--disable-libsystemd-login
+		
+#		--enable-archive 	# exposing the archive backend ( from gentoo) is tricky
+#  	# libgcrypt.m4 needed for eautoreconf, bug #399043
+#		mv "${WORKDIR}/libgcrypt.m4" "${S}"/ || die
+
+#		[[ ${PV} = 9999 ]] || AT_M4DIR=. eautoreconf	
 
   make
 }
