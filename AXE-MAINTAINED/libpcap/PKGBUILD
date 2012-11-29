@@ -5,8 +5,11 @@
 
 pkgname=libpcap
 pkgver=1.3.0
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.1axe
+_arch_rel=1
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="system-independent interface for user-level packet capture  --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.tcpdump.org/"

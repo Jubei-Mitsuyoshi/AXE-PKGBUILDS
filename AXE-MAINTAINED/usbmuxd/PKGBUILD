@@ -5,8 +5,11 @@
 
 pkgname=usbmuxd
 pkgver=1.0.8
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.2axe
+_arch_rel=2
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="USB Multiplex Daemon --maintained as part of the axe project"
 url="http://marcansoft.com/blog/iphonelinux/usbmuxd/"
 arch=('i686' 'x86_64')

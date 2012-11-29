@@ -6,8 +6,11 @@
 pkgname=ntp
 pkgver=4.2.6.p5
 _realver=4.2.6p5
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.11axe
+_arch_rel=11
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc='Network Time Protocol reference implementation --maintained as part of the axe project'
 url='http://www.ntp.org/'
 license=('custom')

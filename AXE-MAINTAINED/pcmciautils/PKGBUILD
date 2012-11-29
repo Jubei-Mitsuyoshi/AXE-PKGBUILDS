@@ -4,8 +4,11 @@
 # Contributor: Tobias Powalowski <tpowa@archlinux.org>
 pkgname=pcmciautils
 pkgver=018
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.4axe
+_arch_rel=4
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="Utilities for inserting and removing PCMCIA cards"
 arch=(i686 x86_64)
 url="http://kernel.org/pub/linux/utils/kernel/pcmcia/pcmcia.html"

@@ -10,8 +10,11 @@ pkgname=('libglapi' 'libgl' 'mesa' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplat
 #_gitdate=20121006
 _git=false
 pkgver=9.0.1
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.1axe
+_arch_rel=1
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 arch=('i686' 'x86_64')
 makedepends=('glproto>=1.4.16' 'libdrm>=2.4.39' 'libxxf86vm>=1.1.2' 'libxdamage>=1.1.3' 'expat>=2.1.0' 'libx11>=1.5.0' 'libxt>=1.1.3'
              'gcc-libs>=4.7.1-6' 'dri2proto>=2.8' 'python2' 'libxml2' 'imake' 'llvm' 'udev' 'libvdpau>=0.5')

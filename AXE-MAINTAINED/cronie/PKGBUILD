@@ -5,8 +5,11 @@
 
 pkgname='cronie'
 pkgver=1.4.9
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.1axe
+_arch_rel=1
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc='Daemon that runs specified programs at scheduled times and related tools'
 url='https://fedorahosted.org/cronie/'
 license=('custom:BSD')

@@ -4,8 +4,11 @@
 
 pkgname=dmraid
 pkgver=1.0.0.rc16.3
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.7axe
+_arch_rel=7
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="Device mapper RAID interface  --maintained as part of the axe project"
 url="http://people.redhat.com/~heinzm/sw/dmraid/"
 conflicts=('mkinitcpio<0.7')

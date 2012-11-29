@@ -3,8 +3,11 @@
 pkgname='dhcpcd'
 pkgdesc="RFC2131 compliant DHCP client daemon,  --maintained as part of the axe project"
 pkgver=5.6.3
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.2axe
+_arch_rel=2
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 groups=('axis' 'base')
 url='http://roy.marples.name/projects/dhcpcd'
 arch=('i686' 'x86_64')

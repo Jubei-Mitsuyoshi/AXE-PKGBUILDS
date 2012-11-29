@@ -4,8 +4,11 @@
 
 pkgname=cinnamon-git
 pkgver=20121101
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.1axe
+_arch_rel=1
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="Linux desktop which provides advanced innovative features and a traditional user experience --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="https://github.com/linuxmint/Cinnamon"

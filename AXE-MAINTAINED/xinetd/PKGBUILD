@@ -4,8 +4,11 @@
 
 pkgname=xinetd
 pkgver=2.3.15
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.2axe
+_arch_rel=2
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="A secure replacement for inetd  --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.xinetd.org/"

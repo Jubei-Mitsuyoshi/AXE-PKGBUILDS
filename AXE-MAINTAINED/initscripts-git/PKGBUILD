@@ -2,8 +2,11 @@
 pkgname='initscripts-git'
 pkgdesc="System initialization/bootup scripts without systemd support, part of the LSD initiative"
 pkgver=20121023
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.3axe
+_arch_rel=0
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 replaces=('initscripts')
 provides=('initscripts')
 conflicts=('initscripts')

@@ -6,8 +6,11 @@
 
 pkgname=openssh
 pkgver=6.1p1
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.4axe
+_arch_rel=4
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc='Free version of the SSH connectivity tools'
 url='http://www.openssh.org/portable.html'
 license=('custom:BSD')

@@ -6,8 +6,11 @@ pkgbase=system-config-printer
 pkgname=('system-config-printer-common'
          'system-config-printer-gnome')
 pkgver=1.3.12
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.1axe
+_arch_rel=1
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="A CUPS printer configuration tool and status applet"
 url="http://cyberelk.net/tim/software/system-config-printer/"
 arch=('i686' 'x86_64')

@@ -5,9 +5,12 @@
 
 pkgname=gnome-menus2
 _pkgname=gnome-menus
-_axe_pkgrel=1
+_arch_rel=2
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
 pkgver=3.0.1
-pkgrel=991.${_axe_pkgrel}.2axe
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="Library for the Desktop Menu Specification (legacy version)"
 arch=('i686' 'x86_64')
 depends=('glib2' 'python2')

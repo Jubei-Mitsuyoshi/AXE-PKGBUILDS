@@ -4,8 +4,11 @@
 
 pkgname='filesystem'
 pkgver=2012.11
-_axe_pkgrel=2
-pkgrel=991.${_axe_pkgrel}.1axe
+_arch_rel=1
+_axe_rel=2
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="Base filesystem,  --maintained as part of the axe project"
 arch=('any')
 license=('GPL')

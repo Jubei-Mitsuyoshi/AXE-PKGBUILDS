@@ -3,8 +3,11 @@
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 pkgname=ppp
 pkgver=2.4.5
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.5axe
+_arch_rel=5
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="A daemon which implements the Point-to-Point Protocol for dial-up networking"
 arch=(i686 x86_64) 
 url="http://www.samba.org/ppp/"

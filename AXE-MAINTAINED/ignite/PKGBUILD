@@ -2,8 +2,11 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 pkgname=ignite
 pkgver=0.9.0
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.3axe
+_arch_rel=3
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="A replacement for sysvinit based upon runit --maintained as part of the axe project"
 url="https://github.com/chneukirchen/ignite"
 license=('custom')

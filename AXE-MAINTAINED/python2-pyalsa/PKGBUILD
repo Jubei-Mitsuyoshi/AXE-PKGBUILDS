@@ -2,8 +2,11 @@
 # Maintainer: pisuka <tekmon@gmail.com>
 pkgname=python2-pyalsa
 pkgver=1.0.26
-_axe_pkgrel=1
-pkgrel=991.${_axe_pkgrel}.2axe
+_arch_rel=2
+_axe_rel=1
+_axe_proc="xx"
+_axe_bin=1
+pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
 pkgdesc="Python bindings for ALSA lib --maintained as part of the axe project"
 arch=(any)
 url="http://alsa-project.org"
