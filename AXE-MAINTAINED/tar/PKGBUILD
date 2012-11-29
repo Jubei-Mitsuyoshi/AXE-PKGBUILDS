@@ -5,7 +5,8 @@
 
 pkgname=tar
 pkgver=1.26
-pkgrel=99.2axe
+_axe_pkgrel=2
+pkgrel=991.${_axe_pkgrel}.2axe
 pkgdesc="Utility used to store, backup, and transport files  --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.gnu.org/software/tar/tar.html"

@@ -6,7 +6,8 @@
 pkgbase=sysvinit
 pkgname=('sysvinit-tools' 'sysvinit')
 pkgver=2.88
-pkgrel=99.9axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.9axe
 groups=('base' 'axis')
 arch=('i686' 'x86_64')
 url="http://savannah.nongnu.org/projects/sysvinit"

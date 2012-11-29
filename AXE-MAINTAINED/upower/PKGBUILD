@@ -3,7 +3,8 @@
 pkgname='upower'
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics, --maintained as part of the axe project"
 pkgver=0.9.18
-pkgrel=99.3axe
+_axe_pkgrel=2
+pkgrel=991.${_axe_pkgrel}.3axe
 arch=('i686' 'x86_64')
 url="http://upower.freedesktop.org"
 license=('GPL')

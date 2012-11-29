@@ -5,7 +5,8 @@
 pkgname=polkit-axe
 _axepkgname=polkit
 pkgver=0.107
-pkgrel=99.4axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.4axe
 pkgdesc="Application development toolkit for controlling system-wide privileges"
 arch=(i686 x86_64)
 license=('LGPL')

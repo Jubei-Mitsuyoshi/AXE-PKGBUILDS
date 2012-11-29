@@ -6,7 +6,8 @@
 
 pkgname=avahi
 pkgver=0.6.31
-pkgrel=99.4axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.4axe
 pkgdesc='Multicast/unicast DNS-SD framework  --maintained as part of the axe project'
 url='http://www.avahi.org/'
 license=('LGPL')

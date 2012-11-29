@@ -6,7 +6,8 @@
 
 pkgname=syslog-ng
 pkgver=3.3.6
-pkgrel=99.3axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.3axe
 pkgdesc="Next-generation syslogd with advanced networking and filtering capabilities"
 arch=('i686' 'x86_64')
 license=('GPL2')

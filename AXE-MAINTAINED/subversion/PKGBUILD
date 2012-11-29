@@ -6,7 +6,8 @@
 
 pkgname=subversion
 pkgver=1.7.7
-pkgrel=99.2axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.2axe
 pkgdesc="A Modern Concurrent Version Control System"
 arch=('i686' 'x86_64')
 license=('APACHE')

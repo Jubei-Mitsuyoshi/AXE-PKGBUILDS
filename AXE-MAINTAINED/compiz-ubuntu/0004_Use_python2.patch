@@ -1,6 +1,15 @@
-diff -Naur compiz-0.9.8.4-orig/compizconfig/ccsm/CMakeLists.txt compiz-0.9.8.4/compizconfig/ccsm/CMakeLists.txt
---- compiz-0.9.8.4-orig/compizconfig/ccsm/CMakeLists.txt	2012-09-27 12:04:02.000000000 +0100
-+++ compiz-0.9.8.4/compizconfig/ccsm/CMakeLists.txt	2012-09-30 19:56:30.470231716 +0100
+diff -Nru compiz-0.9.8.4.orig/compizconfig/ccsm/ccsm compiz-0.9.8.4/compizconfig/ccsm/ccsm
+--- compiz-0.9.8.4.orig/compizconfig/ccsm/ccsm	2012-10-02 14:20:36.950419021 -0400
++++ compiz-0.9.8.4/compizconfig/ccsm/ccsm	2012-10-02 14:22:53.066348284 -0400
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python2
+ # -*- coding: UTF-8 -*-
+ 
+ # This program is free software; you can redistribute it and/or
+diff -Nru compiz-0.9.8.4.orig/compizconfig/ccsm/CMakeLists.txt compiz-0.9.8.4/compizconfig/ccsm/CMakeLists.txt
+--- compiz-0.9.8.4.orig/compizconfig/ccsm/CMakeLists.txt	2012-10-02 14:20:36.953752336 -0400
++++ compiz-0.9.8.4/compizconfig/ccsm/CMakeLists.txt	2012-10-02 14:22:29.463142821 -0400
 @@ -12,7 +12,7 @@
  execute_process (COMMAND uname -p OUTPUT_VARIABLE PROC_ARCH)
  
@@ -28,9 +37,27 @@ diff -Naur compiz-0.9.8.4-orig/compizconfig/ccsm/CMakeLists.txt compiz-0.9.8.4/c
  		   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
  		   COMMENT "Uninstalling Python Files")
  
-diff -Naur compiz-0.9.8.4-orig/compizconfig/compizconfig-python/CMakeLists.txt compiz-0.9.8.4/compizconfig/compizconfig-python/CMakeLists.txt
---- compiz-0.9.8.4-orig/compizconfig/compizconfig-python/CMakeLists.txt	2012-09-27 12:04:02.000000000 +0100
-+++ compiz-0.9.8.4/compizconfig/compizconfig-python/CMakeLists.txt	2012-09-30 19:56:30.470231716 +0100
+diff -Nru compiz-0.9.8.4.orig/compizconfig/ccsm/Makefile compiz-0.9.8.4/compizconfig/ccsm/Makefile
+--- compiz-0.9.8.4.orig/compizconfig/ccsm/Makefile	2012-10-02 14:20:36.883752714 -0400
++++ compiz-0.9.8.4/compizconfig/ccsm/Makefile	2012-10-02 14:22:42.059741246 -0400
+@@ -1,11 +1,11 @@
+ all:
+-	@python setup.py build --prefix=${PREFIX}
++	@python2 setup.py build --prefix=${PREFIX}
+ 
+ install: all
+-	@python setup.py install --prefix=${PREFIX}
++	@python2 setup.py install --prefix=${PREFIX}
+ 
+ uninstall:
+-	@python setup.py uninstall --prefix=${PREFIX}
++	@python2 setup.py uninstall --prefix=${PREFIX}
+ 
+ clean:
+ 	rm -rf build/
+diff -Nru compiz-0.9.8.4.orig/compizconfig/compizconfig-python/CMakeLists.txt compiz-0.9.8.4/compizconfig/compizconfig-python/CMakeLists.txt
+--- compiz-0.9.8.4.orig/compizconfig/compizconfig-python/CMakeLists.txt	2012-10-02 14:20:37.010418695 -0400
++++ compiz-0.9.8.4/compizconfig/compizconfig-python/CMakeLists.txt	2012-10-02 14:23:38.342769668 -0400
 @@ -12,7 +12,7 @@
  execute_process (COMMAND uname -p OUTPUT_VARIABLE PROC_ARCH)
  
@@ -67,18 +94,21 @@ diff -Naur compiz-0.9.8.4-orig/compizconfig/compizconfig-python/CMakeLists.txt c
  	mark_as_advanced (FORCE PYTHON_EXECUTABLE)
  
  	file (GLOB PYTHON_TESTS "tests/test_*.py")
-diff -Naur compiz-0.9.8.4-orig/postinst/CMakeLists.txt compiz-0.9.8.4/postinst/CMakeLists.txt
---- compiz-0.9.8.4-orig/postinst/CMakeLists.txt	2012-09-27 12:04:02.000000000 +0100
-+++ compiz-0.9.8.4/postinst/CMakeLists.txt	2012-09-30 19:56:58.900533674 +0100
-@@ -6,9 +6,9 @@
- 	      PROPERTY GSETTINGS_LOCAL_COMPILE_INHIBIT_RULE
- 	      FALSE)
+diff -Nru compiz-0.9.8.4.orig/compizconfig/compizconfig-python/Makefile compiz-0.9.8.4/compizconfig/compizconfig-python/Makefile
+--- compiz-0.9.8.4.orig/compizconfig/compizconfig-python/Makefile	2012-10-02 14:20:37.007085379 -0400
++++ compiz-0.9.8.4/compizconfig/compizconfig-python/Makefile	2012-10-02 14:23:53.262688839 -0400
+@@ -1,11 +1,11 @@
+ all:
+-	@python setup.py build --prefix=${PREFIX}
++	@python2 setup.py build --prefix=${PREFIX}
  
--if (USE_GSETTINGS)
-+if (USE_GSETTINGS AND NOT COMPIZ_DISABLE_SCHEMAS_INSTALL)
+ install: all
+-	@python setup.py install --prefix=${PREFIX}
++	@python2 setup.py install --prefix=${PREFIX}
  
-     compiz_add_install_recompile_gsettings_schemas (${CMAKE_INSTALL_PREFIX}/share/glib-2.0/schemas)
-     add_all_gsettings_schemas_to_local_recompilation_rule ()
+ uninstall:
+-	@python setup.py uninstall --prefix=${PREFIX}
++	@python2 setup.py uninstall --prefix=${PREFIX}
  
--endif (USE_GSETTINGS)
-+endif (USE_GSETTINGS AND NOT COMPIZ_DISABLE_SCHEMAS_INSTALL)
+ clean:
+ 	rm -rf build/

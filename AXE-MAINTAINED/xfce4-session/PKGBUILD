@@ -5,7 +5,8 @@
 
 pkgname=xfce4-session
 pkgver=4.10.0
-pkgrel=99.6axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.6axe
 pkgdesc="A session manager for Xfce"
 arch=('i686' 'x86_64')
 url="http://www.xfce.org/"

@@ -12,7 +12,8 @@
 pkgbase='linux-zen'
 pkgname=('linux-zen' 'linux-headers-zen')
 pkgver=20121025
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 pkgdesc='Featureful kernel including various new features, code and optimizations to better suit Desktops and Laptops'
 groups=('axis' 'base')
 url='http://www.zen-kernel.org'

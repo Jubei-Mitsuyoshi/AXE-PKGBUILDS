@@ -5,7 +5,8 @@
 
 pkgname=rfkill
 pkgver=0.4
-pkgrel=99.6axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.6axe
 pkgdesc='Tool for enabling and disabling wireless devices --maintained as part of the axe project'
 url='http://linuxwireless.org/en/users/Documentation/rfkill'
 license=('custom')

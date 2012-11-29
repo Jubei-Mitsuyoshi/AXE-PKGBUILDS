@@ -6,7 +6,8 @@
 pkgname=ntp
 pkgver=4.2.6.p5
 _realver=4.2.6p5
-pkgrel=99.11axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.11axe
 pkgdesc='Network Time Protocol reference implementation --maintained as part of the axe project'
 url='http://www.ntp.org/'
 license=('custom')

@@ -5,7 +5,8 @@
 
 pkgname=laptop-mode-tools
 pkgver=1.62
-pkgrel=99.2axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.2axe
 pkgdesc="A kernel mode that allows you to extend the battery life of your laptop"
 arch=('any')
 url="http://www.samwel.tk/laptop_mode/"

@@ -3,7 +3,8 @@
 pkgname=consolekit
 pkgdesc="A framework for defining and tracking users, login sessions, and seats, --maintained as part of the axe project"
 pkgver=0.4.6
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/wiki/Software/ConsoleKit"
 license=('GPL')

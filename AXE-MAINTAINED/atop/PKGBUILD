@@ -6,7 +6,8 @@
 
 pkgname=atop
 pkgver=2.0_1
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 pkgdesc="A system and process level monitor. --maintained as part of the axe project"
 arch=(i686 x86_64)
 url="http://www.atoptool.nl/"

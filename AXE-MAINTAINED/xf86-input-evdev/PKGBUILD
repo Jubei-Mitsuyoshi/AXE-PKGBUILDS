@@ -5,7 +5,8 @@
 
 pkgname=xf86-input-evdev
 pkgver=2.7.3
-pkgrel=99.2axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.2axe
 pkgdesc="X.org evdev input driver"
 arch=(i686 x86_64)
 url="http://xorg.freedesktop.org/"

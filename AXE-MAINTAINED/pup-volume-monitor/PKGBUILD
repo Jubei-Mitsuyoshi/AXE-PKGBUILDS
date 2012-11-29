@@ -4,7 +4,8 @@
 
 pkgname='pup-volume-monitor'
 pkgver=0.1.8
-pkgrel=99.2axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.2axe
 pkgdesc="Lightweight drive and volume management backend --maintained as part of the axe project"
 url="http://www.murga-linux.com/puppy/viewtopic.php?t=78881"
 arch=('i686' 'x86_64')

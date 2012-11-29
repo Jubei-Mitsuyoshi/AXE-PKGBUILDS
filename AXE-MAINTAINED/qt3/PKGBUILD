@@ -4,7 +4,8 @@
 
 pkgname=qt3
 pkgver=3.3.8b
-pkgrel=99.2axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.2axe
 pkgdesc="The QT3 gui toolkit --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.trolltech.com/products/qt/index.html"

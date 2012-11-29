@@ -3,7 +3,8 @@
 pkgname=networkmanager
 pkgdesc="Network Management daemon, --maintained as part of the axe project"
 pkgver=0.9.6.4
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 _pkgname=NetworkManager
 arch=('i686' 'x86_64')
 license=('GPL')

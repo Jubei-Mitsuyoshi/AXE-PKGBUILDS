@@ -4,7 +4,8 @@
 
 pkgname=irqbalance
 pkgver=1.0.5
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 pkgdesc="IRQ balancing daemon for SMP systems"
 arch=('i686' 'x86_64')
 url="http://code.google.com/p/irqbalance"

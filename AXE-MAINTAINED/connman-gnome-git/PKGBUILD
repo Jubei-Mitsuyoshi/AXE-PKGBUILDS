@@ -4,7 +4,8 @@
 pkgname=connman-gnome-git
 _pkgname=connman-gnome
 pkgver=20110407
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 pkgdesc="A connection manager for the GNOME and XFCE desktop --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.moblin.org"

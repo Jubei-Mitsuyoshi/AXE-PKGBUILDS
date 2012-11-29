@@ -3,7 +3,8 @@
 
 pkgname=netcfg
 pkgver=3.0
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 pkgdesc="Network configuration and profile scripts --maintained as part of the axe project"
 url="http://archlinux.org/netcfg/"
 license=("BSD")

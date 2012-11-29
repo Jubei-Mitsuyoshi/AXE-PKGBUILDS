@@ -5,7 +5,8 @@
 
 pkgname=xf86-video-intel
 pkgver=2.20.13
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 arch=(i686 x86_64)
 url="http://xorg.freedesktop.org/"
 license=('custom')

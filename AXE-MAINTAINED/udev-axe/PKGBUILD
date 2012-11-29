@@ -5,7 +5,8 @@
 
 pkgname=udev-axe
 pkgver=195
-pkgrel=99.1axe
+_axe_pkgrel=2
+pkgrel=991.${_axe_pkgrel}.1axe
 groups=('axis' 'base')
 arch=('i686' 'x86_64')
 pkgdesc="The userspace dev tools (udev) - fork --maintained as part of the axe project"

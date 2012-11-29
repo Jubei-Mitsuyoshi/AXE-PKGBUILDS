@@ -3,7 +3,8 @@
 pkgname=dbus
 pkgdesc="Freedesktop.org message bus system, --maintained as part of the axe project"
 pkgver=1.6.8
-pkgrel=99.2axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.2axe
 url="http://www.freedesktop.org/Software/dbus"
 arch=(i686 x86_64)
 license=('GPL' 'custom')

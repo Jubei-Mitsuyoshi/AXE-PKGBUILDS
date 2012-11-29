@@ -4,7 +4,8 @@
 
 pkgname=libwacom
 pkgver=0.6
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 pkgdesc="Library to identify Wacom tablets and their features  --maintained as part of the axe project"
 arch=('x86_64' 'i686')
 url="http://sourceforge.net/apps/mediawiki/linuxwacom/index.php?title=Libwacom"

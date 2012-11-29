@@ -4,7 +4,8 @@
 
 pkgname=mkinitcpio
 pkgver=0.11.2
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 groups=('axis' 'base')
 arch=('any')
 pkgdesc="Modular initramfs image creation utility  --maintained as part of the axe project"

@@ -6,7 +6,8 @@
 
 pkgname=distcc
 pkgver=3.1
-pkgrel=99.8axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.8axe
 pkgdesc="A distributed C, C++, Obj C compiler  --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://code.google.com/p/distcc/"

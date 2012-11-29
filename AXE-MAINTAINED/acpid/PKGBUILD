@@ -7,7 +7,8 @@
 
 pkgname=acpid
 pkgver=2.0.17
-pkgrel=99.3axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.3axe
 pkgdesc='A daemon for delivering ACPI power management events with netlink support'
 arch=('i686' 'x86_64')
 url='http://tedfelix.com/linux/acpid-netlink.html'

@@ -7,7 +7,8 @@
 
 pkgname=bluez
 pkgver=4.101
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 pkgdesc="Libraries and tools for the Bluetooth protocol stack  --maintained as part of the axe project"
 url="http://www.bluez.org/"
 arch=('i686' 'x86_64')

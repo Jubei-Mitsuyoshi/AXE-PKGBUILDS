@@ -6,7 +6,8 @@
 
 pkgname=dnsmasq
 pkgver=2.63
-pkgrel=99.1axe
+_axe_pkgrel=1
+pkgrel=991.${_axe_pkgrel}.1axe
 pkgdesc="Lightweight, easy to configure DNS forwarder and DHCP server  --maintained as part of the axe project"
 url="http://www.thekelleys.org.uk/dnsmasq/doc.html"
 arch=('i686' 'x86_64')
