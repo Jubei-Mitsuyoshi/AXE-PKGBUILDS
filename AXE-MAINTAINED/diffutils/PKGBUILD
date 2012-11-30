@@ -7,9 +7,8 @@ pkgname=diffutils
 pkgver=3.2
 _arch_rel=1
 _axe_rel=1
-_axe_proc="xx"
-_axe_bin=1
-pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
+
+pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
 pkgdesc="Utility programs used for creating patch files  --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.gnu.org/software/diffutils"

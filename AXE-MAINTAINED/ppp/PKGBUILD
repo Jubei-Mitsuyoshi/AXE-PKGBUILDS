@@ -5,9 +5,8 @@ pkgname=ppp
 pkgver=2.4.5
 _arch_rel=5
 _axe_rel=1
-_axe_proc="xx"
-_axe_bin=1
-pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
+
+pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
 pkgdesc="A daemon which implements the Point-to-Point Protocol for dial-up networking"
 arch=(i686 x86_64) 
 url="http://www.samba.org/ppp/"

@@ -6,9 +6,8 @@ pkgname=rsyslog
 pkgver=7.2.3
 _arch_rel=1
 _axe_rel=1
-_axe_proc="xx"
-_axe_bin=1
-pkgrel=999.${_axe_bin}.${_arch_rel}.${_axe_rel}.${_axe_proc}.axe
+
+pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
 pkgdesc="An enhanced multi-threaded syslogd with a focus on security and reliability --maintained as part of the axe project"
 url="http://www.rsyslog.com/"
 arch=('i686' 'x86_64')
