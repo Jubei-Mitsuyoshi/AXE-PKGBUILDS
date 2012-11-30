@@ -6,7 +6,7 @@ pkgver=1.6.8
 _arch_rel=3
 _axe_rel=2
 
-pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 url="http://www.freedesktop.org/Software/dbus"
 arch=(i686 x86_64)
 license=('GPL' 'custom')

@@ -8,7 +8,7 @@ pkgver=0.10.31
 _arch_rel=1
 _axe_rel=2
 
-pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 arch=('i686' 'x86_64')
 license=('LGPL')
 makedepends=('intltool' 'pkgconfig' 'gstreamer0.10-base>=0.10.34' 'libavc1394' 'libiec61883' 'aalib' 'libshout' 'libdv' 'flac' 'gconf' 'wavpack' 'taglib' 'libsoup-gnome' 'v4l-utils' 'libcaca' 'bzip2' 'gdk-pixbuf2' 'libpulse' 'jack' 'udev' 'libjpeg' 'libpng')

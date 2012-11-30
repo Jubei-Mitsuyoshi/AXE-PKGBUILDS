@@ -5,12 +5,16 @@
 # Contributor: Manolis Tzanidakis
 # Contributor: Jonathan Schmidt <j.schmidt@archlinux.us
 
+
+
+#--------------------
 pkgname=acpid
+#--------------------
 pkgver=2.0.17
 _arch_rel=3
 _axe_rel=1
-
-pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc='A daemon for delivering ACPI power management events with netlink support'
 arch=('i686' 'x86_64')
 url='http://tedfelix.com/linux/acpid-netlink.html'
@@ -53,6 +57,7 @@ package() {
   # initscripts
   install -Dm755 acpid.rc "$pkgdir/etc/rc.d/acpid"
   install -Dm644 acpid.conf "$pkgdir/etc/conf.d/acpid"
+  # axe change rel 1
 #  install -Dm644 acpid.socket "$pkgdir/usr/lib/systemd/system/acpid.socket"
 #  install -Dm644 acpid.service "$pkgdir/usr/lib/systemd/system/acpid.service"
 

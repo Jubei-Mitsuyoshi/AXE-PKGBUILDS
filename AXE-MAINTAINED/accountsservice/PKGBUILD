@@ -2,12 +2,15 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Ionut Biru <ibiru@archlinux.org>
 
+
+#--------------------
 pkgname=accountsservice
+#--------------------
 pkgver=0.6.29
 _arch_rel=1
 _axe_rel=1
-
-pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="D-Bus interface for user account query and manipulation"
 arch=(i686 x86_64)
 url="http://www.freedesktop.org/software/accountsservice/"

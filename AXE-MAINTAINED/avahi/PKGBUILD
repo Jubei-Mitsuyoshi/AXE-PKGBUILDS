@@ -3,27 +3,31 @@
 # Contributor: Douglas Soares de Andrade <douglas@archlinux.org>
 # Maintainer: Gaetan Bisson <bisson@archlinux.org>
 #axe-progress- lots of patches from gentoo to check and put in -MASSIVE ammount to do and chech
+#commit 	b5d93f0029ce5f82c6ba0650c1790c9610933c82 0.6.31-4 > 0.6.31-5 ----- make dbus dependency optional ------ accepted by axe, axe rel remains 1
 
+#--------------------
 pkgname=avahi
+#--------------------
 pkgver=0.6.31
-_arch_rel=4
+_arch_rel=5
 _axe_rel=1
-
-pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc='Multicast/unicast DNS-SD framework  --maintained as part of the axe project'
 url='http://www.avahi.org/'
 license=('LGPL')
 arch=('i686' 'x86_64')
 options=('!libtool' '!emptydirs')
-depends=('expat' 'libdaemon' 'glib2' 'dbus' 'libcap' 'gdbm')
-optdepends=('gtk3: avahi-discover-standalone, bshell, bssh, bvnc'
+depends=('expat' 'libdaemon' 'glib2' 'libcap' 'gdbm')
+optdepends=('dbus: communicating with client applications'
+            'gtk3: avahi-discover-standalone, bshell, bssh, bvnc'
             'gtk2: gtk2 bindings'
             'qt3: qt3 bindings'
             'qt: qt bindings'
             'pygtk: avahi-bookmarks, avahi-discover'
             'twisted: avahi-bookmarks'
             'mono: mono bindings'
-            'dbus-python: avahi-discover'
+            'python2-dbus: avahi-discover'
             'nss-mdns: NSS support for mDNS')
 makedepends=('qt' 'qt3' 'pygtk' 'mono' 'intltool' 'dbus-python'
              'gtk-sharp-2' 'gobject-introspection' 'gtk3' 'xmltoman')

@@ -1,26 +1,36 @@
+# $Id: PKGBUILD 172106 2012-11-28 19:30:47Z eric $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
-# $Id: PKGBUILD 168672 2012-10-13 23:13:42Z eric $
 # Maintainer:
+#commit 		7875d2e30674cf01601d155ee31d6fac51e43edd 2.4.33-1 > 2.4.33-2 ----- change slapd.service,not used by axe ------ rejected by axe, axe goes to 2
+#commit 		0a9737aaa2e389414efcf82f855c373b4d0a71fb 2.4.33-2 > 2.4.33-3 ----- change slapd.service,not used by axe ------ rejected by axe, axe goes to 3
 
+
+
+
+#--------------------
 pkgbase=openldap
 pkgname=('libldap' 'openldap')
+#--------------------
 pkgver=2.4.33
-_arch_rel=1
-_axe_rel=1
-
-pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
+_arch_rel=3
+_axe_rel=3
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 arch=('i686' 'x86_64')
 url="http://www.openldap.org/"
 license=('custom')
 makedepends=('libltdl' 'libsasl' 'e2fsprogs' 'util-linux')
 options=('!makeflags')
 source=(ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/${pkgbase}-${pkgver}.tgz
-        slapd slapd.default slapd.service slapd.tmpfiles
+        slapd 
+		slapd.default
+		slapd.service
+		slapd.tmpfiles
         ntlm.patch)
 sha1sums=('0cea642ba2dae1eb719da41bfedb9eba72ad504d'
-          'b684038a7f5bc7d2ba470b2d16ee47b5aae64c65'
+          'fa313802ddc83d06dd831420e2c94d979efd46b2'
           'd89b8a533045123f1ab46c9c430cf132d58a20a4'
-          'a2cdab7e800a9f0c8b1e319a68598a12f4af27a4'
+          '9c7f3441e6a6ee13cdcfe8d965081c7a574c3393'
           'f86a82e35ebe15026980467c9dee4007e686b795'
           'e4afd9f1c810ef4c4cd8fe1101dfe5887f2b7eef')
 
@@ -34,15 +44,26 @@ build() {
   sed -i 's|-$(MKDIR) $(DESTDIR)$(localstatedir)/run|-$(MKDIR) $(DESTDIR)/run/openldap|' servers/slapd/Makefile.in
 
   LDFLAGS="$LDFLAGS -L\"${pkgdir}\"/libldap/usr/lib" 
-  ./configure --prefix=/usr --mandir=/usr/share/man --libexecdir=/usr/lib \
-    --sysconfdir=/etc --localstatedir=/var/lib/openldap \
-    --enable-ipv6 --enable-syslog --enable-local \
-    --enable-bdb --enable-hdb \
-    --enable-crypt --enable-dynamic \
-    --with-threads --disable-wrappers \
+  ./configure --prefix=/usr \
+	--mandir=/usr/share/man \
+	--libexecdir=/usr/lib \
+	--sysconfdir=/etc \
+	--localstatedir=/var/lib/openldap \
+    --enable-ipv6 \
+	--enable-syslog \
+	--enable-local \
+    --enable-bdb \
+	--enable-hdb \
+    --enable-crypt \
+	--enable-dynamic \
+    --with-threads \
+	--disable-wrappers \
     --without-fetch \
-    --enable-spasswd --with-cyrus-sasl \
-    --enable-overlays=mod --enable-modules=yes
+    --enable-spasswd \
+	--with-cyrus-sasl \
+    --enable-overlays=mod \
+	--enable-modules=yes
+	
   make
 }
 
@@ -52,11 +73,11 @@ check() {
 }
 
 package_libldap() {
-  pkgdesc="Lightweight Directory Access Protocol (LDAP) client libraries --maintained as part of the axe project"
+  pkgdesc="Lightweight Directory Access Protocol (LDAP) client libraries"
   depends=('libsasl' 'e2fsprogs')
   backup=('etc/openldap/ldap.conf')
-  groups=('axis')
   options=('!libtool')
+  groups=("axis")
 
   cd "${srcdir}"/${pkgbase}-${pkgver}
   for dir in include libraries doc/man/man3 ; do
@@ -76,11 +97,11 @@ package_libldap() {
 }
 
 package_openldap() {
-  pkgdesc="Lightweight Directory Access Protocol (LDAP) client and server --maintained as part of the axe project"
+  pkgdesc="Lightweight Directory Access Protocol (LDAP) client and server"
   depends=("libldap>=${pkgver}" 'libltdl' 'util-linux')
   backup=('etc/openldap/slapd.conf' 'etc/conf.d/slapd')
   options=('!libtool' 'emptydirs')
-  groups=('axis')
+  groups=("axis")
   install=openldap.install
 
   cd "${srcdir}"/${pkgbase}-${pkgver}
@@ -103,8 +124,12 @@ package_openldap() {
   install -dm700 -o 439 -g 439 "${pkgdir}"/var/lib/openldap
   install -dm700 -o 439 -g 439 "${pkgdir}"/etc/openldap/slapd.d
   install -Dm755 "${srcdir}"/slapd "${pkgdir}"/etc/rc.d/slapd
+
   install -Dm644 "${srcdir}"/slapd.default "${pkgdir}"/etc/conf.d/slapd
-#  install -Dm644 "${srcdir}"/slapd.service "${pkgdir}"/usr/lib/systemd/system/slapd.service
-#  install -Dm644 "${srcdir}"/slapd.tmpfiles "${pkgdir}"/usr/lib/tmpfiles.d/slapd.conf
+   # axe change rel 1
+ # install -Dm644 "${srcdir}"/slapd.service "${pkgdir}"/usr/lib/systemd/system/slapd.service
+ # install -Dm644 "${srcdir}"/slapd.tmpfiles "${pkgdir}"/usr/lib/tmpfiles.d/slapd.conf
   install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/openldap/PKGBUILD 
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/openldap/slapd altered for rc.d changes

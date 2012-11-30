@@ -3,12 +3,15 @@
 # Contributor: Aline Freitas <aline@alinefreitas.com.br>
 # Contributor: Ivailo Monev <xakepa10@gmail.com>
 
-pkgname=udev-axe
-pkgver=195
-_arch_rel=0
-_axe_rel=2
 
-pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
+#--------------------
+pkgname=udev-axe
+#--------------------
+pkgver=195
+_arch_rel='native'
+_axe_rel=2
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 groups=('axis' 'base')
 arch=('i686' 'x86_64')
 pkgdesc="The userspace dev tools (udev) - fork --maintained as part of the axe project"

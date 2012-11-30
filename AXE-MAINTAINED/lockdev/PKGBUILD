@@ -10,7 +10,7 @@ _pkgver=1.0.3
 _arch_rel=1
 _axe_rel=1
 
-pkgrel="${_AXE_EXPORTED_PREFIX_REL}.${_AXE_EXPORTED_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_EXPORTED_PROCESSOR_TYPE}.${_AXE_EXPORTED_SUFFIX_REL}"
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc='Run-time shared library for locking devices, using _both_ FSSTND and SVr4 methods.  --maintained as part of the axe project'
 url='http://packages.qa.debian.org/l/lockdev.html'
 license=("GPL")
