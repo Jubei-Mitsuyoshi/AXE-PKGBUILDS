@@ -2,7 +2,6 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Contributor: Douglas Soares de Andrade <douglas@archlinux.org>
 # Maintainer: Gaetan Bisson <bisson@archlinux.org>
-#axe-progress- lots of patches from gentoo to check and put in -MASSIVE ammount to do and chech
 #commit 	b5d93f0029ce5f82c6ba0650c1790c9610933c82 0.6.31-4 > 0.6.31-5 ----- make dbus dependency optional ------ accepted by axe, axe rel remains 1
 
 #--------------------
@@ -86,3 +85,8 @@ package() {
 	(cd usr/include; ln -s avahi-compat-libdns_sd/dns_sd.h dns_sd.h; ln -s avahi-compat-howl howl)
 	(cd usr/lib/pkgconfig; ln -s avahi-compat-howl.pc howl.pc)
 }
+
+
+
+
+#axe-progress- lots of patches from gentoo to check and put in -MASSIVE ammount to do and chech
