@@ -6,16 +6,18 @@
 # this package anymore. There are far too many packages to split and Arch/pacman
 # makes it extremely hard to do.
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
-pkgname=compiz-ubuntu
 
+
+#--------------------
+pkgname=compiz-ubuntu
+#--------------------
 _ubuntu_rel=0ubuntu1
 _actual_ver=0.9.8.4
-
 pkgver=${_actual_ver}.${_ubuntu_rel}
-
+#--------------------
 _arch_rel=100
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="OpenGL window and compositing manager"
 url="http://www.compiz.org/"

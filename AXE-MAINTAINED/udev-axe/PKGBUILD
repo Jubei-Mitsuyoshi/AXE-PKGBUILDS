@@ -8,10 +8,10 @@
 pkgname=udev-axe
 #--------------------
 pkgver=195
-_arch_rel='native'
-_axe_rel=2
+_arch_rel=1
+_axe_native_rel=2
 #--------------------
-pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_native_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 groups=('axis' 'base')
 arch=('i686' 'x86_64')
 pkgdesc="The userspace dev tools (udev) - fork --maintained as part of the axe project"

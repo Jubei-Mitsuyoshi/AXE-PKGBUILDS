@@ -1,11 +1,17 @@
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Ivailo Monev <xakepa10@gmail.com>
-pkgname='initscripts-git'
-pkgdesc="System initialization/bootup scripts without systemd support, part of the LSD initiative"
-pkgver=20121023
-_arch_rel=0
-_axe_rel=1
 
-pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+
+
+#--------------------
+pkgname='initscripts-git'
+#--------------------
+pkgver=20121023
+_arch_rel=1
+_axe_native_rel=1
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_native_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgdesc="System initialization/bootup scripts without systemd support, part of the LSD initiative"
 replaces=('initscripts')
 provides=('initscripts')
 conflicts=('initscripts')

@@ -5,11 +5,14 @@
 # Contributor: Michal Soltys <soltys@ziu.info>
 #axe-progress- lots of patches from gentoo to check and put in
 
+
+#--------------------
 pkgname=arptables
+#--------------------
 pkgver=0.0.3_4
 _arch_rel=3
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc='ARP filtering utility  --maintained as part of the axe project'
 arch=('i686' 'x86_64')

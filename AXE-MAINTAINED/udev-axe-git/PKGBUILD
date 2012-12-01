@@ -8,10 +8,10 @@ pkgname='udev-axe-git'
 #--------------------
 pkgdesc="The userspace dev tools (udev), --maintained as part of the axe project"
 pkgver=20121027
-_arch_rel='native'
-_axe_rel=1
+_arch_rel=1
+_axe_native_rel=1
 #--------------------
-pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_native_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 arch=('i686' 'x86_64')
 url="https://bitbucket.org/braindamaged/udev"
 license=('GPL')
