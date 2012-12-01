@@ -1,19 +1,21 @@
-# $Id: PKGBUILD 169469 2012-10-21 18:59:02Z andyrtr $
+# $Id: PKGBUILD 172167 2012-11-30 14:16:54Z andyrtr $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: AndyRTR <andyrtr@archlinux.org>
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 
+#--------------------
 pkgname=xf86-video-intel
-pkgver=2.20.13
+#--------------------
+pkgver=2.20.14
 _arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 arch=(i686 x86_64)
 url="http://xorg.freedesktop.org/"
 license=('custom')
 install=$pkgname.install
-pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers --maintained as part of the axe project"
+pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 depends=('intel-dri' 'libxvmc' 'xcb-util>=0.3.9' 'udev')
 makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=13' 'resourceproto' 'scrnsaverproto' 'libx11' 'libxrender')
 replaces=('xf86-video-intel-uxa' 'xf86-video-intel-sna')
@@ -21,9 +23,9 @@ provides=('xf86-video-intel-uxa' 'xf86-video-intel-sna')
 conflicts=('xorg-server<1.13.0' 'X-ABI-VIDEODRV_VERSION<13' 'X-ABI-VIDEODRV_VERSION>=14'
            'xf86-video-intel-sna' 'xf86-video-intel-uxa' 'xf86-video-i810' 'xf86-video-intel-legacy')
 options=('!libtool')
-groups=('axis' 'xorg-drivers' 'xorg')
+groups=("axis" 'xorg-drivers' 'xorg')
 source=(${url}/archive/individual/driver/${pkgname}-${pkgver}.tar.bz2)
-sha256sums=('0151104b58ff3509ecd05ac4ee2c5d81a78506c97afbed511fed6b263060dce3')
+sha256sums=('f85019afd5ddead6606bf89855d209d5369823a6e96b779fa956e0cc78d3b09b')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -38,3 +40,4 @@ package() {
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/xf86-video-intel/PKGBUILD 
