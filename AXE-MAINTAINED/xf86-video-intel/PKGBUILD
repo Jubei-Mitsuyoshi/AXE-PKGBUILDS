@@ -2,7 +2,7 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: AndyRTR <andyrtr@archlinux.org>
 # Maintainer: Jan de Groot <jgc@archlinux.org>
-#commit 		54a8930ac50ef3369da249e6e20bc9aab640a202 2.20.13-1 > 2.20.14-1 ----- upgpkg: xf86-video-intel 2.20.14-1 ------ accepted by axe, axe rel io 1
+#commit 		54a8930ac50ef3369da249e6e20bc9aab640a202 2.20.13-1 > 2.20.14-1 ----- upgpkg: xf86-video-intel 2.20.14-1 ------ accepted by axe, _axe_rel reset to 1
 
 #--------------------
 pkgname=xf86-video-intel

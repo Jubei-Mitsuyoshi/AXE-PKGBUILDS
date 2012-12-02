@@ -3,13 +3,14 @@
 # Contributor: Ivailo Monev <xakepa10@gmail.com>
 #--progress needs work
 
+#--------------------
 pkgbase='lvm2'
 pkgname=('lvm2' 'device-mapper')
-
+#--------------------
 pkgver=2.02.98
 _arch_rel=3
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 arch=('i686' 'x86_64')
 url="http://sourceware.org/lvm2/"
