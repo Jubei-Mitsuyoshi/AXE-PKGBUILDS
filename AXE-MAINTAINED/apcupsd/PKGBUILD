@@ -3,13 +3,15 @@
 # Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
 # Maintainer: Todd Musall <tmusall@comcast.net>
 # Maintainer: Massimiliano Torromeo <massimiliano.torromeo@gmail.com>
-#axe-progress- lots of things to check and import from gentoo including patches
 
+
+#--------------------
 pkgname=apcupsd
+#--------------------
 pkgver=3.14.10
 _arch_rel=3
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="Power mangement and controlling most of APC's UPS models --maintained as part of the axe project"
 arch=(i686 x86_64)
@@ -76,3 +78,7 @@ package() {
 	install -dm755 "$pkgdir/usr/lib/$pkgname/cgi-bin"
 	mv "$pkgdir"/etc/apcupsd/*.cgi "$pkgdir/usr/lib/$pkgname/cgi-bin"
 }
+
+
+#axe-progress- lots of things to check and import from gentoo including patches
+

@@ -1,13 +1,14 @@
-# $Id: PKGBUILD 171876 2012-11-22 07:10:34Z heftig $
+# $Id: PKGBUILD 172182 2012-12-01 09:02:32Z heftig $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Ionut Biru <ibiru@archlinux.org>
+#commit 		08207c7797f21a627b9b0a2968b59aacd3460e0e 0.6.29-1 > 0.6.29-2 ----- fix FS#32808 fix 32 bit crash ------ accepted by axe, axe rel remains 1
 
 
 #--------------------
 pkgname=accountsservice
 #--------------------
 pkgver=0.6.29
-_arch_rel=1
+_arch_rel=2
 _axe_rel=1
 #--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
@@ -16,18 +17,19 @@ arch=(i686 x86_64)
 url="http://www.freedesktop.org/software/accountsservice/"
 license=('GPL3')
 groups=("axis")
-depends=('glib2' 'polkit')
-makedepends=('glib2' 'polkit' 'consolekit' 'libxslt' 'gettext')
+depends=('glib2' 'polkit-axe' 'consolekit')
+makedepends=('intltool' 'gobject-introspection' 'vala' 'libxslt' 'gettext')
 options=('!libtool')
-source=($url/$pkgname-$pkgver.tar.xz more-exclusions.patch)
+source=($url/$pkgname-$pkgver.tar.xz more-exclusions.patch 32bit-crash.patch)
 md5sums=('396c16f39711e24bb7cc685a170befa3'
-         '1d5cf127e5aac407fe7c37b2f4fd503c')
+         '1d5cf127e5aac407fe7c37b2f4fd503c'
+         '2d364b82e7bb1df4aaae70e9ac5be0ba')
 
 build() {
   cd $pkgname-$pkgver
   patch -Np1 -i ../more-exclusions.patch
-
-	  ./configure --prefix=/usr \
+  patch -Np1 -i ../32bit-crash.patch
+  	  ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --libexecdir=/usr/lib/accountsservice \
     --localstatedir=/var \
@@ -36,8 +38,6 @@ build() {
 	--enable-vala \
 	--enable-introspection \
 	--disable-systemd
-	
-	
   make
 }
 
