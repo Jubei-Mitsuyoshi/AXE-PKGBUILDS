@@ -27,26 +27,26 @@ fi
 
 case $1 in
   start)
-    stat_busy "Starting DNS/DHCP daemon"
+    msg_busy "Starting DNS/DHCP daemon"
     if [[ -z $PID ]] && checkconfig &&
         /usr/bin/dnsmasq "--user=${DNSMASQ_USER:-nobody}" \
                           "--pid-file=$pidfile" \
                           "${DNSMASQ_OPTS[@]}"; then
-      add_daemon dnsmasq
-      stat_done
+      dmn_add dnsmasq
+      msg_ok
     else
-      stat_fail
+      msg_fail
     fi
     ;;
   stop)
-    stat_busy "Stopping DNS/DHCP daemon"
+    msg_busy "Stopping DNS/DHCP daemon"
     if [[ $PID ]] && kill "$PID" &> /dev/null; then
       # dnsmasq doesn't clean up after itself
       rm -f "$pidfile"
-      rm_daemon dnsmasq
-      stat_done
+      dmn_rm dnsmasq
+      msg_ok
     else
-      stat_fail
+      msg_fail
     fi
     ;;
   restart)

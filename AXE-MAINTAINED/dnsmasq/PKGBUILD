@@ -1,20 +1,22 @@
-# $Id: PKGBUILD 165413 2012-08-18 13:27:49Z dreisner $
+# $Id: PKGBUILD 172766 2012-12-05 11:05:17Z dreisner $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Dave Reisner <dreisner@archlinux.org>
 # Contributor: Paul Mattal <paul@archlinux.org>
 # Contributor: Tom Newsom <Jeepster@gmx.co.uk>
 
+#--------------------
 pkgname=dnsmasq
-pkgver=2.63
+#--------------------
+pkgver=2.64
 _arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-pkgdesc="Lightweight, easy to configure DNS forwarder and DHCP server  --maintained as part of the axe project"
+pkgdesc="Lightweight, easy to configure DNS forwarder and DHCP server"
 url="http://www.thekelleys.org.uk/dnsmasq/doc.html"
 arch=('i686' 'x86_64')
 license=('GPL')
-groups=('axis')
+groups=("axis")
 depends=('glibc' 'dbus-core')
 install=$pkgname.install
 backup=('etc/dnsmasq.conf'
@@ -23,19 +25,17 @@ source=("http://www.thekelleys.org.uk/$pkgname/$pkgname-$pkgver.tar.gz"
         'dnsmasq.confd'
         'rc.dnsmasq'
         'dnsmasq.service')
-md5sums=('43e771997615ebcd8f6c6ffa60c3e40b'
+md5sums=('60adb8e01960a41ce67e0422c4cf9ab3'
          '66479e99123faeab83ebaed709ef95b5'
-         '819fbdf6440d710616e6df5f8ca9cdba'
-         '631d8349acbed1b01d4e11d9f42fdb7d')
+         '8224b4cf17fe773bbf24d628665e2637'
+         '7ac45726cabef4145db40d758cc7fedf')
 
 build() {
   cd "$pkgname-$pkgver"
 
   # link against dbus. this ugliness is needed to ensure that the
   # compile time opts report properly on startup. yuck.
-  sed -i '/^#ifdef DNSMASQ_COMPILE_OPTS/ {
-    i#define HAVE_DBUS
-  }' src/config.h
+  sed -i '/^#ifdef DNSMASQ_COMPILE_OPTS/ i#define HAVE_DBUS' src/config.h
 
   make
 }
@@ -48,10 +48,12 @@ package() {
   install -Dm755 "$srcdir"/rc.dnsmasq "$pkgdir"/etc/rc.d/dnsmasq
   install -Dm644 "$srcdir"/dnsmasq.confd "$pkgdir/etc/conf.d/dnsmasq"
 
-    #masked  out by axe,AXE does not like systemd
   install -Dm644 "dbus/dnsmasq.conf" "$pkgdir"/etc/dbus-1/system.d/dnsmasq.conf
   install -Dm644 "dnsmasq.conf.example" "$pkgdir"/etc/dnsmasq.conf
+  #axe rel commit 1
 #  install -Dm644 "$srcdir/dnsmasq.service" "$pkgdir"/usr/lib/systemd/system/dnsmasq.service
 }
 
 # vim: ts=2 sw=2 et ft=sh
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/dnsmasq/PKGBUILD 
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/dnsmasq/rc.dnsmasq altered for rc.d changes
