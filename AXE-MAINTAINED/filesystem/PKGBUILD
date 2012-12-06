@@ -1,10 +1,10 @@
 # $Id: PKGBUILD 172772 2012-12-05 15:36:59Z tomegun $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Tom Gundersen <teg@jklm.no>
-#commit 		e42ab37cac393f9fc5ccd6989e6ecec9326f4848 2012.10-1 > 2012.10-2 ----- drop /media and empty fstab /media is now shipped with udisks1, 
+#commit 		e42ab37cac393f9fc5ccd6989e6ecec9326f4848 2012.10-1 > 2012.11-2 ----- drop /media and empty fstab /media is now shipped with udisks1, 
 #so the rest of us can drop it emtpy /tmp from fstab as it is done by systemd automatically (can still be overridden with fstab)  ------ part rejected by axe
 # fs tab should retain tempfs ref,---- axe rel incremented to 2
-#commit 			8968a112ad12788d2fcf9148e70398d150e42a8e 2012.10-2 > 2012.11-1 ----- move dbus user to filesystem ------ accepted by axe, axe rel remains 2
+#commit 			8968a112ad12788d2fcf9148e70398d150e42a8e 2012.11-2 > 2012.12-1 ----- move dbus user to filesystem ------ accepted by axe, axe rel remains 2
 
 
 
