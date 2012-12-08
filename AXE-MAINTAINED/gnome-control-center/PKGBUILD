@@ -2,12 +2,16 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 # Contributor: Jan de Groot <jgc@archlinux.org>
+#commit 	0aa3ce7f0d1a029d0e88831cb01b6caeaf4959d0 3.6.3-2 > 3.6.3-3 ----- Fix a problem exposed by pulse 3 ------ accepted by axe, axe rel remains 3
 
+
+#--------------------
 pkgname=gnome-control-center
+#--------------------
 pkgver=3.6.3
-_arch_rel=2
+_arch_rel=3
 _axe_rel=3
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="The Control Center for GNOME"
 arch=('i686' 'x86_64')
@@ -24,14 +28,17 @@ license=('GPL')
 options=('!libtool' '!emptydirs')
 source=(http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz
 		'gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch'
-		'gnome-control-center-3.5.91-optional-kerberos.patch')
+		'gnome-control-center-3.5.91-optional-kerberos.patch'
+		'pulse3.0.patch')
 sha256sums=('2ae23972bc64f62b4facd12dd5adce212bda02491eb6e56bbf195332157d21fb'
 			'EDE7822E6AE989661CD873107922F7301843DFC3A4020FD7A01ED67D33109ACA'
-			'49BC7820C9C5B3EE8171111D9EC37C878554E22B61BADECE23ABF1E2BD09548A')
+			'49BC7820C9C5B3EE8171111D9EC37C878554E22B61BADECE23ABF1E2BD09548A'
+			'27f1d518df91ad9687e3e217023d83726c0d44f65b30942e79106e4aad53c916')
 
 build() {
   cd $pkgname-$pkgver
-  
+  #pulse3 patch very optional
+  patch -Np1 -i ../pulse3.0.patch
     # Make some panels optional; requires eautoreconf
   patch -Np1 -i ../gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch
   # https://bugzilla.gnome.org/show_bug.cgi?id=679759
