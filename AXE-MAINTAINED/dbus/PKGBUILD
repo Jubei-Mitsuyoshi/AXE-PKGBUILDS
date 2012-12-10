@@ -66,19 +66,18 @@ build() {
 #config from dubus pre-merger notice differences especially in var
 
 #	--prefix=/usr \
-      --sysconfdir=/etc \
-      --localstatedir=/var \
-      --libexecdir=/usr/lib/dbus-1.0 \
-      --with-dbus-user=81 \
-      --with-system-pid-file=/var/run/dbus.pid \
-      --without-systemdsystemunitdir \
-      --enable-inotify \
-      --disable-verbose-mode \
-      --disable-static \
-      --disable-dnotify \
-      --disable-tests \
-      --disable-asserts \
-	  --disable-systemd
+#      --sysconfdir=/etc \
+#      --libexecdir=/usr/lib/dbus-1.0 \
+#     --with-dbus-user=81 \
+#      --with-system-pid-file=/var/run/dbus.pid \
+#      --without-systemdsystemunitdir \
+#      --enable-inotify \
+#      --disable-verbose-mode \
+#      --disable-static \
+#      --disable-dnotify \
+#      --disable-tests \
+#      --disable-asserts \
+#	  --disable-systemd
 
 
   make
