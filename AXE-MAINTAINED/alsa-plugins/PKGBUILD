@@ -4,10 +4,16 @@
 # Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
 # Contributor: Daniel Ehlers <danielehlers@mindeye.net>
 
+
+#--------------------
 pkgname=alsa-plugins
-pkgver=1.0.26.0
-pkgrel=99.1axe
-_pkgrelss=g9df5d
+#--------------------
+pkgver=1.0.26.3
+_arch_rel=1
+_axe_rel=1
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+_pkgrelss=gf8c1a
 pkgdesc="Extra alsa plugins  tarball based on GIT snapshot"
 arch=(i686 x86_64)
 url="http://www.alsa-project.org"
@@ -24,6 +30,10 @@ options=('!libtool')
 source=("http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$_pkgrelss.tar.bz2"
         alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch
         alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch)
+		
+md5sums=('EE5A143FF1FB1262766B03A746268024'
+         '50d9adcda20756d063e676a563c201d9'
+         '697c6275f678d86ded2e5092d8a154c9')
 
 build() {
   cd $pkgname-$pkgver.$_pkgrelss
@@ -40,6 +50,4 @@ package() {
   install -d "$pkgdir/usr/share/doc/$pkgname"
   install -m644 doc/README* doc/*.txt "$pkgdir/usr/share/doc/$pkgname/"
 }
-md5sums=('0C2AA65A0CD2CDB3A7B197CEDFD1A2F0'
-         '50d9adcda20756d063e676a563c201d9'
-         '697c6275f678d86ded2e5092d8a154c9')
+

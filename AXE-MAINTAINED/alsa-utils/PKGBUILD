@@ -3,10 +3,19 @@
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Contributor: judd <jvinet@zeroflux.org>
 
+
+
+
+
+#--------------------
 pkgname=alsa-utils
-pkgver=1.0.26.6
-pkgrel=99.1axe
-_pkgrelss=gf2826
+#--------------------
+pkgver=1.0.26.9
+_arch_rel=1
+_axe_rel=1
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+_pkgrelss=gd6da8
 pkgdesc="An alternative implementation of Linux sound support"
 arch=('i686' 'x86_64')
 url="http://www.alsa-project.org"
@@ -21,8 +30,10 @@ source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$_pkgrelss.t
         90alsa)
 backup=(etc/conf.d/alsa)
 
-
-
+md5sums=('E9324D014B73814C976C32F5E82001BA'
+         '2ba1a1cbf653bf1a69f8a720fd6549da'
+         '4c8ae9f976c7df5e271a4cb91ccc7767'
+         '529216f6a46e61a546640e08ea7a0879')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}.${_pkgrelss}
@@ -44,7 +55,4 @@ package() {
   # dir where to save ALSA state
   install -d ${pkgdir}/var/lib/alsa
 }
-md5sums=('2CF37B50513843A8E29E2D560D454DD9'
-         '2ba1a1cbf653bf1a69f8a720fd6549da'
-         '4c8ae9f976c7df5e271a4cb91ccc7767'
-         '529216f6a46e61a546640e08ea7a0879')
+

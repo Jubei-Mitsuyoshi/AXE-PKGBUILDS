@@ -3,9 +3,9 @@
 # Maintainer: judd <jvinet@zeroflux.org>
 
 pkgname=alsa-lib
-pkgver=1.0.26.35
+pkgver=1.0.26.39
 pkgrel=99.1axe
-_pkgrelss=g3fd4a
+_pkgrelss=g22d6b
 pkgdesc="ALSA An alternative implementation of Linux sound support tarball based on GIT snapshot  --maintained as part of the axe project"
 arch=('i686' 'x86_64')
 url="http://www.alsa-project.org"
@@ -16,6 +16,8 @@ license=('GPL')
 groups=('axis')
 options=(!libtool)
 source=(http://www.alsa-project.org/snapshot/files/$pkgname-$pkgver.$_pkgrelss.tar.bz2)
+md5sums=('FF0D03339172C5D8141632F8F8D546F9')
+
 
 build() {
   cd "$srcdir/$pkgname-$pkgver.$_pkgrelss"
@@ -27,4 +29,3 @@ package() {
   cd "$srcdir/$pkgname-$pkgver.$_pkgrelss"
   make DESTDIR="$pkgdir" install
 }
-md5sums=('88F4F716C0E2218DB67B09A4B8980CAE')

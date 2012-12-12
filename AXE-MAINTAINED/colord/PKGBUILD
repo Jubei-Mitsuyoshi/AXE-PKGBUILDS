@@ -3,18 +3,21 @@
 # Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 # Contributor: Ionut Biru <ibiru@archlinux.org>
 
+
+#--------------------
 pkgname=colord
+#--------------------
 pkgver=0.1.24
 _arch_rel=3
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="System daemon for managing color devices"
 arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/software/colord"
 license=('GPL2')
 groups=('axis')
-depends=('lcms2' 'libgusb' 'sane' 'shared-color-profiles' 'sqlite' 'udev')
+depends=('lcms2' 'libgusb' 'sane' 'shared-color-profiles' 'sqlite')
 makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook2x')
 source=($url/releases/$pkgname-$pkgver.tar.xz)
 options=('!libtool')

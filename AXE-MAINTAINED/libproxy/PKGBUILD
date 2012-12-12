@@ -1,0 +1,62 @@
+# $Id: PKGBUILD 24494 2009-01-17 20:42:01Z jgc $
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+#commit 	axe1 added various cmake flags from gentoo ebuild, remove kdlibs makedepends and add mono ------ accepted by axe, axe rel increments to 2
+ 
+
+#--------------------
+pkgname=libproxy
+#--------------------
+pkgver=0.4.7
+_arch_rel=2
+_axe_rel=2
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgdesc="A library that provides automatic proxy configuration management"
+arch=(i686 x86_64)
+license=('LGPL')
+groups=("axis")
+depends=('gcc-libs')
+optdepends=('networkmanager: NetworkManager configuration module'
+            'perl: Perl bindings'
+            'python2: Python bindings')
+makedepends=('cmake' 'networkmanager' 'automoc4' 'python2' 'perl' 'mono')
+url="http://libproxy.googlecode.com"
+source=(http://libproxy.googlecode.com/files/${pkgname}-${pkgver}.tar.gz
+        libproxy-0.4.7-unistd.patch)
+options=('!libtool')
+md5sums=('509e03a488a61cd62bfbaf3ab6a2a7a5'
+         'e90c03f296e553ace347b46f4fea3625')
+
+build() {
+  cd "${srcdir}"
+
+  # Fix build with GCC 4.7 (patch from Fedora)
+  patch -d "${pkgname}-${pkgver}" -Np1 -i \
+    "${srcdir}/libproxy-0.4.7-unistd.patch"
+
+  mkdir build
+  cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIBEXEC_INSTALL_DIR=/usr/lib/libproxy \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DPERL_VENDORINSTALL=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DWITH_VALA=ON \
+	-DWITH_WEBKIT=OFF \
+	-DWITH_WEBKIT3=OFF \
+	-DWITH_MOZJS=OFF \
+	-DWITH_KDE4=OFF \
+	-DWITH_DOTNET=ON \
+	-DWITH_GNOME=ON \
+	-DWITH_GNOME3=ON \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+    -DCMAKE_C_FLAGS="${CFLAGS}"
+  make
+}
+
+package() {
+  cd "${srcdir}/build"
+  make DESTDIR="${pkgdir}" install
+}

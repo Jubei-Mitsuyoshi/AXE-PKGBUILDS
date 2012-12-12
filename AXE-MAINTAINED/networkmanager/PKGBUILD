@@ -1,19 +1,23 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Ivailo Monev <xakepa10@gmail.com>
+
+
+
+#--------------------
 pkgname=networkmanager
-pkgdesc="Network Management daemon, --maintained as part of the axe project"
+#--------------------
 pkgver=0.9.6.4
 _arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-_pkgname=NetworkManager
+pkgdesc="Network Management daemon,"
 arch=('i686' 'x86_64')
 license=('GPL')
 groups=('axis')
 url="http://www.gnome.org/projects/$_pkgname/"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'udev' 'wpa_supplicant' 'ppp' 'dhcpcd'
-         'libsoup')
+         'libsoup' 'polkit-axe')
 makedepends=('intltool' 'dhclient' 'iptables' 'gobject-introspection')
 optdepends=('modemmanager: for modem management service'
             'dhclient: alternative DHCP/DHCPv6 client'
@@ -71,5 +75,5 @@ package() {
   # fix nm-applet
   sed -i -e 's|<deny|<allow|g' "$pkgdir/etc/dbus-1/system.d/org.freedesktop.NetworkManager.conf"
   
-  rm -r "$pkgdir/var/run"
+# rm -r "$pkgdir/var/run"
 }

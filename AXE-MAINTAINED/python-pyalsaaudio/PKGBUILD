@@ -2,13 +2,18 @@
 # Maintainer : SpepS <dreamspepser at yahoo dot it>
 # Contributor: Alexander Fehr <pizzapunk gmail com>
 
+
+
+
+#--------------------
 pkgname=python-pyalsaaudio
+#--------------------
 pkgver=0.7
 _arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-pkgdesc="ALSA wrapper for Python --maintained as part of the axe project"
+pkgdesc="ALSA wrapper for Python"
 arch=('i686' 'x86_64')
 url="http://pyalsaaudio.sourceforge.net/"
 license=('PSF')

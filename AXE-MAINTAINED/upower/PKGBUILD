@@ -1,17 +1,20 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Ivailo Monev <xakepa10@gmail.com>
+
+#--------------------
 pkgname='upower'
-pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics, --maintained as part of the axe project"
+#--------------------
 pkgver=0.9.18
 _arch_rel=3
 _axe_rel=2
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics,"
 arch=('i686' 'x86_64')
 url="http://upower.freedesktop.org"
 license=('GPL')
 groups=('axis')
-depends=('udev' 'libusb' 'pm-utils' 'dbus-glib' 'libimobiledevice')
+depends=('udev' 'polkit-axe' 'libusb' 'pm-utils' 'dbus-glib' 'libimobiledevice')
 makedepends=('intltool' 'docbook-xsl' 'gobject-introspection' 'polkit-axe')
 options=('!libtool')
 source=("$url/releases/$pkgname-$pkgver.tar.xz")

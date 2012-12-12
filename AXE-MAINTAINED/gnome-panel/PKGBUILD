@@ -1,0 +1,51 @@
+# $Id$
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+#commit 		axerel 1 ----- removed evolution data server ------ accepted by axe, axe rel increments to 2
+
+
+
+
+
+
+#--------------------
+pkgname=gnome-panel
+#--------------------
+pkgver=3.6.2
+_arch_rel=1
+_axe_rel=2
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+arch=('i686' 'x86_64')
+license=('GPL')
+pkgdesc="The GNOME Panel"
+url="http://www.gnome.org"
+depends=('gnome-menus' 'gnome-desktop' 'librsvg' 'libwnck3' 'libsm' 'dconf'
+         'gconf' 'telepathy-glib')
+makedepends=('yelp-tools' 'intltool' 'gobject-introspection' 'networkmanager' 'libcanberra')
+install=gnome-panel.install
+groups=('gnome' 'axis')
+provides=("gnome-panel-bonobo=${pkgver}")
+options=('!libtool' '!emptydirs')
+source=(http://ftp.gnome.org/pub/gnome/sources/$pkgname/${pkgver:0:3}/$pkgname-$pkgver.tar.xz)
+sha256sums=('a41c45c5512e796b8602ce50bf0d205993eab364c860aae31afa582d77b77079')
+
+build() {
+  cd "$pkgname-$pkgver"
+  PYTHON=/usr/bin/python2 ./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-static \
+      --libexecdir=/usr/lib/gnome-panel \
+      --disable-scrollkeeper \
+	  --disable-eds \
+      --disable-schemas-compile
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="$pkgdir" install
+
+  install -m755 -d "$pkgdir/usr/share/gconf/schemas"
+  gconf-merge-schema "$pkgdir/usr/share/gconf/schemas/$pkgname.schemas" --domain gnome-panel-3.0 "$pkgdir"/etc/gconf/schemas/*.schemas
+  rm -f "$pkgdir"/etc/gconf/schemas/*.schemas
+}

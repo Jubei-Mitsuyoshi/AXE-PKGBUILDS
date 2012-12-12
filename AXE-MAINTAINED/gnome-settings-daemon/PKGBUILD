@@ -2,11 +2,15 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 
+
+
+#--------------------
 pkgname=gnome-settings-daemon
+#--------------------
 pkgver=3.6.3
 _arch_rel=2
 _axe_rel=3
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="The GNOME Settings daemon"
 arch=('i686' 'x86_64')

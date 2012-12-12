@@ -3,12 +3,15 @@
 # Maintainer: Jonathan Conder <jonno.conder@gmail.com>
 
 
+
+#--------------------
 pkgbase='packagekit'
 pkgname=('packagekit' 'packagekit-qt2' 'packagekit-python')
+#--------------------
 pkgver=0.7.6
 _arch_rel=2
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="A system designed to make installation and updates of packages easier."
 arch=('i686' 'x86_64')
