@@ -28,7 +28,7 @@ backup=()
 options=(!emptydirs)
 install=
 source=("http://www.alsa-project.org/snapshot/files/$_pkgnamess-$pkgver.$_pkgrelss.tar.bz2")
-md5sums=(a68a0749a878ba320ae82b0703d5b346)
+md5sums=('C2851FAA435C27BD53363CD8AAED416D')
 
 package() {
   cd "$srcdir/$_pkgnamess-$pkgver.$_pkgrelss"

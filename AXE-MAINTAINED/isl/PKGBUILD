@@ -8,7 +8,7 @@
 #--------------------
 pkgname=isl
 #--------------------
-pkgver=0.11
+pkgver=0.11.1
 _arch_rel=1
 _axe_rel=1
 #--------------------
@@ -20,7 +20,7 @@ license=('MIT')
 groups=("axis")
 options=('!libtool')
 source=(http://www.kotnet.org/~skimo/isl/$pkgname-$pkgver.tar.bz2)
-md5sums=('8dd36a28ed255f4fd3d903adb24e99db')
+md5sums=('BCE1586384D8635A76D2F017FB067CD2')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
