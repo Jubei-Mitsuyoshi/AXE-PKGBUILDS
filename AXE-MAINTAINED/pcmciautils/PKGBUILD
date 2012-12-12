@@ -25,7 +25,7 @@ conflicts=('pcmcia-cs')
 source=(ftp://ftp.archlinux.org/other/$pkgname/$pkgname-$pkgver.tar.xz
         initcpio-install-pcmcia)
 options=(!makeflags)
-md5sums=('964c802994677a71b38ec56554aa229f'
+md5sums=('2E9469C44DCB790D2B497723C2FA0566'
          '041af04025daee5b3b05812ac3896c8f')
 
 build() {
