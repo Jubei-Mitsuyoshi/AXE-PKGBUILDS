@@ -1,22 +1,24 @@
-# $Id: PKGBUILD 75874 2012-09-04 15:27:48Z spupykin $
+# $Id: PKGBUILD 81014 2012-12-10 10:16:44Z spupykin $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
 # Maintainer: Judd Vinet <jvinet@zeroflux.org>
 # Contributor: Giovanni Scafora <giovanni@archlinux.org>
 
+#--------------------
 pkgname=distcc
+#--------------------
 pkgver=3.1
-_arch_rel=8
+_arch_rel=9
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-pkgdesc="A distributed C, C++, Obj C compiler  --maintained as part of the axe project"
+pkgdesc="A distributed C, C++, Obj C compiler"
 arch=('i686' 'x86_64')
 url="http://code.google.com/p/distcc/"
 license=('GPL')
-groups=('axis')
+groups=("axis")
 depends=('gcc' 'popt' 'avahi')
-makedepends=('gtk2' 'pkgconfig' 'python2')
+makedepends=('gtk2' 'pkgconfig' 'python2' 'dbus')
 optdepends=('gtk2: for distccmon-gnome'
 	    'python2')
 backup=(etc/conf.d/distccd)
@@ -25,9 +27,9 @@ source=(http://distcc.googlecode.com/files/${pkgname}-${pkgver}.tar.bz2
 	distccd.conf.d
 	distccd.service)
 md5sums=('a1a9d3853df7133669fffec2a9aab9f3'
-         '1c918474372c09304772c20c4de484fa'
-         '89aaf6e9072092e283465a14e83f0f94'
-         'bb24748257d9b0739e18b494cae08633')
+         'ce065bf3582978cb55729b5e6a2a01d1'
+         '239aae53250e3e35288cba566bc0bbf1'
+         '09f0688da9c1840e518d2593bd5c3830')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -35,7 +37,7 @@ build() {
   [ -f Makefile ] || PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
 	--with-gtk \
 	--sysconfdir=/etc \
-	--mandir=/usr/share/man
+	--mandir=/usr/share/man \
 #	--without-avahi \
 
   make WERROR_CFLAGS= INCLUDESERVER_PYTHON=/usr/bin/python2
@@ -58,6 +60,8 @@ package() {
   ln -sf /usr/bin/${pkgname} ${pkgdir}/usr/lib/${pkgname}/bin/g++
   ln -sf /usr/bin/${pkgname} ${pkgdir}/usr/lib/${pkgname}/bin/c++
   ln -sf /usr/bin/${pkgname} ${pkgdir}/usr/lib/${pkgname}/bin/cpp
- #masked  out by axe,AXE does not like systemd
+
 #  install -Dm0644 $srcdir/distccd.service $pkgdir/usr/lib/systemd/system/distccd.service
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/distcc/PKGBUILD 
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/distcc/distccd altered for rc.d changes

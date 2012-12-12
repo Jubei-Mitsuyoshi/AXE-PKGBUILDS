@@ -8,23 +8,23 @@
 PID=`pidof -o %PPID /usr/bin/distccd`
 case "$1" in
   start)
-    stat_busy "Starting distcc Daemon"
+    msg_busy "Starting distcc Daemon"
     [ -z "$PID" ] && /usr/bin/distccd --daemon ${DISTCC_ARGS}
     if [ $? -gt 0 ]; then
-      stat_fail
+      msg_fail
     else
-      add_daemon distccd
-      stat_done
+      dmn_add distccd
+      msg_ok
     fi
     ;;
   stop)
-    stat_busy "Stopping distcc Daemon"
+    msg_busy "Stopping distcc Daemon"
     [ ! -z "$PID" ]  && kill $PID &> /dev/null
     if [ $? -gt 0 ]; then
-      stat_fail
+      msg_fail
     else
-      rm_daemon distccd
-      stat_done
+      dmn_rm distccd
+      msg_ok
     fi
     ;;
   restart)
