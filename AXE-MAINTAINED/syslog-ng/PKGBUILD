@@ -1,21 +1,23 @@
-# $Id: PKGBUILD 169467 2012-10-21 18:14:40Z dreisner $
+# $Id: PKGBUILD 173195 2012-12-12 17:17:00Z dreisner $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Dave Reisner <dreisner@archlinux.org>
 # Contributor: Eric Bélanger <eric@archlinux.org>
 # Contributor: Aaron Griffin <aaron@archlinux.org>
 
+#--------------------
 pkgname=syslog-ng
-pkgver=3.3.6
-_arch_rel=3
+#--------------------
+pkgver=3.3.7
+_arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="Next-generation syslogd with advanced networking and filtering capabilities"
 arch=('i686' 'x86_64')
 license=('GPL2')
-groups=('axis')
+groups=("axis")
 url="http://www.balabit.com/network-security/syslog-ng/"
-depends=('awk' 'eventlog' 'glib2' 'libcap' 'openssl' 'udev')
+depends=('awk' 'eventlog' 'glib2' 'libcap')
 makedepends=('flex' 'pkg-config')
 optdepends=('logrotate: for rotating log files')
 options=('!libtool')
@@ -30,19 +32,41 @@ source=("http://www.balabit.com/downloads/files/syslog-ng/sources/$pkgver/source
         syslog-ng.conf.d
         syslog-ng.logrotate
         syslog-ng.rc
-        0001-afsocket-Fix-compilation-without-spoof-source.patch)
-sha1sums=('c2ee74180d640b235665115c5a4b2c61a71a9576'
+		syslog-ng-3.3.5-afsocket.patch
+		syslog-ng-3.3.5-compile.patch
+		syslog-ng-3.3.5-gprocess.patch
+		syslog-ng-3.3.5-include.patch
+		syslog-ng-3.3.5-threading.patch
+		syslog-ng-3.3.5-utmpx.patch)
+sha1sums=('06f09057c3dfb84eba381e0141f92565673ec0c8'
           'db14f4937a821e449b769c938faf2275a7ef188e'
           '9b2eb6ea9e27c9f1b6c1c855be211ec3da51d3c8'
           '949128fe3d7f77a7aab99048061f885bc758000c'
           '3db145595628cf31958fc2b9a904d57b638b4f11'
-          '5f0e6a4b01ba59724bba8932c41ac8f70386659e')
+		  '1934361C9E4B48613CFD61ADEF24BB361E736C72'
+		  '3E1036742EE63D3066CD4381DFC354A6D1B040B3'
+		  '42479089C1B5AD014D61C5ADC010BEB59C4C51BD'
+		  'E4B4FD6676640AED0D03AE74A737A95E83B024ED'
+		  '36637339016BE4EA057D0C348AEA8A578AA4F03F'
+		  'B96B0ED8A3897DFBE505BEBAECB2087AB5FC6319')
 
 build() {
   cd "$pkgname-$pkgver"
+  
+  
+ # patch -Np1 -i ../syslog-ng-3.3.5-afsocket.patch
+#  patch -Np1 -i ../syslog-ng-3.3.5-compile.patch
+ # patch -Np1 -i ../syslog-ng-3.3.5-gprocess.patch
+ # patch -Np1 -i ../syslog-ng-3.3.5-include.patch
+ # patch -Np1 -i ../syslog-ng-3.3.5-threading.patch
+ # patch -Np1 -i ../syslog-ng-3.3.5-utmpx.patch
+  
 
-  # upstream commit 21a9ac3a7e2554f94b8ff8788bc4e82ec3fb58d3
-  patch -Np1 <"$srcdir"/0001-afsocket-Fix-compilation-without-spoof-source.patch
+#	sed -i -e '/libsyslog_ng_crypto_la_LIBADD/s/$/ -lssl -lcrypto/' lib/Makefile.am || die
+#	autoreconf
+
+  
+  
 
   ./configure \
     --prefix=/usr \
@@ -52,8 +76,18 @@ build() {
     --datadir=/usr/share/syslog-ng \
     --with-pidfile-dir=/run \
     --disable-spoof-source \
-    --disable-systemd \
+    -disable-dependency-tracking \
+	--disable-systemd \
+	--with-ivykis=internal \
+	--enable-linux-caps \
+	--disable-ipv6 \
+	--disable-mongodb \
+	--disable-pcre \
+	--disable-sql \
+	--disable-ssl \
+	--disable-tcp-wrapper \
 
+#--with-module-dir=/usr/$(get_libdir)/syslog-ng 
   make
 }
 
@@ -66,5 +100,5 @@ package() {
   install -Dm755 "$srcdir/syslog-ng.rc" "$pkgdir/etc/rc.d/syslog-ng"
   install -Dm644 "$srcdir/syslog-ng.conf.d" "$pkgdir/etc/conf.d/syslog-ng"
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/syslog-ng/PKGBUILD 
 #----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/syslog-ng/syslog-ng.rc altered for rc.d changes
-#----------------axe warning------------------ syetemd detected

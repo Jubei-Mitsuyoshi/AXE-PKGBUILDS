@@ -1,11 +1,16 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Ivailo Monev <xakepa10@gmail.com>
-pkgname=gparted
-pkgdesc="A Partition Magic clone, frontend to GNU Parted, --maintained as part of the axe project"
-pkgver=0.14.0
-_arch_rel=3
-_axe_rel=2
+#commit  	e149b6af585981508871edc1245b203b71ac68b7   0.14.0-3 > 0.14.1-1 ----- - upstream release ------ accepted by axe, _axe_rel remains 2
 
+
+#--------------------
+pkgname=gparted
+#--------------------
+pkgdesc="A Partition Magic clone, frontend to GNU Parted,"
+pkgver=0.14.1
+_arch_rel=1
+_axe_rel=2
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 arch=('i686' 'x86_64')
 url="http://gparted.sourceforge.net"
@@ -23,7 +28,7 @@ optdepends=('dosfstools: for FAT16 and FAT32 partitions'
             'mtools')
 install=gparted.install
 source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('fc3507479e930967a2049c533907384d')
+md5sums=('1ffe859c70e102a776dffb1ff0a2164a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
