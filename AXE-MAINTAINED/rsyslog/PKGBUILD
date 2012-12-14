@@ -1,12 +1,17 @@
 # $Id: PKGBUILD 80430 2012-11-21 14:28:23Z spupykin $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
+#commit 	3b9133cbc735d6371cec301a68bad369f5938229 7.2.3-1 > 7.2.4-1 ----- upd ------ accepted by axe, axe rel remains 1
 
+
+
+#--------------------
 pkgname=rsyslog
-pkgver=7.2.3
+#--------------------
+pkgver=7.2.4
 _arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="An enhanced multi-threaded syslogd with a focus on security and reliability --maintained as part of the axe project"
 url="http://www.rsyslog.com/"
@@ -27,7 +32,7 @@ source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-$pkgver.tar.gz"
 	'rsyslog'
 	'rsyslog.logrotate'
 	'rsyslog.conf.d')
-md5sums=('81fd0f6c38e2005a1d2a9e6afff338c1'
+md5sums=('7fb607313ec534a4352da7aa2e0084ec'
          'ee43c21f0290127bfc71964a9400dc2d'
          '8065db4bef3061a4f000ba58779f6829'
          '18565f38a4445136446a31a3c95ffc3e')
