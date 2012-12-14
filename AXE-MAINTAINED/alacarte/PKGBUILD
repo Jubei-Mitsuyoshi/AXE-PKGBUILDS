@@ -3,11 +3,14 @@
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 # Contributor: pressh <pressh@gmail.com>
 
+
+#--------------------
 pkgname=alacarte
+#--------------------
 pkgver=3.6.1
 _arch_rel=2
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="Menu editor for gnome"
 arch=(any)

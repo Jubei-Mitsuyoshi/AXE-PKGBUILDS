@@ -3,11 +3,14 @@
 # Maintainer: Daniel Wallace <danielwallace at gtmanfred dot com>
 # Contributor: Lucas De Marchi <lucas.de.marchi@gmail.com>
 
+
+#--------------------
 pkgname=connman
+#--------------------
 pkgver=1.9
 _arch_rel=2
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="Wireless LAN network manager  --maintained as part of the axe project"
 url="http://connman.net/"
