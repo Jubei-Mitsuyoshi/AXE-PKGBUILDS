@@ -1,19 +1,23 @@
-# $Id: PKGBUILD 165511 2012-08-21 15:29:07Z dreisner $
+# $Id: PKGBUILD 173225 2012-12-14 12:00:48Z bisson $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Gaetan Bisson <bisson@archlinux.org>
 # Contributor: kevin <kevin@archlinux.org>
+#commit 	d939765766a8807fc75a9dd3402d2459bc883a4a 4.2.6.p5-11 > 4.2.6.p5-11 ----- fix FS#33090 ------ rejected by axe-- more shit as arch struggle keeping up with sysemd -- axerel increments to 2
 
+
+#--------------------
 pkgname=ntp
+#--------------------
 pkgver=4.2.6.p5
 _realver=4.2.6p5
-_arch_rel=11
-_axe_rel=1
-
+_arch_rel=12
+_axe_rel=2
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-pkgdesc='Network Time Protocol reference implementation --maintained as part of the axe project'
+pkgdesc='Network Time Protocol reference implementation'
 url='http://www.ntp.org/'
 license=('custom')
-groups=('axis')
+groups=("axis")
 arch=('i686' 'x86_64')
 makedepends=('perl-html-parser')
 depends=('openssl' 'readline' 'libcap')
@@ -23,15 +27,15 @@ source=("http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-${_realver}.tar.gz"
         'ntpdate'
         'ntp.conf'
         'ntpd.conf'
-        'logrotate.d'
-        'ntpd.service')
+        'ntpd.service'
+        'ntpdate.service')
 sha1sums=('4a5353a4791b6f4315a66c28d504ec6c7926b192'
-          '4e324e625c1f080b5c028be5092aa71adbf9bd99'
-          '01394b8a952f5edc85d19df8335eeac3980320f4'
-          'eb1f63814b9adbd3d518e880fa3b38c375f0fe91'
+          '4272221ce5ab71440f02afd9f115356ef9e49edd'
+          'ff9be033b0bc8f4fbf60fed327b3ce7762d605cc'
+          'f6a2292c26a201d9305669e99463fb54e5603b3f'
           '4537d1f58b299d463db5048129cb264511474b0b'
-          '4f76f7f9ffc8315ff9924f793f272d4f6939b816'
-          '25a27cecdb937f48fa7b7c71dcc8b31cdad89306')
+          'ffbabfaab90f1ba4dc769c84fbbfe89c5c01ee95'
+          '0cb9dbd285e2e8ac51ff47dee08af69e12a09855')
 
 install=install
 
@@ -47,7 +51,7 @@ build() {
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-$_realver"
+	cd "${srcdir}/${pkgname}-${_realver}"
 
 	make DESTDIR="${pkgdir}" install
 
@@ -57,9 +61,8 @@ package() {
 	install -Dm755 ../ntpdate "${pkgdir}"/etc/rc.d/ntpdate
 	install -Dm644 ../ntp.conf "${pkgdir}"/etc/ntp.conf
 	install -Dm644 ../ntpd.conf "${pkgdir}"/etc/conf.d/ntpd.conf
-	install -Dm644 ../logrotate.d "${pkgdir}"/etc/logrotate.d/ntpd
-	     #masked  out by axe,AXE does not like systemd
 #	install -Dm644 ../ntpd.service "${pkgdir}"/usr/lib/systemd/system/ntpd.service
+#	install -Dm644 ../ntpdate.service "${pkgdir}"/usr/lib/systemd/system/ntpdate.service
 	install -Dm644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 	
 	cd html
@@ -67,7 +70,10 @@ package() {
 	install -d "${pkgdir}"/usr/share/man
 	mv man/man* "${pkgdir}"/usr/share/man
 	mv "${pkgdir}/usr/share/man/man8/ntpd.8" "${pkgdir}/usr/share/man/man8/ntp-ntpd.8" # we should ditch openntpd
-     #masked  out by axe,AXE does not like systemd
-#	install -dm755 "$pkgdir/usr/lib/systemd/ntp-units.d"
-#	echo "ntpd.service" > "$pkgdir/usr/lib/systemd/ntp-units.d/$pkgname.list"
+
+#	install -dm755 "${pkgdir}/usr/lib/systemd/ntp-units.d"
+#	echo 'ntpd.service' > "${pkgdir}/usr/lib/systemd/ntp-units.d/${pkgname}.list"
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/ntp/PKGBUILD 
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/ntp/ntpd altered for rc.d changes
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/ntp/ntpdate altered for rc.d changes

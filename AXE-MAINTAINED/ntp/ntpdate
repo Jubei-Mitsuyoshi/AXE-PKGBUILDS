@@ -6,19 +6,19 @@
 
 case "$1" in
 	start)
-		stat_busy "Starting NTP Client"
+		msg_busy "Starting NTP Client"
 		if /usr/bin/ntpd -q ${NTP_CLIENT_OPTION} &>/dev/null; then
-			add_daemon ntpdate
-			stat_done
+			dmn_add ntpdate
+			msg_ok
 		else
-			stat_fail
+			msg_fail
 			exit 1
 		fi
 		;;
 	stop)
-		stat_busy "Stopping NTP Client"
-		rm_daemon ntpdate
-		stat_done
+		msg_busy "Stopping NTP Client"
+		dmn_rm ntpdate
+		msg_ok
 		;;
 	restart)
 		$0 stop

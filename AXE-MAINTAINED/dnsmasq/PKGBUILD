@@ -3,11 +3,13 @@
 # Maintainer: Dave Reisner <dreisner@archlinux.org>
 # Contributor: Paul Mattal <paul@archlinux.org>
 # Contributor: Tom Newsom <Jeepster@gmx.co.uk>
+#commit		c3ae496005f7324d4984294f21a671a1673dc022 2.64-1 > 2.65-1 ----- upgpkg: dnsmasq 2.65-1 ------ accepted by axe, axe rel remains 1
+
 
 #--------------------
 pkgname=dnsmasq
 #--------------------
-pkgver=2.64
+pkgver=2.65
 _arch_rel=1
 _axe_rel=1
 #--------------------
@@ -25,7 +27,7 @@ source=("http://www.thekelleys.org.uk/$pkgname/$pkgname-$pkgver.tar.gz"
         'dnsmasq.confd'
         'rc.dnsmasq'
         'dnsmasq.service')
-md5sums=('60adb8e01960a41ce67e0422c4cf9ab3'
+md5sums=('a91534a5d6f053d5c80f67ef502afa34'
          '66479e99123faeab83ebaed709ef95b5'
          '8224b4cf17fe773bbf24d628665e2637'
          '7ac45726cabef4145db40d758cc7fedf')
