@@ -1,0 +1,28 @@
+
+    # Maintainer: György Balló <ballogy@freestart.hu>
+    _pkgname=indicator-application
+    pkgname=indicator-application-gtk2
+    pkgver=0.5.0
+    pkgrel=2
+    pkgdesc="A library and indicator to take menus from applications and place them in the panel (GTK+ 2 library for Xfce/LXDE)"
+    arch=('i686' 'x86_64')
+    url="https://launchpad.net/indicator-application"
+    license=('GPL')
+    depends=('indicator-application' 'libappindicator>=0.2.9')
+    options=('!libtool')
+    source=(http://launchpad.net/$_pkgname/0.5/$pkgver/+download/$_pkgname-$pkgver.tar.gz)
+    md5sums=('2af53b69dbdbb326810cbfec31a9ee77')
+     
+    build() {
+      cd "$srcdir/$_pkgname-$pkgver"
+     
+      ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib/$_pkgname \
+                  --disable-static --with-gtk=2
+      make
+    }
+     
+    package() {
+      cd "$srcdir/$_pkgname-$pkgver"
+     
+      make -C src DESTDIR="$pkgdir/" install-applicationlibLTLIBRARIES
+    }
