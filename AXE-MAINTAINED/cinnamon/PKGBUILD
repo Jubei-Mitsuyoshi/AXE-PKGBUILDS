@@ -2,12 +2,13 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Contributor: unifiedlinux
 #axe notes needs deps checking against portage but otherwise complete and untested
+#commit 	 1.6.7-3 > 1.6.7-4 ----- packaging change see below ------ accepted by axe, axe rel remains 2
 
 #--------------------
 pkgname=cinnamon
 #--------------------
 pkgver=1.6.7
-_arch_rel=3
+_arch_rel=4
 _axe_rel=2
 #--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
@@ -76,7 +77,8 @@ build() {
 
 package() {
   cd ${srcdir}/linuxmint-Cinnamon*
-  make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
+#  make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
+	make DESTDIR="${pkgdir}" install
   
    #Run python2 instead of python(3)
   sed -i 's/bin\/python/bin\/python2/g' \

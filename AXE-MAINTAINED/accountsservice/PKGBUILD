@@ -1,7 +1,7 @@
 # $Id: PKGBUILD 172182 2012-12-01 09:02:32Z heftig $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Ionut Biru <ibiru@archlinux.org>
-_axe_level='full'
+#_axe_level='full'
 #commit 	08207c7797f21a627b9b0a2968b59aacd3460e0e 0.6.29-1 > 0.6.29-2 ----- fix FS#32808 fix 32 bit crash ------ accepted by axe, axe rel remains 1
 #commit 	ff9c774de986221e2dbca96201609b377d3d944c 0.6.29-2 > 0.6.30-1 ----- 0.6.30 ------ accepted by axe, axe rel remains 1
 
