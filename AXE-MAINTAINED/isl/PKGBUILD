@@ -1,7 +1,7 @@
 # $Id$
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Allan McRae <allan@archlinux.org>
-_axe_level='temp'
+#_axe_level='temp'
 ##commit ----- no commits, since _axe_level is temp this package will revert to arch as soon as arch version compiles
 
 
