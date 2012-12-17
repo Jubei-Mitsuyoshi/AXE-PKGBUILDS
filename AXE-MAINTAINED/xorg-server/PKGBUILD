@@ -3,7 +3,7 @@
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 
 #commit 		e985c8265828ff213f4794640434dd579966d522 1.13.0.902-1 > 1.13.0.902-2 ----- disable glyph caching again - fixes nvidia blob and vmware systems ------ accepted by axe, _axe_rel remains 1
-#commit 		304b90ef427cf253f01dd6b5159f429d6fad1e95 1.13.0.902-2 > 1.13.0.902-1 ----- upstream update 1.13.1 ------ accepted by axe, _axe_rel remains 1
+#commit 		304b90ef427cf253f01dd6b5159f429d6fad1e95 1.13.0.902-2 > 1.13.1-1 ----- upstream update 1.13.1 ------ accepted by axe, _axe_rel remains 1
 
 
 #--------------------
@@ -11,7 +11,7 @@ pkgbase=xorg-server
 #--------------------
 #--------------------
 pkgname=('xorg-server' 'xorg-server-xephyr' 'xorg-server-xdmx' 'xorg-server-xvfb' 'xorg-server-xnest' 'xorg-server-common' 'xorg-server-devel')
-pkgver=1.13.0.902
+pkgver=1.13.1
 #--------------------
 _arch_rel=1
 _axe_rel=1
