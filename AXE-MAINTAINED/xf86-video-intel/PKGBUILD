@@ -3,13 +3,14 @@
 # Maintainer: AndyRTR <andyrtr@archlinux.org>
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 #commit 		54a8930ac50ef3369da249e6e20bc9aab640a202 2.20.13-1 > 2.20.14-1 ----- upgpkg: xf86-video-intel 2.20.14-1 ------ accepted by axe, _axe_rel remains 1
-#commit 		e02a8d91211bc5126e45f8bfa20c142e0ae42926 2.20.14-1 > 2.20.15-1 ----- upgpkg: xf86-video-intel 2.20.14-1 ------ accepted by axe, _axe_rel remains 1
+#commit 		e02a8d91211bc5126e45f8bfa20c142e0ae42926 2.20.14-1 > 2.20.15-1 ----- upgpkg: xf86-video-intel 2.20.15-1 ------ accepted by axe, _axe_rel remains 1
+#commit 		ab81486c15954f25d7dd369c7d3426c9313b1dcd 2.20.14-1 > 2.20.16-1 ----- upgpkg: xf86-video-intel 2.20.16-1 ------ accepted by axe, _axe_rel remains 1
 
 
 #--------------------
 pkgname=xf86-video-intel
 #--------------------
-pkgver=2.20.15
+pkgver=2.20.16
 _arch_rel=1
 _axe_rel=1
 #--------------------
@@ -28,7 +29,7 @@ conflicts=('xorg-server<1.13.0' 'X-ABI-VIDEODRV_VERSION<13' 'X-ABI-VIDEODRV_VERS
 options=('!libtool')
 groups=("axis" 'xorg-drivers' 'xorg')
 source=(${url}/archive/individual/driver/${pkgname}-${pkgver}.tar.bz2)
-sha256sums=('09ba6878746193951b5471d9ed54fa6115fea97477ed33d0b9bd9b8cafd9e163')
+sha256sums=('308646d1d4b07e5c581cd7cca133b0e3410a1a3911a58d7d49b8ea106b64d0ba')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

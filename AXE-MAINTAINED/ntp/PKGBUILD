@@ -2,15 +2,15 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Gaetan Bisson <bisson@archlinux.org>
 # Contributor: kevin <kevin@archlinux.org>
-#commit 	d939765766a8807fc75a9dd3402d2459bc883a4a 4.2.6.p5-11 > 4.2.6.p5-11 ----- fix FS#33090 ------ rejected by axe-- more shit as arch struggle keeping up with sysemd -- axerel increments to 2
-
+#commit 	d939765766a8807fc75a9dd3402d2459bc883a4a 4.2.6.p5-11 > 4.2.6.p5-12 ----- fix FS#33090 ------ rejected by axe-- more shit as arch struggle keeping up with sysemd -- axerel increments to 2
+#commit 	0fd8d9cb369f0d1c13d0a3a361aaca482f7745ee 4.2.6.p5-12 > 4.2.6.p5-13 ----- fix fix FS#33124 ------ accepted by axe-- axerel stays at 2
 
 #--------------------
 pkgname=ntp
 #--------------------
 pkgver=4.2.6.p5
 _realver=4.2.6p5
-_arch_rel=12
+_arch_rel=13
 _axe_rel=2
 #--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
@@ -19,8 +19,9 @@ url='http://www.ntp.org/'
 license=('custom')
 groups=("axis")
 arch=('i686' 'x86_64')
-makedepends=('perl-html-parser')
-depends=('openssl' 'readline' 'libcap')
+depends=('openssl' 'libcap')
+optdepends=('libedit: ntpdc, ntpq')
+makedepends=('perl-html-parser' 'libedit')
 backup=('etc/ntp.conf' 'etc/conf.d/ntpd.conf')
 source=("http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-${_realver}.tar.gz"
         'ntpd'

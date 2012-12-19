@@ -1,28 +1,33 @@
-# $Id: PKGBUILD 163774 2012-07-19 19:37:59Z heftig $
+# $Id: PKGBUILD 173315 2012-12-18 20:30:41Z heftig $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 # Contributor: Corrado Primier <bardo@aur.archlinux.org>
 # Contributor: William Rea <sillywilly@gmail.com>
 
+#--------------------
 pkgbase=pulseaudio
+#--------------------
+#--------------------
 pkgname=(pulseaudio libpulse)
-pkgdesc=" A featureful, general-purpose sound server  --maintained as part of the axe project"
-pkgver=2.1
-_arch_rel=1
+pkgdesc="A featureful, general-purpose sound server"
+pkgver=3.0
+#--------------------
+_arch_rel=2
 _axe_rel=1
-
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 arch=(i686 x86_64)
 url="http://www.freedesktop.org/wiki/Software/PulseAudio"
 license=(GPL LGPL)
+groups=("axis")
 makedepends=(libasyncns libcap attr libxtst libsm libsamplerate libtool rtkit
-             speex tdb udev dbus-core avahi bluez gconf intltool jack
-             lirc-utils openssl fftw orc json-c gtk2 webrtc-audio-processing libsndfile)
+             speex tdb udev dbus-core avahi bluez gconf intltool jack sbc
+             lirc-utils openssl fftw orc json-c gtk2 webrtc-audio-processing
+             check)
 options=(!emptydirs !libtool)
 source=(http://freedesktop.org/software/$pkgbase/releases/$pkgbase-$pkgver.tar.xz
         pulseaudio.xinit)
-sha256sums=('ef6b347bf47abfb98080795f1583018ac959b4aeb4df916b879f9e1eaba0ca7f'
+sha256sums=('c90bfda29605942d08e3e218ef10e3c660506a06651a616bfbb6a6df8392836d'
             'a0db6cdc74fbf0ca10e2343c08e1e228f109221c6c0ff91b0bfade5c4bdf03cf')
 
 build() {
@@ -34,7 +39,6 @@ build() {
     --localstatedir=/var \
     --with-udev-rules-dir=/usr/lib/udev/rules.d \
     --with-database=tdb \
-    --disable-hal \
     --disable-tcpwrap \
     --disable-rpath \
     --disable-default-build-tests
@@ -47,7 +51,7 @@ build() {
 
 package_pulseaudio() {
   depends=("libpulse=$pkgver-$pkgrel" rtkit libltdl speex tdb udev fftw orc
-           libsamplerate webrtc-audio-processing udev)
+           libsamplerate webrtc-audio-processing sbc)
   optdepends=('avahi: zeroconf support'
               'bluez: bluetooth support'
               'gconf: configuration through gconf (paprefs)'
@@ -56,14 +60,15 @@ package_pulseaudio() {
               'openssl: RAOP support'
               'python2-pyqt: Equalizer GUI (qpaeq)')
   backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
-  groups=('axis')
   install=pulseaudio.install
 
   cd $pkgbase-$pkgver
   make -j1 DESTDIR="$pkgdir" install
 
+  # Speed up pulseaudio shutdown
   # Lower resample quality, saves CPU
-  sed -e '/resample-method/iresample-method=speex-float-0' \
+  sed -e '/exit-idle-time/iexit-idle-time=0' \
+      -e '/resample-method/iresample-method=speex-float-0' \
       -i "$pkgdir/etc/pulse/daemon.conf"
 
   # Disable cork-request module, can result in e.g. media players unpausing
@@ -82,11 +87,17 @@ package_pulseaudio() {
 
   rm "$pkgdir/etc/dbus-1/system.d/pulseaudio-system.conf"
 
+  # cap is handled in .install
+  chmod 755 "$pkgdir/usr/lib/pulse/proximity-helper"
+
 ### Split libpulse
 
-  mkdir -p "$srcdir"/libpulse/{etc/pulse,usr/{lib/pulseaudio,share/man/man5}}
+  mkdir -p "$srcdir"/libpulse/{etc/pulse,usr/{bin,lib/pulseaudio,share/man/man{1,5}}}
 
   mv {"$pkgdir","$srcdir/libpulse"}/etc/pulse/client.conf
+
+  mv "$pkgdir"/usr/bin/pa{cat,ctl,dsp,mon,play,rec,record} \
+     "$srcdir/libpulse/usr/bin"
 
   mv "$pkgdir"/usr/lib/libpulse{,-simple,-mainloop-glib}.so* \
      "$srcdir/libpulse/usr/lib"
@@ -100,6 +111,9 @@ package_pulseaudio() {
 
   mv {"$pkgdir","$srcdir/libpulse"}/usr/include
 
+  mv "$pkgdir"/usr/share/man/man1/pa{cat,ctl,dsp,play}.1 \
+     "$srcdir/libpulse/usr/share/man/man1"
+
   mv {"$pkgdir","$srcdir/libpulse"}/usr/share/man/man5/pulse-client.conf.5
   mv {"$pkgdir","$srcdir/libpulse"}/usr/share/vala
 }
@@ -107,10 +121,10 @@ package_pulseaudio() {
 package_libpulse() {
   pkgdesc="$pkgdesc (client library)"
   depends=(dbus-core libasyncns libcap libxtst libsm libsndfile json-c)
-  groups=('axis')
   optdepends=('alsa-plugins: ALSA support'
               'avahi: zeroconf support')
   backup=(etc/pulse/client.conf)
 
   mv "$srcdir"/libpulse/* "$pkgdir"
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/pulseaudio/PKGBUILD 
