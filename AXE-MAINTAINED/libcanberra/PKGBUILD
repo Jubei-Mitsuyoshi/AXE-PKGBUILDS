@@ -21,14 +21,11 @@ groups=("axis")
 depends=(libvorbis libltdl alsa-lib tdb sound-theme-freedesktop udev)
 makedepends=(gtk-doc gstreamer gtk2 gtk3 libpulse)
 options=(!emptydirs)
-url=http://0pointer.de/lennart/projects/libcanberra
+url="https://launchpad.net/~gnome3-team/+archive/gnome3/+files/"
 source=("https://launchpad.net/~gnome3-team/+archive/gnome3/+files/libcanberra_$pkgver.orig.tar.xz"
         libcanberra.xinit)
 sha256sums=('C2B671E67E0C288A69FC33DC1B6F1B534D07882C2ACEED37004BF48C601AFA72'
             '68a68d66b7491f99d5aa09fe7c6ef4eb38352a2a8ff7997d184d1cbc5e80c0d3')
-			
-			
-https://launchpad.net/~gnome3-team/+archive/gnome3/+files/libcanberra_0.30.orig.tar.xz
 
 _plugindir=usr/lib/$pkgbase-$pkgver
 
@@ -91,4 +88,4 @@ package_libcanberra-gstreamer() {
 }
 
 
-#axe hand notes, we can get rid of pulse from this alltogether,but dont think any point since the pulse bit is a sepperate packaage
+#axe hand notes, we can get rid of pulse from this alltogether,but dont think any point since the pulse bit is a sepperate packaage, also enabled udev and added dep
