@@ -37,8 +37,9 @@ md5sums=('EE5A143FF1FB1262766B03A746268024'
 
 build() {
   cd $pkgname-$pkgver.$_pkgrelss
-  patch -Np1 -i ../alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch
-  patch -Np1 -i ../alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch
+  #these patches not working on git snapshot ,hope probs been cleared up
+#  patch -Np1 -i ../alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch
+#  patch -Np1 -i ../alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch
   ./configure --prefix=/usr
   make
 }
