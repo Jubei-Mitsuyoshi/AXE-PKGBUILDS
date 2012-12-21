@@ -7,25 +7,25 @@
 PID=`pidof -o %PPID /usr/sbin/kadmind`
 case "$1" in
     start)
-        stat_busy "Starting Kerberos Admin Daemon"
+        msg_busy "Starting Kerberos Admin Daemon"
         if [ -z "$PID" ]; then
            /usr/sbin/kadmind
         fi
         if [ ! -z "$PID" -o $? -gt 0 ]; then
-            stat_fail
+            msg_fail
         else
-            add_daemon krb5-kadmind
-            stat_done
+            dmn_add krb5-kadmind
+            msg_ok
         fi
         ;;
     stop)
-        stat_busy "Stopping Kerberos Admin Daemon"
+        msg_busy "Stopping Kerberos Admin Daemon"
 	    [ ! -z "$PID" ] && kill $PID &> /dev/null
         if [ $? -gt 0 ]; then
-            stat_fail
+            msg_fail
         else
-            rm_daemon krb5-kadmind
-            stat_done
+            dmn_rm krb5-kadmind
+            msg_ok
         fi
         ;;
     restart)

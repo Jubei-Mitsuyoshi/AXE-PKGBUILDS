@@ -7,25 +7,25 @@
 PID=`pidof -o %PPID /usr/sbin/krb5kdc`
 case "$1" in
     start)
-        stat_busy "Starting Kerberos Authentication"
+        msg_busy "Starting Kerberos Authentication"
         if [ -z "$PID" ]; then
            /usr/sbin/krb5kdc
         fi
         if [ ! -z "$PID" -o $? -gt 0 ]; then
-            stat_fail
+            msg_fail
         else
-            add_daemon krb5-kdc
-            stat_done
+            dmn_add krb5-kdc
+            msg_ok
         fi
         ;;
     stop)
-        stat_busy "Stopping Kerberos Authentication"
+        msg_busy "Stopping Kerberos Authentication"
 	    [ ! -z "$PID" ] && kill $PID &> /dev/null
         if [ $? -gt 0 ]; then
-            stat_fail
+            msg_fail
         else
-            rm_daemon krb5-kdc
-            stat_done
+            dmn_rm krb5-kdc
+            msg_ok
         fi
         ;;
     restart)

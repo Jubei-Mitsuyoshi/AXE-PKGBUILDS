@@ -1,22 +1,27 @@
-# $Id: PKGBUILD 165136 2012-08-11 13:41:56Z stephane $
+# $Id: PKGBUILD 173666 2012-12-20 14:18:03Z stephane $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Stéphane Gaudreault <stephane@archlinux.org>
+#commit 	05a62636aa53c026565019438d87805538e23576 1.10.3-1 > 1.11-1 ----- upstream update ------ accepted by axe, axe rel remains 1
 
+
+
+#--------------------
 pkgname=krb5
-pkgver=1.10.3
+#--------------------
+pkgver=1.11
 _arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-pkgdesc="The Kerberos network authentication system --maintained as part of the axe project"
+pkgdesc="The Kerberos network authentication system"
 arch=('i686' 'x86_64')
-groups=('axis')
 url="http://web.mit.edu/kerberos/"
 license=('custom')
+groups=("axis")
 depends=('e2fsprogs' 'libldap' 'keyutils')
 makedepends=('perl')
 backup=('etc/krb5.conf' 'var/lib/krb5kdc/kdc.conf')
-source=(http://web.mit.edu/kerberos/dist/${pkgname}/1.10/${pkgname}-${pkgver}-signed.tar
-        krb5-1.10.1-gcc47.patch
+source=(http://web.mit.edu/kerberos/dist/${pkgname}/1.11/${pkgname}-${pkgver}-signed.tar
         krb5-kadmind
         krb5-kadmind.service
         krb5-kdc
@@ -25,13 +30,12 @@ source=(http://web.mit.edu/kerberos/dist/${pkgname}/1.10/${pkgname}-${pkgver}-si
         krb5-kpropd.service
         krb5-kpropd@.service
         krb5-kpropd.socket)
-sha1sums=('04ab9837e5d1958158bcb30bd6480201089a0cbb'
-          '78b759d566b1fdefd9bbcd06df14f07f12effe96'
-          '2aa229369079ed1bbb201a1ef72c47bf143f4dbe'
+sha1sums=('dcdc305bd2b63cf8b8cb698cb9ea28f0a6282136'
+          'c4baedcfa35de9ea1031cece1642379da31c0c09'
           'a2a01e7077d9e89cda3457ea0e216debb3dc353c'
-          '77d2312ecd8bf12a6e72cc8fd871a8ac93b23393'
+          '1568f04dee7fee95002572c1841edcb81b0f8c7e'
           'f5e4fa073e11b0fcb4e3098a5d58a4f791ec841e'
-          '7f402078fa65bb9ff1beb6cbbbb017450df78560'
+          'b8f8ce630e8bbcb958996a152f39ce029b84bd40'
           '614401dd4ac18e310153240bb26eb32ff1e8cf5b'
           '023a8164f8ee7066ac814486a68bc605e79f6101'
           'f3677d30dbbd7106c581379c2c6ebb1bf7738912')
@@ -41,10 +45,6 @@ build() {
    tar zxvf ${pkgname}-${pkgver}.tar.gz
    cd "${srcdir}/${pkgname}-${pkgver}/src"
 
-   # With gcc47 : deltat.c:1694:12: error: 'yylval' may be used uninitialized
-   # in this function [-Werror=maybe-uninitialized]
-   # As this is generated code, just ignore the complaint.
-   patch -Np2 -i ../../krb5-1.10.1-gcc47.patch
    rm lib/krb5/krb/deltat.c
 
    # FS#25384
@@ -89,8 +89,14 @@ package() {
 
    install -Dm644 "${srcdir}"/${pkgname}-${pkgver}/NOTICE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 
-   #  # commented out by AXE, axe does not like systemd
+   # systemd stuff
 #   install -dm 755 "${pkgdir}"/usr/lib/systemd/system
 #   install -m 644 ../../krb5-{kadmind.service,kdc.service,kpropd.service,kpropd@.service,kpropd.socket} \
-#      "${pkgdir}"/usr/lib/systemd/system
+ #     "${pkgdir}"/usr/lib/systemd/system
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/krb5/PKGBUILD 
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/krb5/krb5-kadmind altered for rc.d changes
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/krb5/krb5-kdc altered for rc.d changes
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/krb5/krb5-kpropd altered for rc.d changes
+
+#axe hand notes, this only installs sysd services, can be given back if get pacman to block extraction etc
