@@ -60,7 +60,7 @@ build() {
 			   --with-berkeley-db=:/usr/include/:/usr/lib:db-5.3 \
                --enable-javahl \
 			   --without-gnome-keyring \
-			   --without-kwallet
+			   --without-kwallet \
 			   --disable-experimental-libtool \
 				--without-jikes \
 				--enable-local-library-preloading \
