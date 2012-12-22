@@ -1,0 +1,44 @@
+# $Id$
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Contributor: Alexander Baldeck <alexander@archlinux.org>
+
+
+
+#--------------------
+pkgname=libxcb
+#--------------------
+pkgver=1.9
+_arch_rel=1
+_axe_rel=1
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgdesc="X11 client-side library"
+arch=(i686 x86_64)
+url="http://xcb.freedesktop.org/"
+depends=('xcb-proto>=1.7' 'libxdmcp' 'libxau')
+makedepends=('pkgconfig' 'libxslt' 'python2')
+options=('!libtool')
+license=('custom')
+groups=('axis')
+source=($url/dist/$pkgname-$pkgver.tar.bz2
+        libxcb-1.1-no-pthread-stubs.patch)
+sha1sums=('ad2fb95eeec41ba3d39502a4f7460c3b64fdf061'
+          'd2df03ddf3e949c10c2c185256b0eb7fa02837ab')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  patch -Np1 -i "$srcdir/libxcb-1.1-no-pthread-stubs.patch"
+  PYTHON=/usr/bin/python2
+  ./autogen.sh --prefix=/usr \
+    --enable-xinput \
+    --disable-static
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+  install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
+  install -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname"
+}
