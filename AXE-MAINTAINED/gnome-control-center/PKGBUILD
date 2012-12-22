@@ -40,9 +40,9 @@ build() {
   #pulse3 patch very optional
   patch -Np1 -i ../pulse3.0.patch
     # Make some panels optional; requires eautoreconf
-  patch -Np0 -i ../gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch
+#  patch -Np0 -i ../gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch
   # https://bugzilla.gnome.org/show_bug.cgi?id=679759
-	patch -Np0 -i ../gnome-control-center-3.5.91-optional-kerberos.patch
+#	patch -Np0 -i ../gnome-control-center-3.5.91-optional-kerberos.patch
 
   
   
@@ -61,8 +61,10 @@ build() {
 		--disable-goa \
 		--disable-cups \
 		--disable-wacom \
-		--disable-ibus \
-		KRB5_CONFIG=$(type -P true) #remove kerborus support from gentoo
+		--disable-ibus
+		
+#excluded till proved
+#		KRB5_CONFIG=$(type -P true) #remove kerborus support from gentoo
 
   #https://bugzilla.gnome.org/show_bug.cgi?id=656229
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' -e 's/    if test "$export_dynamic" = yes && test -n "$export_dynamic_flag_spec"; then/      func_append compile_command " -Wl,-O1,--as-needed"\n      func_append finalize_command " -Wl,-O1,--as-needed"\n\0/' libtool
@@ -74,3 +76,4 @@ package() {
 
   make DESTDIR="$pkgdir" install
 }
+#axe hand notes cannot get optional bt goa colord to work!!!!! needs some other method of autoreconf or looking at the patch itself, but looks clean from first glance
