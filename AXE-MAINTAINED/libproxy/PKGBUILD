@@ -20,7 +20,7 @@ depends=('gcc-libs')
 optdepends=('networkmanager: NetworkManager configuration module'
             'perl: Perl bindings'
             'python2: Python bindings')
-makedepends=('cmake' 'networkmanager' 'automoc4' 'python2' 'perl' 'mono')
+makedepends=('cmake' 'networkmanager' 'automoc4' 'perl' 'mono')
 url="http://libproxy.googlecode.com"
 source=(http://libproxy.googlecode.com/files/${pkgname}-${pkgver}.tar.gz
         libproxy-0.4.7-unistd.patch)
@@ -48,9 +48,10 @@ build() {
 	-DWITH_WEBKIT3=OFF \
 	-DWITH_MOZJS=OFF \
 	-DWITH_KDE4=OFF \
-	-DWITH_DOTNET=ON \
+	-DWITH_DOTNET=OFF \
 	-DWITH_GNOME=ON \
 	-DWITH_GNOME3=ON \
+	-DWITH_PYTHON=OFF \
     -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
     -DCMAKE_C_FLAGS="${CFLAGS}"
   make
@@ -60,3 +61,5 @@ package() {
   cd "${srcdir}/build"
   make DESTDIR="${pkgdir}" install
 }
+#axe hand notes, will not build with PYHTON=ON needs a python2 patch or exporting the right variable, building it without python
+#not a good idea but a stopgap till arch or me fixes it
