@@ -2,11 +2,15 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Eric Bélanger <eric@archlinux.org>
 
+
+
+
+#--------------------
 pkgname=libmng
 pkgver=1.0.10
 _arch_rel=4
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="A collection of routines used to create and manipulate MNG format graphics files--maintained as part of the axe project"
 arch=('i686' 'x86_64')
@@ -22,8 +26,17 @@ build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   ln -s makefiles/configure.in .
   ln -s makefiles/Makefile.am .
-  autoreconf --force --install
-  ./configure --prefix=/usr
+  sed -i '/^AM_C_PROTOTYPES$/d' configure.in
+  
+  
+#  autoreconf --force --install
+  
+  autoreconf
+  
+  
+  ./configure --prefix=/usr \
+			--disable-dependency-tracking \
+			--with-jpeg
   make
 }
 
@@ -32,3 +45,5 @@ package() {
   make DESTDIR="${pkgdir}" install
   install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
+
+#axe hand notes... this is a arch build fail obviously some compile fuck up, as soon as its fixed at arch will hand it back
