@@ -58,7 +58,7 @@ build() {
 		--enable-wacom \
 		--disable-schemas-compile \
 		--disable-ibus \
-		--disble-systemd
+		--disable-systemd
 
   #https://bugzilla.gnome.org/show_bug.cgi?id=656231
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
