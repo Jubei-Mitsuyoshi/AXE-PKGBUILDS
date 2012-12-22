@@ -56,7 +56,7 @@ build() {
 #	if ! use networkmanager; then
 #		rm -rv files/usr/share/cinnamon/applets/network@cinnamon.org || die
 #	fi
-  autoreconf
+
 
   ./autogen.sh --prefix=/usr \
 	--sysconfdir=/etc \
@@ -69,8 +69,7 @@ build() {
 	--disable-jhbuild-wrapper-script \
 	--with-ca-certificates=/etc/ssl/certs/ca-certificates.crt \
 	--without-bluetooth \
-	--enable-networkmanager \
-	--without-session-tracking=systemd
+	--enable-networkmanager
  
   make
 }
@@ -110,3 +109,6 @@ package() {
 # 10. pygobject needed for menu editor
 # 11. nemo - default file manager, tightly integrated with cinnamon
 # 12. timedated or DateTimeMechanism implementation for cinnamon-settings
+
+
+#axe hand notes after a bit of work found autoreconf not necessary autogen does it
