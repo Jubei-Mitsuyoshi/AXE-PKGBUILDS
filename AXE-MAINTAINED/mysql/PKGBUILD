@@ -1,25 +1,30 @@
-# $Id: PKGBUILD 167246 2012-09-29 09:32:53Z andrea $
+# $Id: PKGBUILD 173697 2012-12-21 09:03:47Z andrea $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Andrea Scarpino <andrea@archlinux.org>
 # Contributor: Douglas Soares de Andrade <douglas@archlinux.org>
 
+#--------------------
 pkgbase=mysql
+#--------------------
+#--------------------
 pkgname=('libmysqlclient' 'mysql-clients' 'mysql')
-pkgver=5.5.28
+pkgver=5.5.29
+#--------------------
 _arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 arch=('i686' 'x86_64')
 license=('GPL')
+groups=("axis")
 url="https://www.mysql.com/products/community/"
-makedepends=('cmake' 'openssl' 'zlib' 'udev')
+makedepends=('cmake' 'openssl' 'zlib')
 options=('!libtool')
 source=("http://ftp.gwdg.de/pub/misc/mysql/Downloads/MySQL-5.5/${pkgbase}-${pkgver}.tar.gz"
         'mysqld.rc' 'my.cnf' 'mysqld-post.sh' 'mysqld-tmpfile.conf' 'mysqld.service')
-md5sums=('da8ddb3d00e6e159153d2444360f52a8'
-         'e7eb2faeab755cbb2fe03542bf328da9'
-         '1c949c0dbea5206af0db14942d9927b6'
+md5sums=('e6b9f9cb82e990bd8f0474df7462904e'
+         'f0b3d989029c725e270d50994596af53'
+         '1351485633baf9894cfdf7c5bbffd7b5'
          '6ea6ceb360d09a774e87335ee098ddd5'
          '2fa6e456964d4ff5e6d4f9ff0126aed6'
          'a0e1460c276a50a9666c331de83271f2')
@@ -69,9 +74,8 @@ build() {
 }
 
 package_libmysqlclient(){
-  pkgdesc="MySQL client libraries --maintained as part of the axe project"
+  pkgdesc="MySQL client libraries"
   depends=('openssl')
-  groups=('axis')
   
   cd build
   for dir in include libmysql libmysqld libservices; do
@@ -87,9 +91,8 @@ package_libmysqlclient(){
 }
 
 package_mysql-clients(){
-  pkgdesc="MySQL client tools --maintained as part of the axe project"
+  pkgdesc="MySQL client tools"
   depends=('libmysqlclient')
-  groups=('axis')
   
   cd build
   make -C client DESTDIR="${pkgdir}" install
@@ -105,12 +108,11 @@ package_mysql-clients(){
 }
 
 package_mysql(){
-  pkgdesc="A fast SQL database server --maintained as part of the axe project"
+  pkgdesc="A fast SQL database server"
   backup=('etc/mysql/my.cnf')
   install=mysql.install
-  depends=('mysql-clients' 'udev')
+  depends=('mysql-clients')
   options=('emptydirs')
-  groups=('axis')
 
   cd build
   make DESTDIR="${pkgdir}" install
@@ -118,7 +120,6 @@ package_mysql(){
   install -Dm644 "${srcdir}"/my.cnf "${pkgdir}"/etc/mysql/my.cnf
   install -Dm755 "${srcdir}"/mysqld.rc "${pkgdir}"/etc/rc.d/mysqld
   install -Dm755 "${srcdir}"/mysqld-post.sh "${pkgdir}"/usr/bin/mysqld-post
-  #commented bt axe 
 #  install -Dm644 "${srcdir}"/mysqld-tmpfile.conf "${pkgdir}"/usr/lib/tmpfiles.d/mysqld.conf
 #  install -d "${pkgdir}"/usr/lib/systemd/system
 #  install -Dm644 "${srcdir}"/mysqld.service "${pkgdir}"/usr/lib/systemd/system/
@@ -139,3 +140,8 @@ package_mysql(){
 
   install -dm700 "${pkgdir}"/var/lib/mysql
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/mysql/PKGBUILD 
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/mysql/mysqld.rc altered for rc.d changes
+
+#axe hand notes,yet to fully check but seems only installing systemd services is only change from arch standard, prob keep it cos it has rc.d so will need maintaining when
+#rc.d is dropped by arch
