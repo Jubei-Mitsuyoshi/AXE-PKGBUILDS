@@ -19,7 +19,7 @@ depends=('dconf' 'gnome-desktop' 'gsettings-desktop-schemas' 'hicolor-icon-theme
          'udev' 'libwacom' 'nss' 'pulseaudio' 'pulseaudio-alsa' 'upower' 'cairo' 'gtk3' 'cantarell-fonts'
 		 'fontconfig' 'lcms2' 'packagekit' 'consolekit')
 makedepends=('intltool' 'xf86-input-wacom' 'libxslt' 'docbook-xsl' 'libx11' 'libxkbfile' 'libxi' 'libxext' 'libxfixes' 'gettext' 'libxml2'
-			'inputproto' 'xproto' 'gdk-pixbuf2 2.26.5-1')
+			'inputproto' 'xproto' 'gdk-pixbuf2')
 options=('!emptydirs' '!libtool')
 install=gnome-settings-daemon.install
 url="http://www.gnome.org"
@@ -37,12 +37,12 @@ build() {
   # logind key handling FS#31801, patch from Fedora
   # rebased onto screensaver.patch
 #  patch -Np1 -i ../0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
-#  aclocal
-#  automake
+  aclocal
+  automake
 
-	patch -Np1 -i ../gnome-settings-daemon-3.5.91-optional-color-wacom.patch
+#	patch -Np1 -i ../gnome-settings-daemon-3.5.91-optional-color-wacom.patch
 	
-	autoreconf
+#	autoreconf
 
   ./configure --prefix=/usr \
 	--sysconfdir=/etc \
@@ -75,7 +75,4 @@ package() {
   sed -i '/org\.gnome\.settings-daemon\.plugins\.updates/d' \
     "$pkgdir/usr/share/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml"
 }
-#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/gnome-settings-daemon/0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch altered for rc.d changes
-#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/gnome-settings-daemon/0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch aswell
-#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/gnome-settings-daemon/screensaver.patch altered for rc.d changes
-#----------------axe warning------------------ syetemd detected
+#axe hand notes .. object here is to make colord and cups optional, gentoo patch does not work, looking for configure.am , some compile step i canot replicate from gentoos ebuilds
