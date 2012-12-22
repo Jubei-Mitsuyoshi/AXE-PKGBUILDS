@@ -37,12 +37,8 @@ build() {
   # logind key handling FS#31801, patch from Fedora
   # rebased onto screensaver.patch
 #  patch -Np1 -i ../0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
-  aclocal
-  automake
-
-#	patch -Np1 -i ../gnome-settings-daemon-3.5.91-optional-color-wacom.patch
-	
-#	autoreconf
+	patch -Np0 -i ../gnome-settings-daemon-3.5.91-optional-color-wacom.patch
+	autoreconf
 
   ./configure --prefix=/usr \
 	--sysconfdir=/etc \
@@ -76,3 +72,4 @@ package() {
     "$pkgdir/usr/share/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml"
 }
 #axe hand notes .. object here is to make colord and cups optional, gentoo patch does not work, looking for configure.am , some compile step i canot replicate from gentoos ebuilds
+#fixed it was a patch problem it needed patch -Np0 -i , stripoptions wrong

@@ -40,12 +40,11 @@ build() {
   #pulse3 patch very optional
   patch -Np1 -i ../pulse3.0.patch
     # Make some panels optional; requires eautoreconf
-  patch -Np1 -i ../gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch
+  patch -Np0 -i ../gnome-control-center-3.5.91-optional-bt-colord-goa-wacom.patch
   # https://bugzilla.gnome.org/show_bug.cgi?id=679759
-	patch -Np1 -i ../gnome-control-center-3.5.91-optional-kerberos.patch
+	patch -Np0 -i ../gnome-control-center-3.5.91-optional-kerberos.patch
 	autoreconf
 
-   gnome-autogen.sh
   
   
   ./configure --prefix=/usr \
