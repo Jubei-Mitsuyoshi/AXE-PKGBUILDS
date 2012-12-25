@@ -25,14 +25,13 @@ provides=("runit")
 conflicts=("runit" "runit-dietlibc")
 makedepends=('gcc' 'make' 'coreutils' 'sed')
 
-source=( http://smarden.org/runit/runit-$pkgver.tar.gz
-			1 
-			2
-			3
-			binfmt
-			tmpfiles
-			runitfunctions
-			_sv )
+source=("http://smarden.org/runit/runit-$pkgver.tar.gz" 1
+ 2 
+ 3 
+ "binfmt" 
+ "tmpfiles" 
+ "runitfunctions" 
+ "_sv")
 			
 md5sums=('8FA53EA8F71D88DA9503F62793336BC3'
 		'0048371CCEAFC1AEBEEBBF29CDBE813D'
@@ -75,10 +74,10 @@ package() {
 
   
   
-  install -s -m0755 $srcdir/[123] ${startdir}/pkg/etc/runit  || return 1
-  install -s -m0755 $srcdir/binfmt ${startdir}/pkg/etc/runit  || return 1
-  install -s -m0755 $srcdir/tmpfiles ${startdir}/pkg/etc/runit  || return 1
-  install -s -m0755 $srcdir/runitfunctions ${startdir}/pkg/etc/runit  || return 1
+  install -m0755 $srcdir/[123] ${startdir}/pkg/etc/runit  || return 1
+  install -m0755 $srcdir/binfmt ${startdir}/pkg/etc/runit  || return 1
+  install -m0755 $srcdir/tmpfiles ${startdir}/pkg/etc/runit  || return 1
+  install -m0755 $srcdir/runitfunctions ${startdir}/pkg/etc/runit  || return 1
   
 
   install -m0755 ${startdir}/src/admin/$pkgname-$pkgver/etc/debian/ctrlaltdel ${startdir}/pkg/etc/runit || return 1
@@ -100,16 +99,16 @@ package() {
   install -d -m0755 ${startdir}/pkg/usr/share/doc/runit || return 1
   install -m0644 ${startdir}/src/admin/$pkgname-$pkgver/doc/*.html ${startdir}/pkg/usr/share/doc/runit  || return 1
   
-  # add gettys for 1-4 terminals
+   add gettys for 1-4 terminals
   cd ${startdir}/src/admin/$pkgname-$pkgver/etc/debian/getty-tty5/ || return 1
   for i in {1..4}
   do
-    install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/all/getty-$i || return 1
-	ln -s ../all/getty-$i "${startdir}/pkg/etc/runit/runsvdir/pkg-default/" || return 1
+    install -d -m0755 ${startdir}/pkg/etc/sv/getty-$i || return 1
+#	ln -s ../all/getty-$i "${startdir}/pkg/etc/runit/runsvdir/pkg-default/" || return 1
 	for f in *
 	do
-		sed "s/tty5/tty$i/g;s/getty/agetty/g" <"$f" >"${startdir}/pkg/etc/runit/runsvdir/all/getty-$i/$f" || return 1
-		chmod 0755 "${startdir}/pkg/etc/runit/runsvdir/all/getty-$i/$f"
+		sed "s/tty5/tty$i/g;s/getty/agetty/g" <"$f" >"${startdir}/pkg/etc/sv/getty-$i/$f" || return 1
+		chmod 0755 "${startdir}/pkg/etc/sv/getty-$i/$f"
 	done
   done
 
