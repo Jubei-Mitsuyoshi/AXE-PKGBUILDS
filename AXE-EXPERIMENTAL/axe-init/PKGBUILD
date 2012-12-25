@@ -43,7 +43,7 @@ md5sums=('8FA53EA8F71D88DA9503F62793336BC3'
 		'53AE4D0DC6E17D52F9BF1C37E44D86A9')
 
 build() {
-  cd $srcdir/admin/runit-$pkgver/src
+   cd $startdir/src/admin/$pkgname-$pkgver/src
 
   # configure 
   # we build nothing static
@@ -51,21 +51,12 @@ build() {
   # apply custom CFLAGS and LDFLAGS
   echo "${CC:-gcc} $CFLAGS" > conf-cc || return 1
   echo "${CC:-gcc -s} $LDFLAGS" > conf-ld || return 1
-  # set default service path to /etc/service
+  # set default service path to /var/service
   sed -i -e 's:^char \*varservice ="/service/";$:char \*varservice ="/etc/service/";:' sv.c || return 1
-  
-  make
-  
-}
 
-check() {
-  cd $srcdir/admin/runit-$pkgver/src
-
-  make check
-}
-
-package() {
-
+  # compile
+  make || return 1
+  make check || return 1
 
   # default services
   install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/system || return 1
@@ -113,5 +104,7 @@ package() {
   done
 
   install -D ${startdir}/src/admin/runit-$pkgver/package/COPYING $startdir/pkg/usr/share/licenses/runit/COPYING
+  
 }
+
 
