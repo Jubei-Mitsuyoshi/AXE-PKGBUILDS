@@ -65,7 +65,6 @@ build() {
   install -m0755 $srcdir/[123] ${startdir}/pkg/etc/runit  || return 1
   install -m0755 $srcdir/binfmt ${startdir}/pkg/etc/runit  || return 1
   install -m0755 $srcdir/tmpfiles ${startdir}/pkg/etc/runit  || return 1
-  install -m0755 $srcdir/runitfunctions ${startdir}/pkg/etc/runit  || return 1
   
 
   install -m0755 ${startdir}/src/admin/runit-$pkgver/etc/debian/ctrlaltdel ${startdir}/pkg/etc/runit || return 1
