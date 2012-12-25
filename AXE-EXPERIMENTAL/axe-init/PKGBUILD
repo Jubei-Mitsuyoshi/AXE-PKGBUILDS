@@ -43,7 +43,7 @@ md5sums=('8FA53EA8F71D88DA9503F62793336BC3'
 		'53AE4D0DC6E17D52F9BF1C37E44D86A9')
 
 build() {
-   cd $startdir/src/admin/$pkgname-$pkgver/src
+   cd $startdir/src/admin/runit-$pkgver/src
 
   # configure 
   # we build nothing static
@@ -71,27 +71,27 @@ build() {
   install -m0755 $srcdir/runitfunctions ${startdir}/pkg/etc/runit  || return 1
   
 
-  install -m0755 ${startdir}/src/admin/$pkgname-$pkgver/etc/debian/ctrlaltdel ${startdir}/pkg/etc/runit || return 1
+  install -m0755 ${startdir}/src/admin/runit-$pkgver/etc/debian/ctrlaltdel ${startdir}/pkg/etc/runit || return 1
 
  # ln -s ../etc/runit/runsvdir/current ${startdir}/pkg/etc/service || return 1
 
   # install binaries
   install -d -m0755 ${startdir}/pkg/sbin || return 1
-  for i in `cat $startdir/src/admin/$pkgname-$pkgver/package/commands`
+  for i in `cat $startdir/src/admin/runit-$pkgver/package/commands`
   do
-    install -s -m0755 ${startdir}/src/admin/$pkgname-$pkgver/src/$i ${startdir}/pkg/sbin || return 1
+    install -s -m0755 ${startdir}/src/admin/runit-$pkgver/src/$i ${startdir}/pkg/sbin || return 1
   done
 
   # man-pages
   install -d -m0755 ${startdir}/pkg/usr/share/man/man8 || return 1
-  install -m0644 ${startdir}/src/admin/$pkgname-$pkgver/man/* ${startdir}/pkg/usr/share/man/man8 || return 1
+  install -m0644 ${startdir}/src/admin/runit-$pkgver/man/* ${startdir}/pkg/usr/share/man/man8 || return 1
 
   # doc
   install -d -m0755 ${startdir}/pkg/usr/share/doc/runit || return 1
-  install -m0644 ${startdir}/src/admin/$pkgname-$pkgver/doc/*.html ${startdir}/pkg/usr/share/doc/runit  || return 1
+  install -m0644 ${startdir}/src/admin/runit-$pkgver/doc/*.html ${startdir}/pkg/usr/share/doc/runit  || return 1
   
    add gettys for 1-4 terminals
-  cd ${startdir}/src/admin/$pkgname-$pkgver/etc/debian/getty-tty5/ || return 1
+  cd ${startdir}/src/admin/runit-$pkgver/etc/debian/getty-tty5/ || return 1
   for i in {1..4}
   do
     install -d -m0755 ${startdir}/pkg/etc/sv/getty-$i || return 1
