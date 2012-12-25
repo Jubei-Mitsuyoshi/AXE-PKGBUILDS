@@ -30,14 +30,18 @@ source=("http://smarden.org/runit/runit-$pkgver.tar.gz"
  2 
  3 
  "binfmt" 
- "tmpfiles")
+ "tmpfiles"
+ "startup.conf"
+ 'tmpfiles.conf')
 			
 md5sums=('8FA53EA8F71D88DA9503F62793336BC3'
-		'C3C4CEE870452BA4952945FC84AA2F6F'
+		'20992B421E4C487735434059A5FB1830'
 		'209499B5376F89C0D4044DE4BBA6BE33'
-		'8A00610DCFC86ED402A96FDEEBF2AD12'
+		'F68C631E0890CB701DED758BAF5B202E'
 		'B3A470A401152DED24322797F9E4CFCB'
-		'D78CED3B8AF25B6B942729A4C5B1FE0B')
+		'D78CED3B8AF25B6B942729A4C5B1FE0B'
+		'6AAACC91933FFC6A330F948C51E85C91'
+		'912FC80688863A6C8DAEF4C79E42B3C4')
 
 build() {
    cd $startdir/src/admin/runit-$pkgver/src
@@ -65,6 +69,7 @@ build() {
   install -m0755 $srcdir/[123] ${startdir}/pkg/etc/runit  || return 1
   install -m0755 $srcdir/binfmt ${startdir}/pkg/etc/runit  || return 1
   install -m0755 $srcdir/tmpfiles ${startdir}/pkg/etc/runit  || return 1
+  install -m0755 $srcdir/startup.conf ${startdir}/pkg/etc/runit  || return 1
   
 
   install -m0755 ${startdir}/src/admin/runit-$pkgver/etc/debian/ctrlaltdel ${startdir}/pkg/etc/runit || return 1
@@ -100,6 +105,7 @@ build() {
   done
 
   install -D ${startdir}/src/admin/runit-$pkgver/package/COPYING $startdir/pkg/usr/share/licenses/runit/COPYING
+
   
 }
 

@@ -5,12 +5,9 @@
 export PATH="/command:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 
-source /etc/startup.conf
-
 # clear the TZ envvar, so daemons always respect /etc/localtime
 unset TZ
 
-# These can be overridden/reused for customizations like shutdown/loop-fsck.
 # These can be overridden/reused for customizations like shutdown/loop-fsck.
 NETFS="nfs,nfs4,smbfs,cifs,codafs,ncpfs,shfs,fuse,fuseblk,glusterfs,davfs,fuse.glusterfs"
 NO_NETFS="no${NETFS//,/,no}"
@@ -18,8 +15,6 @@ APIFS="devpts,devtmpfs,proc,sysfs,tmpfs"
 NO_APIFS="no${APIFS//,/,no}"
 
 RANDOM_SEED=/var/lib/misc/random-seed
-
-
 
 # prefixes
 PREFIX_HL=" > "
@@ -44,20 +39,35 @@ fi
 #                          Messages                         #
 #############################################################
 
+msg_banner() {
+    printf "${C_BLUE}
+ __         __ __                    __         __         
+|__|.-----.|__|  |_.-----.----.----.|__|.-----.|  |_.-----.
+|  ||     ||  |   _|__ --|  __|   _||  ||  _  ||   _|__ --|
+|__||__|__||__|____|_____|____|__|  |__||   __||____|_____|
+                                        |__|        
+${C_CLEAR}"
+}
+
 msg_headline() {
-	printf "\n${C_BLUE} > ${C_WHITE}${1}${C_CLEAR}\n\n"
+	printf "\n${C_BLUE}${PREFIX_HL}${C_WHITE}${1}${C_CLEAR}\n\n"
 }
 
 msg_busy() {
-	printf "${C_CYAN} * ${C_WHITE}${1}${C_CLEAR}"
+	printf "${C_CYAN}${PREFIX_MSG}${C_WHITE}${1}${C_CLEAR}"
 }
 
 msg_ok() {
-    printf "\r${C_BLUE} * ${C_WHITE}${1}${C_CLEAR}\n"
+    printf "\r${C_BLUE}${PREFIX_MSG}${C_WHITE}${1}${C_CLEAR}\n"
 }
 
 msg_fail() {
-    printf "\r${C_RED} * ${C_WHITE}${1}${C_CLEAR}\n"
+    printf "\r${C_RED}${PREFIX_MSG}${C_WHITE}${1}${C_CLEAR}\n"
+}
+
+msg_die() {
+	msg_fail "${1}"
+	exit "${2:-1}"
 }
 
 msg_status() {
@@ -67,7 +77,6 @@ msg_status() {
         msg_fail
     fi
 }
-
 
 #############################################################
 #                      Common routines                      #
@@ -174,7 +183,7 @@ axe_leftovers_remove() {
 
 # setup system time zone
 axe_timezone_set() {
-	if [ "$(readlink /etc/localtime)" != "/usr/share/zoneinfo/${1}" ];then
+	if [ "$(readlink /etc/localtime)" != "/usr/share/zoneinfo/${1}" ]; then
         ln --symbolic --force "/usr/share/zoneinfo/${1}" "/etc/localtime"
 	fi
 }
@@ -200,6 +209,12 @@ axe_hwclock_set() {
         hwclock ${@}
     fi
 }
+
+if [[ -s /etc/runit/startup.conf ]]; then
+    source /etc/runit/startup.conf
+else
+	msg_ok '/etc/runit/startup.conf not found writing default settings'
+fi
 
 
 # TODO: performa a proper runtime check
@@ -308,6 +323,23 @@ exec_cmd "Removing leftover files" axe_leftovers_remove
 if [ -f "${RANDOM_SEED}" ];then
 	exec_cmd "Restoring random seed" cp "${RANDOM_SEED}" /dev/urandom
 fi
+
+################################## 17 ##################################
+# last shit
+exec_cmd "Stopping bootlogd daemon" axe_bootlogd_stop
+
+
+################################## 17 ##################################
+# last shit
+msg_busy "Saving dmesg log"
+	if [[ -e /proc/sys/kernel/dmesg_restrict ]] &&
+		(( $(< /proc/sys/kernel/dmesg_restrict) == 1 )); then
+		install -Tm 0600 <( dmesg ) /var/log/dmesg.log
+	else
+		install -Tm 0644 <( dmesg ) /var/log/dmesg.log
+	fi
+(( $? == 0 )) && msg_ok || msg_fail
+
 
 ################################## 17 ##################################
 # setup consoles

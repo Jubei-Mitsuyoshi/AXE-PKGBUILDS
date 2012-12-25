@@ -152,7 +152,11 @@ axe_timezone_set() {
 
 
 
-source /etc/runit/start.conf
+if [[ -s /etc/runit/startup.conf ]]; then
+    source /etc/runit/startup.conf
+else
+	msg_ok '/etc/runit/startup.conf not found writing default settings'
+fi
 
 
 echo 'Waiting for services to stop...'
