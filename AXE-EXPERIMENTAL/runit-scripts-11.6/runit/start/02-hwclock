@@ -1,0 +1,3 @@
+#!/bin/dash
+hwclock --hctosys -u
+exit 0

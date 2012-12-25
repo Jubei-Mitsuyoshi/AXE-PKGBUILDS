@@ -1,3 +1,0 @@
-#!/bin/bash
-. /etc/rc.conf
-hwclock --adjust ${HARDWARECLOCK:+--$(echo $HARDWARECLOCK |tr A-Z a-z)}

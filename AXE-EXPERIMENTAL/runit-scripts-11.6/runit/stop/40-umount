@@ -1,0 +1,5 @@
+#!/bin/dash
+swapoff -a
+umount -a -r -t noramfs,notmpfs,nosysfs,noproc
+mount -n -o remount,ro /
+exit 0

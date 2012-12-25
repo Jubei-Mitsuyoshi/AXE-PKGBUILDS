@@ -1,0 +1,4 @@
+#!/bin/dash
+sv start dbus || exit 1
+sv start hal || exit 1
+exec gdm

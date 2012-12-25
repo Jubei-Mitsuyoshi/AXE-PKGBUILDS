@@ -1,0 +1,8 @@
+#!/bin/dash
+egrep -q '^[[:space:]]*RunAsDaemon[[:space:]]\+0' /etc/tor/torrc
+if [ $? -ne 0 ]
+then
+ sed -i 's/^[[:space:]]*RunAsDaemon[[:space:]]\+1[[:space:]]$/d' /etc/tor/torrc
+ echo 'RunAsDaemon 0' >> /etc/tor/torrc
+fi
+exec /usr/bin/tor

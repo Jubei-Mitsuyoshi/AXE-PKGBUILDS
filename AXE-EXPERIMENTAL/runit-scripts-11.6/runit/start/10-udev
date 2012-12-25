@@ -1,0 +1,6 @@
+#!/bin/dash
+echo "start and trigger udev"
+(while true; do udevd; sleep 1; done) &
+udevadm trigger
+udevadm settle
+exit 0

@@ -1,0 +1,13 @@
+#!/bin/dash
+RANDOM_SEED=/var/lib/misc/random-seed
+[ -d $(dirname $RANDOM_SEED) ] || mkdir -p $(dirname $RANDOM_SEED)
+: > $RANDOM_SEED
+chmod 0600 $RANDOM_SEED
+POOL_FILE=/proc/sys/kernel/random/poolsize
+if [ -r $POOL_FILE ]; then
+	POOL_SIZE=$(cat $POOL_FILE)
+else
+	POOL_SIZE=512
+fi
+dd if=/dev/urandom of=$RANDOM_SEED count=1 bs=$POOL_SIZE
+exit 0

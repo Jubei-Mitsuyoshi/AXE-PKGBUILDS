@@ -1,0 +1,16 @@
+#!/bin/dash
+echo "cleaning"
+rm -f /etc/nologin
+rm -f /etc/shutdownpid
+rm -rf /var/lock/*
+rm -rf /var/run/*
+rm -rf /tmp
+mkdir /tmp && chmod 1777 /tmp
+rm -f /forcefsck
+find /var/run -not -type d -delete
+: > /var/run/utmp
+chmod 0664 /var/run/utmp
+# Keep {x,k,g}dm happy with xorg
+mkdir /tmp/.ICE-unix && chmod 1777 /tmp/.ICE-unix
+mkdir /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
+exit 0

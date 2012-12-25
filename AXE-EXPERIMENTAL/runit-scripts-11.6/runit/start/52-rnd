@@ -1,0 +1,4 @@
+#!/bin/dash
+RANDOM_SEED=/var/lib/misc/random-seed
+( [ -f $RANDOM_SEED ] && cat $RANDOM_SEED > /dev/urandom ) &
+exit 0

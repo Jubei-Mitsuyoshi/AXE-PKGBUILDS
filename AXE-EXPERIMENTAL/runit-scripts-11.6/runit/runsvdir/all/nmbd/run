@@ -1,0 +1,3 @@
+#!/bin/dash
+-e /var/run/samba ] || mkdir -p /var/run/samba
+exec nmbd -F

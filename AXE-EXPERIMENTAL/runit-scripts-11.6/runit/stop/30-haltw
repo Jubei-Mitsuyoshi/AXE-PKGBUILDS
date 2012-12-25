@@ -1,0 +1,3 @@
+#!/bin/dash
+halt -w
+exit 0

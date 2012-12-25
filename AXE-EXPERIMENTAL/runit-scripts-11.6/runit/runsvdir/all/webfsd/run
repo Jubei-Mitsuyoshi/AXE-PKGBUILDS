@@ -1,0 +1,3 @@
+#!/bin/dash
+. /etc/conf.d/webfsd
+exec webfsd $WEBFSD_ARGS

@@ -1,0 +1,5 @@
+#!/bin/dash
+echo 0 > /sys/class/rfkill/rfkill1/state
+ip link set wlan0 down
+rfkill block wlan
+exit 0

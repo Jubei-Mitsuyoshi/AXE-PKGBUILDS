@@ -1,0 +1,3 @@
+#!/bin/dash
+( [ -e /var/log/dmesg.log ] && mv /var/log/dmesg.log /var/log/dmesg.log.1 ; dmesg > /var/log/dmesg.log ) &
+exit 0

@@ -1,0 +1,24 @@
+#!/bin/dash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+echo 'Waiting for services to stop...'
+sv -w196 force-stop /etc/runit/runsvdir/current/*
+sv exit /etc/runit/runsvdir/current/*
+
+echo 'Shutdown...'
+
+for i in /etc/runit/stop/*
+do
+	if [ -x "$i" ]
+	then
+		echo "$i"
+		"$i"
+	fi
+done
+
+if [ -x /etc/runit/reboot ]
+then
+	/sbin/reboot -d -f -i
+else
+	/sbin/poweroff -d -f -h -i
+fi

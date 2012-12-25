@@ -1,4 +1,0 @@
-#!/bin/sh
-set -e
-/usr/lib/systemd/scripts/cpupower
-exec chpst -b cpupower pause

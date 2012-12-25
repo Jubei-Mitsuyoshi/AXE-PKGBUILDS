@@ -1,0 +1,6 @@
+#!/bin/dash
+echo "remount / rw"
+mount -n -o remount,rw /
+cat /proc/mounts > /etc/mtab
+mount -a
+exit 0

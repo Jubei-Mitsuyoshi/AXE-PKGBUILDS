@@ -1,0 +1,118 @@
+# Maintainer: Christian Neukirchen <chneukirchen@gmail.com>
+# Contributor: TJ Vanderpoel <tj@rubyists.com>
+# Contributor: Kevin Berry <kb@rubyists.com>
+# Contributor: Andrej Gelenberg <andrej.gelenberg@udo.edu>
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+
+
+
+
+
+#--------------------
+pkgname=axe-init
+#--------------------
+pkgver=2.1.1
+_arch_rel=5
+_axe_native_rel=1
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgdesc="A service supervision scheme, compiled with musl"
+url="http://smarden.org/runit/"
+license=('custom')
+arch=('i686' 'x86_64')
+depends=('bash' 'util-linux')
+provides=("runit")
+conflicts=("runit" "runit-dietlibc")
+makedepends=('gcc' 'make' 'coreutils' 'sed')
+
+source=( http://smarden.org/runit/runit-$pkgver.tar.gz
+			1 
+			2
+			3
+			binfmt
+			tmpfiles
+			runitfunctions
+			_sv )
+			
+md5sums=('8FA53EA8F71D88DA9503F62793336BC3'
+		'0048371CCEAFC1AEBEEBBF29CDBE813D'
+		'209499B5376F89C0D4044DE4BBA6BE33'
+		'F3A6C81A7033DF28822EBD0E820A54DF'
+		'23F2766A2EBD46A1A93CD806DCC9CB4E'
+		'D24DF6C38F402090E24A4A8A4811E8E7'
+		'FD295CA4BA5765250C98E34085EBD2E9'
+		'53AE4D0DC6E17D52F9BF1C37E44D86A9')
+
+build() {
+  cd $srcdir/admin/runit-$pkgver/src
+
+  # configure 
+  # we build nothing static
+  sed -i -e 's:-static: :' Makefile || return 1
+  # apply custom CFLAGS and LDFLAGS
+  echo "${CC:-gcc} $CFLAGS" > conf-cc || return 1
+  echo "${CC:-gcc -s} $LDFLAGS" > conf-ld || return 1
+  # set default service path to /etc/service
+  sed -i -e 's:^char \*varservice ="/service/";$:char \*varservice ="/etc/service/";:' sv.c || return 1
+  
+  make
+  
+}
+
+check() {
+  cd $srcdir/admin/runit-$pkgver/src
+
+  make check
+}
+
+package() {
+
+
+  # default services
+  install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/system || return 1
+  install -d -m0755 ${startdir}/pkg/etc/sv || return 1
+  install -d -m0755 ${startdir}/etc/service/ || return 1
+
+  
+  
+  install -s -m0755 $srcdir/[123] ${startdir}/pkg/etc/runit  || return 1
+  install -s -m0755 $srcdir/binfmt ${startdir}/pkg/etc/runit  || return 1
+  install -s -m0755 $srcdir/tmpfiles ${startdir}/pkg/etc/runit  || return 1
+  install -s -m0755 $srcdir/runitfunctions ${startdir}/pkg/etc/runit  || return 1
+  
+
+  install -m0755 ${startdir}/src/admin/$pkgname-$pkgver/etc/debian/ctrlaltdel ${startdir}/pkg/etc/runit || return 1
+
+ # ln -s ../etc/runit/runsvdir/current ${startdir}/pkg/etc/service || return 1
+
+  # install binaries
+  install -d -m0755 ${startdir}/pkg/sbin || return 1
+  for i in `cat $startdir/src/admin/$pkgname-$pkgver/package/commands`
+  do
+    install -s -m0755 ${startdir}/src/admin/$pkgname-$pkgver/src/$i ${startdir}/pkg/sbin || return 1
+  done
+
+  # man-pages
+  install -d -m0755 ${startdir}/pkg/usr/share/man/man8 || return 1
+  install -m0644 ${startdir}/src/admin/$pkgname-$pkgver/man/* ${startdir}/pkg/usr/share/man/man8 || return 1
+
+  # doc
+  install -d -m0755 ${startdir}/pkg/usr/share/doc/runit || return 1
+  install -m0644 ${startdir}/src/admin/$pkgname-$pkgver/doc/*.html ${startdir}/pkg/usr/share/doc/runit  || return 1
+  
+  # add gettys for 1-4 terminals
+  cd ${startdir}/src/admin/$pkgname-$pkgver/etc/debian/getty-tty5/ || return 1
+  for i in {1..4}
+  do
+    install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/all/getty-$i || return 1
+	ln -s ../all/getty-$i "${startdir}/pkg/etc/runit/runsvdir/pkg-default/" || return 1
+	for f in *
+	do
+		sed "s/tty5/tty$i/g;s/getty/agetty/g" <"$f" >"${startdir}/pkg/etc/runit/runsvdir/all/getty-$i/$f" || return 1
+		chmod 0755 "${startdir}/pkg/etc/runit/runsvdir/all/getty-$i/$f"
+	done
+  done
+
+  install -D ${startdir}/src/admin/runit-$pkgver/package/COPYING $startdir/pkg/usr/share/licenses/runit/COPYING
+}
+

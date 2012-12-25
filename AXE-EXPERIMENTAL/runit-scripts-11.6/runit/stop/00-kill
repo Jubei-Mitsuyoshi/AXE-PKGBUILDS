@@ -1,0 +1,6 @@
+#!/bin/dash
+killall5 -15
+sleep 5
+killall5 -9
+sleep 1
+exit 0

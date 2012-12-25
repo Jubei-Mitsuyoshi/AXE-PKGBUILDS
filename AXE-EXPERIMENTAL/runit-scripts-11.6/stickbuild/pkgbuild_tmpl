@@ -1,0 +1,35 @@
+#!/bin/dash
+
+if [ -z "$1" ]
+then
+ echo "usage: $0 <output file>" >&2
+ exit 1
+fi
+
+cat >"$1" <<END
+# Contributor: $AUTHOR
+pkgname="$PROJECT_NAME"
+pkgver="$MAJOR_VER.$MINOR_VER"
+pkgrel=1
+pkgdesc="$PROJECT_DESC"
+arch=($ARCHS)
+depends=($DEPS)
+makedepends=($MAKEDEPS)
+optdepends=($OPTDEPS)
+url="$URL"
+source=(${SOURCE_URL}$SOURCE)
+license="$LICENSE"
+build()
+{
+ cd "\$srcdir/\$pkgname-\$pkgver"
+ export PREFIX=/usr
+ export ETCDIR=/etc
+ export BINDIR=\$PREFIX/bin
+ export LIBDIR=\$PREFIX/lib
+ export DESTDIR="\${startdir}/pkg"
+ make || return 1
+ make install
+}
+END
+
+makepkg -p "$1" -g 2>/dev/null >>"$1"

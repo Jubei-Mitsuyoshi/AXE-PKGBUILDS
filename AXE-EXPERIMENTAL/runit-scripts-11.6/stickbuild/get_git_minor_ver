@@ -1,0 +1,33 @@
+#!/bin/sh
+target=$1
+major=$(( $2 ))
+minor=-1
+
+if [ -e .git ]
+then
+ echo "$target: .git/HEAD .git/logs/$(awk '{print $2}' .git/HEAD)";
+ for i in `git tag --contains HEAD | egrep "^v$major.[[:digit:]]+$"`
+ do
+  new_minor=${i#v$major.}
+  [ "$minor" -lt "$new_minor" ] && minor=$new_minor
+ done
+
+ ( git tag | grep -qx "v$major.$minor" ) 1>/dev/null 2>/dev/null
+ if [ "$?" -ne 0 ]
+ then
+  for i in $(git tag | egrep "^v$major.[0-9]+$")
+  do
+   new_minor=${i##v$major.}
+   if [ "$new_minor" != "[0-9]*" ]
+   then
+    [ "$minor" -lt "$new_minor" ] && minor=$new_minor
+   fi
+  done
+  minor=$(( $minor + 1 ))
+ fi
+ echo "MINOR_VER:=$minor"
+else
+ echo "NO_GIT:=1"
+fi
+
+exit 0

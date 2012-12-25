@@ -1,0 +1,4 @@
+#!/bin/dash
+alsactl store
+amixer -q set Master 0 mute
+exit 0

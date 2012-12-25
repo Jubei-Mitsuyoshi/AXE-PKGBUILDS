@@ -1,0 +1,35 @@
+#!/bin/dash
+# if we can't check AC, then check fs
+# if we can check AC and AC is offline, then skip fsck
+
+if [ ! -e /forcefsch ] && \
+   [ "$(for i in /sys/class/power_supply/AC*/online; do cat $i 2>/dev/null; break; done)" -eq 0 ]
+then
+ echo "no ac, skip check"
+fi
+
+echo "remount / ro"
+if mount -n -o ro,remount /
+then
+ echo "fsck"
+ fsck -A -a -C $([ -e /forcefsck ] && echo "-- -f")
+ ret=$?
+ if [ $ret -gt 0 ]
+ then
+  if [ $(( $ret & 2 )) -eq 2 ]
+  then
+   echo "need reboot. will happen in 15 sek"
+   sleep 15
+   reboot -d -f -i
+  fi
+  echo "fsck fail"
+  sulogin -p
+  reboot -d -f -i
+ fi
+else
+ echo "can't remount / read only"
+fi
+
+[ -e /forcefsck ] && rm /forcefsck 
+
+exit 0

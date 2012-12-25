@@ -1,0 +1,14 @@
+#!/bin/dash
+echo "mount /sys and /proc"
+mount -n -t proc none /proc
+mount -n -t sysfs none /sys
+if mount -t devtmpfs none /dev
+then
+ mkdir /dev/pts
+ mkdir /dev/shm
+else
+ echo "populate static /dev"
+ mount -n -t ramfs none /dev
+ cp -a /lib/udev/devices/* /dev/
+fi
+exit 0

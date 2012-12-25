@@ -1,0 +1,4 @@
+#!/bin/dash
+setserial /dev/ttyS1 uart none port 0 irq 0 || exit 1
+lsmod | grep lirc_sir -q || modprobe lirc_sir || exit 1
+exec lircd -n -r -d /dev/lirc0 /etc/lircd.conf

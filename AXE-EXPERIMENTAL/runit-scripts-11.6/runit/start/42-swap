@@ -1,0 +1,3 @@
+#!/bin/dash
+swapon -a &
+exit 0

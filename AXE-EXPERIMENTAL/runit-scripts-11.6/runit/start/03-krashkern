@@ -1,0 +1,13 @@
+#!/bin/dash
+if grep -q crashkernel /proc/cmdline
+then
+ mount -n /boot
+ . /etc/conf.d/kexec
+ [ -f "$KPATH" ] || exit 0
+ [ -f "$INITRD" ] && _INITRD="--initrd=$INITRD"
+ echo "load krashdump kernel"
+ /sbin/kexec -p $KPATH --append="root=$ROOTPART $KPARAM" $_INITRD
+ umount -n /boot
+fi
+
+exit 0

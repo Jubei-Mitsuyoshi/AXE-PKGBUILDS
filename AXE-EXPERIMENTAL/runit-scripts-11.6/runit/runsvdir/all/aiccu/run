@@ -1,0 +1,8 @@
+#!/bin/dash
+egrep -q '^[[:space:]]*daemonize[[:space:]]+false' /etc/aiccu.conf
+if [ $? -ne 0 ]
+then
+ sed -i '/^[[:space:]]*daemonize[[:space:]]\+.*$/d' /etc/aiccu.conf
+ echo 'daemonize false' >> /etc/aiccu.conf
+fi
+exec aiccu start

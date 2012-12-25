@@ -1,0 +1,5 @@
+#!/bin/dash
+SQUID_ARGS=
+[ -f /etc/conf.d/squid ] && . /etc/conf.d/squid
+[ -f /var/cache/squid/swap.state ] || /usr/sbin/squid -z
+exec /usr/sbin/squid -N ${SQUID_ARGS}

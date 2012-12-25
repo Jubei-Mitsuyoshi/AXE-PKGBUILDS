@@ -1,3 +1,0 @@
-#!/bin/sh
-sv check colord >/dev/null && sv check colord-sane >/dev/null &&
-exec cupsd -f

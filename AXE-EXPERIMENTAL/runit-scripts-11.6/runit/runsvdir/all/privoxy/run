@@ -1,0 +1,8 @@
+#!/bin/dash
+[ -f /etc/conf.d/privoxy ] && . /etc/conf.d/privoxy
+for i in logfile jarfile; do 
+ touch /var/log/privoxy/$i
+ chgrp $PRIVOXY_GROUP /var/log/privoxy/$i
+ chmod 660 /var/log/privoxy/$i
+done
+exec /usr/sbin/privoxy --no-daemon $PRIVOXY_ARGS

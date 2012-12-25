@@ -1,0 +1,3 @@
+#!/bin/dash
+( [ -r /etc/domainname ] && domainname `cat /etc/domainname` ) &
+exit 0

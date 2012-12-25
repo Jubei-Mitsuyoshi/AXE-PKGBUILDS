@@ -1,0 +1,4 @@
+#!/bin/dash
+rm -rf /var/run/nscd/*
+mkdir -p /var/run/nscd
+exec nscd -d

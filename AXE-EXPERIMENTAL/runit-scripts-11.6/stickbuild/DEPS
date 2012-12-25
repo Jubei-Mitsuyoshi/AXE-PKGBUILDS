@@ -1,0 +1,7 @@
+Dependencies:
+ - gnu make
+ - shell (bash or dash)
+ - git archive for package target (git.mk)
+ - bzip2 and bzcat for package and fullpackage targets (git.mk and pkg.mk)
+ - rm for clean target (clean.mk)
+ - strip for install target (optional)

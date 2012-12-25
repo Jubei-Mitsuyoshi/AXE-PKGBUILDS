@@ -1,0 +1,4 @@
+#!/bin/dash
+lvm vgscan --ignorelockingfailure --mknodes
+lvm vgchange --ignorelockingfailure -a y
+exit 0

@@ -1,0 +1,4 @@
+#!/bin/dash
+rfkill unblock wlan
+ip link set wlan0 up || exit 1
+exec wpa_supplicant -iwlan0 -c/etc/wpa_supplicant.conf

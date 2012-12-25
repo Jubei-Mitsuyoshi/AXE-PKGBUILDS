@@ -1,0 +1,3 @@
+#!/bin/dash
+. /etc/conf.d/ngetty
+exec ngetty $NGETTY_TTYS 

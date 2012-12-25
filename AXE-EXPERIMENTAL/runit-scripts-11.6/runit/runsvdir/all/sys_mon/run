@@ -1,0 +1,14 @@
+#!/bin/dash
+if [ -e /etc/conf.d/sys_mon ]
+then
+. /etc/conf.d/sys_mon
+fi
+
+if [ -z "$DEVICES" ]
+then
+ sv stop sys_mon &
+ echo "sys_mon: no input devices defined"
+ exit 1
+fi
+
+exec sys_mon $DEVICES

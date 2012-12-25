@@ -1,0 +1,12 @@
+PROJECT_NAME = examnple
+AUTHOR = unknown
+
+CBINS =
+BINS = $(CBINS)
+all: $(BINS)
+CLEAN += $(CBINS)
+
+stickbuild:
+	ln -s ../$@ $@
+stickbuild/stickbuild.mk: stickbuild
+include stickbuild/stickbuild.mk

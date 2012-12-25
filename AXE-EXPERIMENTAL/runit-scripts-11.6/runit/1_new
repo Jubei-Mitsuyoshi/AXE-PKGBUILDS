@@ -1,0 +1,21 @@
+#!/bin/dash
+# system one time tasks
+
+PATH=/command:/sbin:/bin:/usr/sbin:/usr/bin
+
+for i in /etc/runit/start/*
+do
+ if [ -x "$i" ]
+ then
+  echo "Start: $i"
+  "$i"
+  if [ $? -ne 0 ]
+  then
+   /sbin/sulogin
+   exit 1
+  fi
+ fi
+done
+
+touch /etc/runit/stopit
+chmod 0 /etc/runit/stopit
