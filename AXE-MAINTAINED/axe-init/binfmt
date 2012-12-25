@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# /usr/lib/initscripts/arch-binfmt
+# /etc/runit/binfmnt
 #
 # Configure additional binary formats at boot
 #

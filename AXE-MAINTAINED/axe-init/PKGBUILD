@@ -25,21 +25,20 @@ provides=("runit")
 conflicts=("runit" "runit-dietlibc")
 makedepends=('gcc' 'make' 'coreutils' 'sed')
 
-source=("http://smarden.org/runit/runit-$pkgver.tar.gz" 1
+source=("http://smarden.org/runit/runit-$pkgver.tar.gz" 
+ 1
  2 
  3 
  "binfmt" 
  "tmpfiles" 
- "runitfunctions" 
  "_sv")
 			
 md5sums=('8FA53EA8F71D88DA9503F62793336BC3'
-		'0048371CCEAFC1AEBEEBBF29CDBE813D'
+		'C3C4CEE870452BA4952945FC84AA2F6F'
 		'209499B5376F89C0D4044DE4BBA6BE33'
-		'F3A6C81A7033DF28822EBD0E820A54DF'
-		'23F2766A2EBD46A1A93CD806DCC9CB4E'
-		'D24DF6C38F402090E24A4A8A4811E8E7'
-		'FD295CA4BA5765250C98E34085EBD2E9'
+		'8A00610DCFC86ED402A96FDEEBF2AD12'
+		'B3A470A401152DED24322797F9E4CFCB'
+		'D78CED3B8AF25B6B942729A4C5B1FE0B'
 		'53AE4D0DC6E17D52F9BF1C37E44D86A9')
 
 build() {
@@ -61,7 +60,7 @@ build() {
   # default services
   install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/system || return 1
   install -d -m0755 ${startdir}/pkg/etc/sv || return 1
-  install -d -m0755 ${startdir}/etc/service/ || return 1
+  install -d -m0755 ${startdir}/pkg/etc/service/ || return 1
 
   
   
@@ -90,16 +89,16 @@ build() {
   install -d -m0755 ${startdir}/pkg/usr/share/doc/runit || return 1
   install -m0644 ${startdir}/src/admin/runit-$pkgver/doc/*.html ${startdir}/pkg/usr/share/doc/runit  || return 1
   
-   add gettys for 1-4 terminals
+ #  add gettys for 1-4 terminals
   cd ${startdir}/src/admin/runit-$pkgver/etc/debian/getty-tty5/ || return 1
   for i in {1..4}
   do
-    install -d -m0755 ${startdir}/pkg/etc/sv/getty-$i || return 1
+    install -d -m0755 ${startdir}/pkg/etc/service/getty-$i || return 1
 #	ln -s ../all/getty-$i "${startdir}/pkg/etc/runit/runsvdir/pkg-default/" || return 1
 	for f in *
 	do
-		sed "s/tty5/tty$i/g;s/getty/agetty/g" <"$f" >"${startdir}/pkg/etc/sv/getty-$i/$f" || return 1
-		chmod 0755 "${startdir}/pkg/etc/sv/getty-$i/$f"
+		sed "s/tty5/tty$i/g;s/getty/agetty/g" <"$f" >"${startdir}/pkg/etc/service/getty-$i/$f" || return 1
+		chmod 0755 "${startdir}/pkg/etc/service/getty-$i/$f"
 	done
   done
 

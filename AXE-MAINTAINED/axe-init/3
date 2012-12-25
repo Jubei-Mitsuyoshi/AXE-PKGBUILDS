@@ -1,0 +1,235 @@
+#!/bin/sh
+exec 2>&1
+
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+# These can be overridden/reused for customizations like shutdown/loop-fsck.
+NETFS="nfs,nfs4,smbfs,cifs,codafs,ncpfs,shfs,fuse,fuseblk,glusterfs,davfs,fuse.glusterfs"
+NO_NETFS="no${NETFS//,/,no}"
+APIFS="devpts,devtmpfs,proc,sysfs,tmpfs"
+NO_APIFS="no${APIFS//,/,no}"
+
+
+# clear the TZ envvar, so daemons always respect /etc/localtime
+unset TZ
+
+RANDOM_SEED=/var/lib/misc/random-seed
+
+# prefixes
+PREFIX_HL=" > "
+PREFIX_MSG=" * "
+PREFIX_STD="   >> "
+
+# set colors
+if [ "${USE_COLOR}" = "yes" ] && [ -t 0 ];then
+    C_BLACK='\e[1;30m'
+    C_RED='\e[1;31m'
+    C_GREEN='\e[1;32m'
+    C_YELLOW='\e[1;33m'
+    C_BLUE='\e[1;34m'
+    C_PURPLE='\e[1;35m'
+    C_CYAN='\e[1;36m'
+    C_WHITE='\e[1;37m'
+    C_CLEAR='\e[m'
+fi
+
+
+#############################################################
+#                          Messages                         #
+#############################################################
+
+msg_headline() {
+	printf "\n${C_BLUE}${PREFIX_HL}${C_WHITE}${1}${C_CLEAR}\n\n"
+}
+
+msg_busy() {
+	printf "${C_CYAN}${PREFIX_MSG}${C_WHITE}${1}${C_CLEAR}"
+}
+
+msg_ok() {
+    printf "\r${C_BLUE}${PREFIX_MSG}${C_WHITE}${1}${C_CLEAR}\n"
+}
+
+msg_fail() {
+    printf "\r${C_RED}${PREFIX_MSG}${C_WHITE}${1}${C_CLEAR}\n"
+}
+
+msg_die() {
+	msg_fail "${1}"
+	exit "${2:-1}"
+}
+
+msg_status() {
+    if [ "${?}" = "${1:-0}" ];then
+        msg_ok
+    else
+        msg_fail
+    fi
+}
+
+
+
+# save entrophy file
+axe_urandom_save() {
+    local pool_file="/proc/sys/kernel/random/poolsize"
+    local pool_size="512"
+    
+    install -TDm 0600 /dev/null "${RANDOM_SEED}"
+
+	if [ -r "${pool_file}" ]; then
+		pool_size=$(< "${pool_file}")
+	fi
+    
+	dd if=/dev/urandom of="${RANDOM_SEED}" count=1 bs="${pool_size}"
+}
+
+
+# unmount all filesystems, ${1} restricts to fstype
+axe_umount_all() {
+    local fstype
+
+	findmnt -mrunRo TARGET,FSTYPE,OPTIONS / | {
+		while read -r target fstype options; do
+			# match only targeted fstypes
+			if [ "${1}" != "$fstype" ]; then
+				continue
+			fi
+
+			# do not unmount API filesystems
+			if [[ $target = /@(proc|sys|run|dev|dev/pts) ]]; then
+				continue
+			fi
+
+			# avoid networked devices
+			IFS=, read -ra opts <<< "$options"
+			if chk_in_array _netdev "${opts[@]}"; then
+				continue
+			fi
+
+			mounts=("$target" "${mounts[@]}")
+		done
+
+		if (( ${#mounts[*]} )); then
+			umount --read-only "${mounts[@]}"
+		fi
+	}
+
+}
+
+# $1 - signal
+# $2 - iterations
+axe_killall_wait() {
+	# Send SIGTERM/SIGKILL all processes and wait until killall5
+	# reports all done or timeout.
+	# Unfortunately killall5 does not support the 0 signal, so just
+	# use SIGCONT for checking (which should be ignored).
+
+	local i
+
+	killall5 -${1} ${omit_pids[@]/#/-o }
+
+	for (( i=0; i<${2}; i++ )); do
+
+		sleep .25 # 1/4 second
+
+		# sending SIGCONT to processes to check if they are there
+		killall5 -18 ${omit_pids[@]/#/-o }
+
+		if (( $? == 2 )); then
+			return 0
+		fi
+	done
+
+	return 1
+}
+
+# setup system time zone
+axe_timezone_set() {
+	if [ "$(readlink /etc/localtime)" != "/usr/share/zoneinfo/${1}" ];then
+        ln --symbolic --force "/usr/share/zoneinfo/${1}" "/etc/localtime"
+	fi
+}
+
+
+
+source /etc/runit/start.conf
+
+
+echo 'Waiting for services to stop...'
+sv -w196 force-stop /etc/service/*
+sv exit /etc/service/*
+
+echo 'Shutdown...'
+
+
+# avoid staircase effect
+stty onlcr
+
+msg_headline "Initiating Shutdown..."
+
+################################## 1 ##################################
+# saving random seed
+exec_cmd "Saving random seed" axe_urandom_save
+
+################################## 1 ##################################
+# time zone (ending)
+if [ -n "${TIME_ZONE}" ]; then
+    exec_cmd "Setting time zone: ${TIME_ZONE}" axe_timezone_set "${TIME_ZONE}"
+elif [ -f "/etc/localtime" ];then
+    exec_cmd "Dumping /etc/localtime" rm /etc/localtime
+fi
+
+################################## 1 ##################################
+# Write to wtmp file before unmounting
+halt -w
+
+################################## 1 ##################################
+# stop lvm
+# stop monitoring of LVM2 groups before unmounting filesystems
+# Maybe someone has LVM on an encrypted block device
+# executing an extra vgchange is errorless
+if [ "${USE_LVM}" = "yes" ];then
+    exec_cmd "Deactivating monitoring of LVM2 groups" vgchange --monitor n
+    exec_cmd "Deactivating LVM2 groups" vgchange --sysinit --activate n
+fi
+
+################################## 1 ##################################
+# stop udev
+# any future uevents can and should be ignored
+exec_cmd "Shutting down UDev" udevadm control --exit
+
+################################## 1 ##################################
+# kill all processes
+exec_cmd "Sending SIGTERM To processes" axe_killall_wait 15 40
+    
+if [ "${?}" = "0" ];then
+    exec_cmd "Sending SIGKILL To processes" axe_killall_wait 9 60
+fi
+
+################################## 1 ##################################
+# unmount tmpfs
+if [ ${USE_SWAP} = "yes" ];then
+    # unmount any non-API partitions that are backed by swap, we don't want to
+    # move their contents into memory (waste of time and might caues OOM).
+    exec_cmd "Unmounting Swap-backend Filesystems" axe_umount_all "tmpfs"
+    exec_cmd "Deactivating Swap" swapoff --all
+fi
+
+################################## 1 ##################################
+# non-API Filesystems
+exec_cmd "Unmounting non-API Filesystems" axe_umount_all
+
+
+exec_cmd "Remounting Root filesystem read-only" mount --options remount,ro /
+
+# Power off or reboot
+if [ -x /etc/runit/reboot ]; then
+	msg_headline "REBOOTING"
+	# if kexec is installed and a kernel is loaded, use it
+	[[ -x $(type -P kexec) ]] && kexec -e
+	reboot -d -f -i
+else
+	msg_headline "POWER OFF"
+	poweroff -d -f -h -i
+fi
+
