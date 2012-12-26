@@ -188,15 +188,6 @@ axe_timezone_set() {
 	fi
 }
 
-# save boot log to file for reference
-axe_dmesg_save() {
-    if [ "$(</proc/sys/kernel/dmesg_restrict)" = "1" ]; then
-        install -Tm 0600 <( dmesg ) /var/log/dmesg.log
-    else
-        install -Tm 0644 <( dmesg ) /var/log/dmesg.log
-    fi
-}
-
 # mount all local filesystems
 axe_mount_all() {
 	mount --all --types "nosysfs,${NO_NETFS}"
@@ -334,9 +325,11 @@ exec_cmd "Stopping bootlogd daemon" axe_bootlogd_stop
 msg_busy "Saving dmesg log"
 	if [[ -e /proc/sys/kernel/dmesg_restrict ]] &&
 		(( $(< /proc/sys/kernel/dmesg_restrict) == 1 )); then
-		install -Tm 0600 <( dmesg ) /var/log/dmesg.log
+		dmesg > /var/log/dmesg.log
+		chmod 0600 /var/log/dmesg.log
 	else
-		install -Tm 0644 <( dmesg ) /var/log/dmesg.log
+		dmesg > /var/log/dmesg.log
+		chmod 0644 /var/log/dmesg.log
 	fi
 (( $? == 0 )) && msg_ok || msg_fail
 
@@ -425,8 +418,5 @@ exec_cmd "Loading additional binary formats" /etc/runit/binfmt
 exec_cmd "Mounting local filesystems" axe_mount_all
 
 
-################################## 26 ##################################
-# last shit
-exec_cmd "Stopping bootlogd daemon" axe_bootlogd_stop
-exec_cmd "Saving dmesg log" axe_dmesg_save
+
 
