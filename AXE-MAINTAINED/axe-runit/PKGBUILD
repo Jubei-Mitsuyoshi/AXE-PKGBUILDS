@@ -9,7 +9,7 @@
 
 
 #--------------------
-pkgname=axe-init
+pkgname=axe-runit
 #--------------------
 pkgver=2.1.1
 _arch_rel=5
@@ -25,23 +25,9 @@ provides=("runit")
 conflicts=("runit" "runit-dietlibc")
 makedepends=('gcc' 'make' 'coreutils' 'sed')
 
-source=("http://smarden.org/runit/runit-$pkgver.tar.gz" 
- 1
- 2 
- 3 
- "binfmt" 
- "tmpfiles"
- "startup.conf"
- 'tmpfiles.conf')
+source=("http://smarden.org/runit/runit-$pkgver.tar.gz")
 			
-md5sums=('8FA53EA8F71D88DA9503F62793336BC3'
-		'CBD8B99427F5171F7F7BD457D2AFA530'
-		'209499B5376F89C0D4044DE4BBA6BE33'
-		'F68C631E0890CB701DED758BAF5B202E'
-		'B3A470A401152DED24322797F9E4CFCB'
-		'D78CED3B8AF25B6B942729A4C5B1FE0B'
-		'A02ABD7C356346E7986384455EBB925E'
-		'09C51EE3CCE93883468CB13B54B3C699')
+md5sums=('8FA53EA8F71D88DA9503F62793336BC3')
 
 build() {
    cd $startdir/src/admin/runit-$pkgver/src
@@ -53,28 +39,17 @@ build() {
   echo "${CC:-gcc} $CFLAGS" > conf-cc || return 1
   echo "${CC:-gcc -s} $LDFLAGS" > conf-ld || return 1
   # set default service path to /var/service
-  sed -i -e 's:^char \*varservice ="/service/";$:char \*varservice ="/etc/service/";:' sv.c || return 1
+  sed -i -e 's:^char \*varservice ="/service/";$:char \*varservice ="/var/service/";:' sv.c || return 1
 
   # compile
   make || return 1
   make check || return 1
 
-  # default services
-  install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/system || return 1
+  # directories
+  install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/current || return 1
   install -d -m0755 ${startdir}/pkg/etc/sv || return 1
-  install -d -m0755 ${startdir}/pkg/etc/service/ || return 1
-
+  install -d -m0755 ${startdir}/pkg/var/service || return 1
   
-  
-  install -m0755 $srcdir/[123] ${startdir}/pkg/etc/runit  || return 1
-  install -m0755 $srcdir/binfmt ${startdir}/pkg/etc/runit  || return 1
-  install -m0755 $srcdir/tmpfiles ${startdir}/pkg/etc/runit  || return 1
-  install -m0755 $srcdir/startup.conf ${startdir}/pkg/etc/runit  || return 1
-  
-
-  install -m0755 ${startdir}/src/admin/runit-$pkgver/etc/debian/ctrlaltdel ${startdir}/pkg/etc/runit || return 1
-
- # ln -s ../etc/runit/runsvdir/current ${startdir}/pkg/etc/service || return 1
 
   # install binaries
   install -d -m0755 ${startdir}/pkg/sbin || return 1
@@ -90,19 +65,7 @@ build() {
   # doc
   install -d -m0755 ${startdir}/pkg/usr/share/doc/runit || return 1
   install -m0644 ${startdir}/src/admin/runit-$pkgver/doc/*.html ${startdir}/pkg/usr/share/doc/runit  || return 1
-  
- #  add gettys for 1-4 terminals
-  cd ${startdir}/src/admin/runit-$pkgver/etc/debian/getty-tty5/ || return 1
-  for i in {1..4}
-  do
-    install -d -m0755 ${startdir}/pkg/etc/service/getty-$i || return 1
-#	ln -s ../all/getty-$i "${startdir}/pkg/etc/runit/runsvdir/pkg-default/" || return 1
-	for f in *
-	do
-		sed "s/tty5/tty$i/g;s/getty/agetty/g" <"$f" >"${startdir}/pkg/etc/service/getty-$i/$f" || return 1
-		chmod 0755 "${startdir}/pkg/etc/service/getty-$i/$f"
-	done
-  done
+
 
   install -D ${startdir}/src/admin/runit-$pkgver/package/COPYING $startdir/pkg/usr/share/licenses/runit/COPYING
 

@@ -1,37 +1,27 @@
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
-# Maintainer: Ivailo Monev <xakepa10@gmail.com>
 
 
 
 #--------------------
 pkgname='initscripts-git'
 #--------------------
-pkgver=20121023
+pkgver=0.0.0.1
 _arch_rel=1
 _axe_native_rel=1
 #--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_native_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-pkgdesc="System initialization/bootup scripts without systemd support, part of the LSD initiative"
-replaces=('initscripts')
-provides=('initscripts')
-conflicts=('initscripts')
+pkgdesc="runit scripts for the axe init system"
 groups=('axis' 'base')
-
 arch=('any')
-url="https://bitbucket.org/smil3y/initscripts"
+url="https://github.com/Jubei-Mitsuyoshi/AXE-SYSTEM-SCRIPTS"
 license=('GPL')
 install="${pkgname}.install"
 backup=('etc/inittab'
         'etc/rc.conf')
 makedepends=('git' 'asciidoc')
-depends=('glibc' 'bash' 'sed' 'grep' 'coreutils' 'udev' 'iproute2'
-         'ncurses' 'kbd' 'findutils' 'sysvinit' 'procps-ng')
-optdepends=('cronie: runs specified programs at scheduled times'
-            'net-tools: legacy network tools'
-            'dhcpcd-lsd: DHCP network configuration'
-            'netcfg: advanced network configuration')
-_gitroot="https://smil3y@bitbucket.org/smil3y/initscripts.git"
-_gitname="initscripts"
+depends=('glibc' 'bash' 'sed' 'grep' 'coreutils' 'udev' 'axe-runit' 'findutils' 'procps-ng')
+_gitroot="https://github.com/Jubei-Mitsuyoshi/AXE-SYSTEM-SCRIPTS.git"
+_gitname="axesystemscripts"
 
 build() {
     if [ -d "${_gitname}" ] ; then
