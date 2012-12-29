@@ -15,7 +15,6 @@ groups=('axis' 'base')
 arch=('any')
 url="https://github.com/Jubei-Mitsuyoshi/AXE-SYSTEM-SCRIPTS"
 license=('GPL')
-install="${pkgname}.install"
 backup=('etc/inittab'
         'etc/rc.conf')
 makedepends=('git' 'asciidoc')
