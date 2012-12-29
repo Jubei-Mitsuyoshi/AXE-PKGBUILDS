@@ -1,15 +1,16 @@
-# $Id: PKGBUILD 173074 2012-12-10 03:04:40Z dreisner $
+# $Id: PKGBUILD 173746 2012-12-22 15:22:21Z tomegun $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Tom Gundersen <teg@jklm.no>
 # Contributor: Tobias Powalowski <tpowa@archlinux.org>
-#commit  3d6f3dbbf8effde4f1ec5809057ad7aa723972ef   018-4 > 018-5 ----- - fix initcpio install hook for mkinitcpio 0.12.0 ------ accepted by axe, _axe_rel remains 1
+
+
 
 
 #--------------------
 pkgname=pcmciautils
 #--------------------
 pkgver=018
-_arch_rel=5
+_arch_rel=6
 _axe_rel=1
 #--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
@@ -18,20 +19,16 @@ arch=('i686' 'x86_64')
 url="http://kernel.org/pub/linux/utils/kernel/pcmcia/pcmcia.html"
 license=('GPL')
 groups=("axis" 'base')
-# sysfsutils will not be required in the next release
-depends=('udev' 'sysfsutils')
+depends=('udev')
 conflicts=('pcmcia-cs')
 # source=(http://kernel.org/pub/linux/utils/kernel/pcmcia/${pkgname}-${pkgver}.tar.bz2) broken due to breakin
 source=(ftp://ftp.archlinux.org/other/$pkgname/$pkgname-$pkgver.tar.xz
         initcpio-install-pcmcia)
 options=(!makeflags)
-md5sums=('2E9469C44DCB790D2B497723C2FA0566'
-         '041af04025daee5b3b05812ac3896c8f')
 
 build() {
   cd "$pkgname-$pkgver"
-  sed -i -e 's,/usr/bin/install,install,g;
-             s,/lib/udev,/usr/lib/udev,g' Makefile
+  sed -i -e 's,/lib/udev,/usr/lib/udev,g' Makefile
   make
 }
 
@@ -41,3 +38,6 @@ package() {
   # install the mkinitpcio hook
   install -Dm644 initcpio-install-pcmcia "$pkgdir/usr/lib/initcpio/install/pcmcia"
 }
+md5sums=('2e9469c44dcb790d2b497723c2fa0566'
+         '041af04025daee5b3b05812ac3896c8f')
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/pcmciautils/PKGBUILD 

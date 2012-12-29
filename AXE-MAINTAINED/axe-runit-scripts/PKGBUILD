@@ -3,7 +3,7 @@
 
 
 #--------------------
-pkgname='initscripts-git'
+pkgname='axe-runit-scripts'
 #--------------------
 pkgver=0.0.0.1
 _arch_rel=1
@@ -15,8 +15,7 @@ groups=('axis' 'base')
 arch=('any')
 url="https://github.com/Jubei-Mitsuyoshi/AXE-SYSTEM-SCRIPTS"
 license=('GPL')
-backup=('etc/inittab'
-        'etc/rc.conf')
+backup=('/etc/crypttab')
 makedepends=('git' 'asciidoc')
 depends=('glibc' 'bash' 'sed' 'grep' 'coreutils' 'udev' 'axe-runit' 'findutils' 'procps-ng')
 _gitroot="https://github.com/Jubei-Mitsuyoshi/AXE-SYSTEM-SCRIPTS.git"

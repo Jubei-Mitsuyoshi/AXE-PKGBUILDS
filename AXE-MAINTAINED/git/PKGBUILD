@@ -1,18 +1,22 @@
-# $Id: PKGBUILD 169122 2012-10-18 14:05:32Z dan $
+# $Id: PKGBUILD 173917 2012-12-28 04:30:01Z dan $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
 # Maintainer: Dan McGee <dan@archlinux.org>
+#commit  	b33d5d10149b5a5a8e88fc02396373467defe3ba 1.8.0.2-1 > 1.8.0.3-1 ----- upgpkg: git 1.8.0.3-1 ------ accepted by axe, axe rel remains 1
 
+
+#--------------------
 pkgname=git
-pkgver=1.8.0.2
+#--------------------
+pkgver=1.8.0.3
 _arch_rel=1
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-pkgdesc="the fast distributed version control system --maintained as part of the axe project"
+pkgdesc="the fast distributed version control system"
 arch=(i686 x86_64)
 url="http://git-scm.com/"
 license=('GPL2')
-groups=('axis')
+groups=("axis")
 depends=('curl' 'expat>=2.0' 'perl-error' 'perl>=5.14.0' 'openssl' 'pcre')
 makedepends=('python2' 'emacs')
 optdepends=('tk: gitk and git gui'
@@ -34,12 +38,6 @@ source=("http://git-core.googlecode.com/files/git-$pkgver.tar.gz"
         git-daemon.conf
         git-daemon@.service
         git-daemon.socket)
-md5sums=('1aca109d4a719fe5bc43d25927fbc7d9'
-		 'ab83283a5b3c73ab711a9f02896ca12e'
-         '8e2648910fd5dd4f1c41d3c7fa9e9156'
-         '2e42bf97779a1c6411d89043334c9e78'
-         '042524f942785772d7bd52a1f02fe5ae'
-         'f67869315c2cc112e076f0c73f248002')
 
 build() {
   export PYTHON_PATH='/usr/bin/python2'
@@ -115,9 +113,19 @@ package() {
   install -D -m755 "$srcdir"/git-daemon "$pkgdir"/etc/rc.d/git-daemon
   install -D -m644 "$srcdir"/git-daemon.conf "$pkgdir"/etc/conf.d/git-daemon.conf
 
+  #axe commit 1 remove systemd deamon
   # systemd stuff
 #  install -D -m 644 "$srcdir"/git-daemon@.service "$pkgdir"/usr/lib/systemd/system/git-daemon@.service
 #  install -D -m 644 "$srcdir"/git-daemon.socket "$pkgdir"/usr/lib/systemd/system/git-daemon.socket
 }
 
+md5sums=('6a32290550c9e8aa55aeb6e8db9c183f'
+         '962ba4fb286372386c83c3712d1fd59a'
+         '3da53a88339ad99286e095d034e20874'
+         '2e42bf97779a1c6411d89043334c9e78'
+         '042524f942785772d7bd52a1f02fe5ae'
+         'f67869315c2cc112e076f0c73f248002')
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/git/PKGBUILD 
+#----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/git/git-daemon altered for rc.d changes
 
+#axe hand notes, only sysd service on this one, here because it has rcd file and like all others will get fucked in new year

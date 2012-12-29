@@ -3,12 +3,14 @@
 # Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
 # Maintainer: Judd Vinet <jvinet@zeroflux.org>
 # Contributor: Giovanni Scafora <giovanni@archlinux.org>
+#commit 	7f440b04f9fdbaa856ef5c3fdd60b9bf2d8555dc 3.1-9 > 3.1-10 ----- extramly minor change to backup files ------ accepted by axe, axe rel remains 1
+
 
 #--------------------
 pkgname=distcc
 #--------------------
 pkgver=3.1
-_arch_rel=9
+_arch_rel=10
 _axe_rel=1
 #--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
@@ -65,3 +67,4 @@ package() {
 }
 #----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/distcc/PKGBUILD 
 #----------------axe warning------------------ /root/axebuilder/AxePkgbuildsUpdatable/distcc/distccd altered for rc.d changes
+#axe hand notes, only sysd service on this one, here because it has rcd file and like all others will get fucked in new year

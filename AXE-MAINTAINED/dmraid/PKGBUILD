@@ -1,20 +1,25 @@
-# $Id: PKGBUILD 162150 2012-06-22 12:53:50Z dreisner $
+# $Id: PKGBUILD 173944 2012-12-28 19:27:14Z dreisner $
 # Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 #Contributor: Urs Wolfer <uwolfer @ fwo.ch>
+#commit 	29f25860f8c922853caa2fc66ec9c2f11fe3c1be 1.0.0.rc16.3-7 > 1.0.0.rc16.3-8 ----- Add db_persist udev rule to initramfs hook (FS#33166) ------ accepted by axe, axe rel remains 1
+#commit     6b1ccee31c4441500d8880093db5e6feb4fe6375 1.0.0.rc16.3-7 > 1.0.0.rc16.3-8 ----- he forgot to increment pkg rel ------ accepted by axe, axe rel remains 1
 
+#--------------------
 pkgname=dmraid
+#--------------------
 pkgver=1.0.0.rc16.3
-_arch_rel=7
+_arch_rel=8
 _axe_rel=1
-
+#--------------------
 pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
-pkgdesc="Device mapper RAID interface  --maintained as part of the axe project"
+pkgdesc="Device mapper RAID interface"
 url="http://people.redhat.com/~heinzm/sw/dmraid/"
 conflicts=('mkinitcpio<0.7')
 depends=('device-mapper>=2.0.54')
 arch=('i686' 'x86_64')
 license=('GPL')
-groups=('axis')
+groups=("axis")
 source=(#ftp://ftp.archlinux.org/other/dmraid/$pkgname-$pkgver.tar.bz2
         http://people.redhat.com/~heinzm/sw/dmraid/src/$pkgname-1.0.0.rc16-3.tar.bz2
         dmraid_install
@@ -23,10 +28,10 @@ source=(#ftp://ftp.archlinux.org/other/dmraid/$pkgname-$pkgver.tar.bz2
         dmraid.service)
 install=dmraid.install
 md5sums=('819338fcef98e8e25819f0516722beeb'
-         '2297d23cee1aef23ec6ad8d6d1870356'
+         'dea048cc09b49b02da1009adae563866'
          'faec669dc85f87187b45b5d3968efe2c'
          '56a8bb0ece8d206cd8efb504ee072ddd'
-         'de0af1fdb9ed4c109b8119160167d2e9')
+         '1cd201496e52bd05c1c3048bf6dd809f')
 
 build() {
   cd "$pkgname/1.0.0.rc16-3/$pkgname"
@@ -39,11 +44,12 @@ package() {
   make DESTDIR="$pkgdir" prefix=/usr libdir=/usr/lib mandir=/usr/share/man includedir=/usr/include install
   install -D -m644 "$srcdir"/dmraid_install "$pkgdir"/usr/lib/initcpio/install/dmraid
   install -D -m644 "$srcdir"/dmraid_hook "$pkgdir"/usr/lib/initcpio/hooks/dmraid
- # install -D -m644 "$srcdir"/dmraid_tmpfiles "$pkgdir"/usr/lib/tmpfiles.d/dmraid.conf
+  install -D -m644 "$srcdir"/dmraid_tmpfiles "$pkgdir"/usr/lib/tmpfiles.d/dmraid.conf
 
   # fix permissions
   chmod 644 "$pkgdir"/usr/include/dmraid/* "$pkgdir"/usr/lib/libdmraid.a
 
- # commented out by AXE, axe does not like systemd
- # install -Dm644 "$srcdir/dmraid.service" "$pkgdir/usr/lib/systemd/system/dmraid.service"
+#  install -Dm644 "$srcdir/dmraid.service" "$pkgdir/usr/lib/systemd/system/dmraid.service"
 }
+#----------------axe warning------------------ syetemd detected in file /root/axebuilder/AxePkgbuildsUpdatable/dmraid/PKGBUILD 
+#axe hand notes, only sysd service on this one, here because it has rcd file and like all others will get fucked in new year
