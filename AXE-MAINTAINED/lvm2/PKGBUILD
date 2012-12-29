@@ -76,5 +76,5 @@ package_lvm2() {
   # systemd support
   # install -D -m644 "${srcdir}/lvm.service" "${pkgdir}/usr/lib/systemd/system/lvm.service"
   # install -D -m644 "${srcdir}/lvm-on-crypt.service" "${pkgdir}/usr/lib/systemd/system/lvm-on-crypt.service"
-  # install -D -m644 "${srcdir}/lvm2.conf" "${pkgdir}/usr/lib/tmpfiles.d/lvm2.conf"
+   install -D -m644 "${srcdir}/lvm2.conf" "${pkgdir}/usr/lib/tmpfiles.d/lvm2.conf"
 }

@@ -73,7 +73,7 @@ package() {
 	install -Dm755 "$srcdir/apcupsd" "$pkgdir/etc/rc.d/apcupsd"
 	     #masked  out by axe,AXE does not like systemd
 #	install -Dm644 "$srcdir/apcupsd.service" "$pkgdir/usr/lib/systemd/system/apcupsd.service"
-#	install -Dm644 "$srcdir/apcupsd-tmpfiles.conf" "$pkgdir/usr/lib/tmpfiles.d/apcupsd.conf"
+	install -Dm644 "$srcdir/apcupsd-tmpfiles.conf" "$pkgdir/usr/lib/tmpfiles.d/apcupsd.conf"
 	chmod 755 "$pkgdir"/sbin/*
 	install -dm755 "$pkgdir/usr/lib/$pkgname/cgi-bin"
 	mv "$pkgdir"/etc/apcupsd/*.cgi "$pkgdir/usr/lib/$pkgname/cgi-bin"

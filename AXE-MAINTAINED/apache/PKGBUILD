@@ -133,7 +133,7 @@ build() {
 	install -D -m755 "${srcdir}/httpd" "${pkgdir}/etc/rc.d/httpd"
 	install -D -m644 "${srcdir}/httpd.logrotate" "${pkgdir}/etc/logrotate.d/httpd"
 	install -D -m644 "${srcdir}/apache.conf.d" "${pkgdir}/etc/conf.d/apache"
-#	install -D -m644 "${srcdir}/apache.tmpfiles.conf" "${pkgdir}/usr/lib/tmpfiles.d/apache.conf"
+	install -D -m644 "${srcdir}/apache.tmpfiles.conf" "${pkgdir}/usr/lib/tmpfiles.d/apache.conf"
 
 	# symlinks for /etc/httpd
 	ln -fs /var/log/httpd "${pkgdir}/etc/httpd/logs"
