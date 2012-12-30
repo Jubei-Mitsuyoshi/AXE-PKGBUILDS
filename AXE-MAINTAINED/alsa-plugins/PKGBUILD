@@ -12,8 +12,9 @@ pkgver=1.0.26.3
 _arch_rel=1
 _axe_rel=1
 #--------------------
-pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 _pkgrelss=gf8c1a
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
 pkgdesc="Extra alsa plugins  tarball based on GIT snapshot"
 arch=(i686 x86_64)
 url="http://www.alsa-project.org"

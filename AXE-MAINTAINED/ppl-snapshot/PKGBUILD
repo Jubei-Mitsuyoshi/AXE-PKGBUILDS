@@ -1,0 +1,44 @@
+# $Id$
+# Maintainer: Allan McRae <allan@archlinux.org>
+# Contributor: ezzetabi <ezzetabi at gawab dot com>
+
+
+#--------------------
+pkgname=ppl-snapshot
+#--------------------
+pkgver=1.0
+#--------------------
+_arch_rel=1
+_axe_native_rel=1
+#--------------------
+_pkgrelss=decf66d
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgdesc="A modern library for convex polyhedra and other numerical abstractions. git snapshot, maintained by axe"
+arch=('i686' 'x86_64')
+url="http://www.cs.unipr.it/git"
+license=('GPL3')
+depends=('gmp>=5.0')
+replaces=('ppl')
+provides=("ppl=$pkgver")
+conflicts=("ppl")
+options=('!docs' '!libtool')
+source=(http://www.cs.unipr.it/git/gitweb.cgi?p=ppl/ppl.git;a=snapshot;h=refs/heads/master;sf=tgz)
+md5sums=('48E38AD5DC9A4EE116411F8F76307442')
+
+build() {
+  cd $srcdir/ppl-master-$pkgrelss
+  autoreconf
+  ./configure --prefix=/usr --enable-interfaces="c,cxx"
+  make
+}
+
+check() {
+  cd $srcdir/ppl-master-$pkgrelss
+  make check
+}
+
+package() {
+  cd $srcdir/ppl-master-$pkgrelss
+  make DESTDIR=$pkgdir install
+}
