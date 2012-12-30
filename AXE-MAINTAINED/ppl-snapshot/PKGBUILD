@@ -23,22 +23,22 @@ replaces=('ppl')
 provides=("ppl=$pkgver")
 conflicts=("ppl")
 options=('!docs' '!libtool')
-source=(http://www.cs.unipr.it/git/gitweb.cgi?p=ppl/ppl.git;a=snapshot;h=refs/heads/master;sf=tgz)
+source=(ppl-master-$_pkgrelss.tar.gz)
 md5sums=('48E38AD5DC9A4EE116411F8F76307442')
 
 build() {
-  cd $srcdir/ppl-master-$pkgrelss
+  cd $srcdir/ppl-master-$_pkgrelss
   autoreconf
   ./configure --prefix=/usr --enable-interfaces="c,cxx"
   make
 }
 
 check() {
-  cd $srcdir/ppl-master-$pkgrelss
+  cd $srcdir/ppl-master-$_pkgrelss
   make check
 }
 
 package() {
-  cd $srcdir/ppl-master-$pkgrelss
+  cd $srcdir/ppl-master-$_pkgrelss
   make DESTDIR=$pkgdir install
 }
