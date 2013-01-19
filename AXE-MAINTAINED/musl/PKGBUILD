@@ -1,0 +1,34 @@
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+# Maintainer: Serge Ziryukin <ftrvxmtrx@gmail.com>
+
+
+
+#--------------------
+pkgname=musl
+#--------------------
+pkgver=0.9.8
+_arch_rel=1
+_axe_rel=1
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgdesc="An implementation of the C/POSIX standard library intended for use on Linux-based systems"
+arch=('i686' 'x86_64')
+url="http://www.musl-libc.org/"
+license=('MIT')
+groups=("axis")
+makedepends=('make')
+source=(http://www.musl-libc.org/releases/$pkgname-$pkgver.tar.gz)
+md5sums=('530cd51a761023f020b6e84c14404287')
+options=(!buildflags !strip)
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure --prefix=/usr/musl --exec-prefix=/usr --syslibdir=/usr/lib && make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  make DESTDIR="$pkgdir/" install
+}

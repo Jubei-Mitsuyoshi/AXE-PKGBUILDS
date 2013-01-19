@@ -1,0 +1,68 @@
+# Maintainer: Jubei-Mitsuyoshi <jubei.house.of.five.masters@gmail.com>
+
+
+
+#--------------------
+pkgname=axe-runit-musl
+#--------------------
+pkgver=20121017
+_arch_rel=2
+_axe_native_rel=1
+#--------------------
+pkgrel="${_AXE_PREFIX_REL}.${_AXE_STAGE}.${_arch_rel}.${_axe_rel}.${_AXE_PROCESOR_REL}.${_AXE_SUFFIX_REL}"
+pkgdesc="A replacement for sysvinit based upon runit, Git HEAD version"
+url="https://github.com/chneukirchen/ignite"
+license=('custom')
+groups=("axis")
+arch=('i686' 'x86_64' 'arm')
+depends=('bash' 'util-linux')
+makedepends=('gcc' 'make' 'coreutils' 'sed' 'git')
+provides=("runit" "runit-dietlibc")
+conflicts=("runit" "runit-dietlibc")
+
+_gitroot="https://github.com/Jubei-Mitsuyoshi/AXE-SYSTEM-SCRIPTS.git"
+_gitname="axesystemscripts"
+
+# /etc/sv gets added below to this!
+backup=('etc/runit/1'
+	'etc/runit/2'
+	'etc/runit/3'
+        'etc/runit/ctrlaltdel'
+		'usr/bin/pause'
+		'usr/share/man/man1/pause.1')
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+
+}
+
+package() {
+  cd "$srcdir/$_gitname/runit-musl"
+
+    # default services
+  install -d -m0755 "$pkgdir/var"
+  ln -s ../run/runit/runsvdir/current "${pkgdir}/var/service" || return 1
+
+  install -d -m0755 $pkgdir/sbin
+  install -s -m0755 $srcdir/$_gitname/runit-musl/sbin/{chpst,runit,runit-init,runsv,runsvchdir,runsvdir,sv,svlogd,utmpset} $pkgdir/sbin
+
+  install -d -m0755 $pkgdir/usr/share/man/man8
+  install -m0644 $srcdir/admin/$_pkgname-$pkgver/man/* $pkgdir/usr/share/man/man8
+
+  install -d -m0755 $pkgdir/usr/share/doc/runit
+  install -m0644 $srcdir/admin/$_pkgname-$pkgver/doc/*.html $pkgdir/usr/share/doc/runit
+
+  install -D $srcdir/admin/$_pkgname-$pkgver/package/COPYING $pkgdir/usr/share/licenses/runit-musl/COPYING
+
+  install -D -m0644 $srcdir/_sv $pkgdir/usr/share/zsh/site-functions/_sv
+}

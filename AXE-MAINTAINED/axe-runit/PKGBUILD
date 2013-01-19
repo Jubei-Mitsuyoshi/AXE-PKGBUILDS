@@ -29,8 +29,9 @@ source=("http://smarden.org/runit/runit-$pkgver.tar.gz")
 			
 md5sums=('8FA53EA8F71D88DA9503F62793336BC3')
 
+
 build() {
-   cd $startdir/src/admin/runit-$pkgver/src
+  cd $startdir/src/admin/runit-$pkgver/src
 
   # configure 
   # we build nothing static
@@ -42,34 +43,33 @@ build() {
   sed -i -e 's:^char \*varservice ="/service/";$:char \*varservice ="/var/service/";:' sv.c || return 1
 
   # compile
-  make || return 1
-  make check || return 1
-
-  # directories
-  install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/current || return 1
-  install -d -m0755 ${startdir}/pkg/etc/sv || return 1
-  install -d -m0755 ${startdir}/pkg/var/service || return 1
-  
-
-  # install binaries
-  install -d -m0755 ${startdir}/pkg/sbin || return 1
-  for i in `cat $startdir/src/admin/runit-$pkgver/package/commands`
-  do
-    install -s -m0755 ${startdir}/src/admin/runit-$pkgver/src/$i ${startdir}/pkg/sbin || return 1
-  done
-
-  # man-pages
-  install -d -m0755 ${startdir}/pkg/usr/share/man/man8 || return 1
-  install -m0644 ${startdir}/src/admin/runit-$pkgver/man/* ${startdir}/pkg/usr/share/man/man8 || return 1
-
-  # doc
-  install -d -m0755 ${startdir}/pkg/usr/share/doc/runit || return 1
-  install -m0644 ${startdir}/src/admin/runit-$pkgver/doc/*.html ${startdir}/pkg/usr/share/doc/runit  || return 1
-
-
-  install -D ${startdir}/src/admin/runit-$pkgver/package/COPYING $startdir/pkg/usr/share/licenses/runit/COPYING
-
-  
+  make
 }
 
+check() {
+  cd $srcdir/admin/$_pkgname-$pkgver/src
+
+  make check
+}
+
+package() {
+  cd $srcdir/admin/$_pkgname-$pkgver/src
+
+  # default services
+  install -d -m0755 "$pkgdir/var"
+  ln -s ../run/runit/runsvdir/current "${pkgdir}/var/service" || return 1
+
+  install -d -m0755 $pkgdir/sbin
+  install -s -m0755 $srcdir/admin/$_pkgname-$pkgver/src/{chpst,runit,runit-init,runsv,runsvchdir,runsvdir,sv,svlogd,utmpset} $pkgdir/sbin
+
+  install -d -m0755 $pkgdir/usr/share/man/man8
+  install -m0644 $srcdir/admin/$_pkgname-$pkgver/man/* $pkgdir/usr/share/man/man8
+
+  install -d -m0755 $pkgdir/usr/share/doc/runit
+  install -m0644 $srcdir/admin/$_pkgname-$pkgver/doc/*.html $pkgdir/usr/share/doc/runit
+
+  install -D $srcdir/admin/$_pkgname-$pkgver/package/COPYING $pkgdir/usr/share/licenses/axe-runit/COPYING
+
+  install -D -m0644 $srcdir/_sv $pkgdir/usr/share/zsh/site-functions/_sv
+}
 
